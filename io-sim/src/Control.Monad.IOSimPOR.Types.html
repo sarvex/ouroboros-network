@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Control.Monad.IOSimPOR.Types</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-2"></span><span>
+</span><span id="line-3"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">Data.List</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">List</span></span><span>
+</span><span id="line-4"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier">Data.Set</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier">Set</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier">Data.Set</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Set</span></span><span>
+</span><span id="line-6"></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html"><span class="hs-identifier">Control.Monad.IOSim.CommonTypes</span></a></span><span>
+</span><span id="line-8"></span><span>
+</span><span id="line-9"></span><span class="hs-comment">--</span><span>
+</span><span id="line-10"></span><span class="hs-comment">-- Effects</span><span>
+</span><span id="line-11"></span><span class="hs-comment">--</span><span>
+</span><span id="line-12"></span><span>
+</span><span id="line-13"></span><span class="hs-comment">-- | An `Effect` aggregates effects performed by a thread.  Only used by</span><span>
+</span><span id="line-14"></span><span class="hs-comment">-- *IOSimPOR*.</span><span>
+</span><span id="line-15"></span><span class="hs-comment">--</span><span>
+</span><span id="line-16"></span><span class="hs-keyword">data</span><span> </span><span id="Effect"><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-var">Effect</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Effect"><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-var">Effect</span></a></span></span><span> </span><span class="hs-special">{</span><span>
+</span><span id="line-17"></span><span>    </span><span id="effectReads"><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var hs-var">effectReads</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-type">Set</span></a></span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#TVarId"><span class="hs-identifier hs-type">TVarId</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-18"></span><span>    </span><span id="effectWrites"><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-type">Set</span></a></span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#TVarId"><span class="hs-identifier hs-type">TVarId</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-19"></span><span>    </span><span id="effectForks"><span class="annot"><span class="annottext">Effect -&gt; Set ThreadId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectForks"><span class="hs-identifier hs-var hs-var">effectForks</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-type">Set</span></a></span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-20"></span><span>    </span><span id="effectLiftST"><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectLiftST"><span class="hs-identifier hs-var hs-var">effectLiftST</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Bool</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-21"></span><span>    </span><span id="effectThrows"><span class="annot"><span class="annottext">Effect -&gt; [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectThrows"><span class="hs-identifier hs-var hs-var">effectThrows</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span class="hs-special">]</span><span class="hs-special">,</span><span>
+</span><span id="line-22"></span><span>    </span><span id="effectWakeup"><span class="annot"><span class="annottext">Effect -&gt; [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWakeup"><span class="hs-identifier hs-var hs-var">effectWakeup</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-23"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-24"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679100404"><span id="local-6989586621679100406"><span class="annot"><span class="annottext">Effect -&gt; Effect -&gt; Bool
+(Effect -&gt; Effect -&gt; Bool)
+-&gt; (Effect -&gt; Effect -&gt; Bool) -&gt; Eq Effect
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+/= :: Effect -&gt; Effect -&gt; Bool
+$c/= :: Effect -&gt; Effect -&gt; Bool
+== :: Effect -&gt; Effect -&gt; Bool
+$c== :: Effect -&gt; Effect -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679100397"><span id="local-6989586621679100399"><span id="local-6989586621679100401"><span class="annot"><span class="annottext">Int -&gt; Effect -&gt; ShowS
+[Effect] -&gt; ShowS
+Effect -&gt; String
+(Int -&gt; Effect -&gt; ShowS)
+-&gt; (Effect -&gt; String) -&gt; ([Effect] -&gt; ShowS) -&gt; Show Effect
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+showList :: [Effect] -&gt; ShowS
+$cshowList :: [Effect] -&gt; ShowS
+show :: Effect -&gt; String
+$cshow :: Effect -&gt; String
+showsPrec :: Int -&gt; Effect -&gt; ShowS
+$cshowsPrec :: Int -&gt; Effect -&gt; ShowS
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-25"></span><span>
+</span><span id="line-26"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679100391"><span id="local-6989586621679100393"><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Semigroup</span></a></span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-27"></span><span>  </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span> </span><span id="local-6989586621679100389"><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100389"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span id="local-6989586621679100388"><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100388"><span class="hs-identifier hs-var">w</span></a></span></span><span> </span><span id="local-6989586621679100387"><span class="annot"><span class="annottext">Set ThreadId
+</span><a href="#local-6989586621679100387"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span id="local-6989586621679100386"><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679100386"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span id="local-6989586621679100385"><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100385"><span class="hs-identifier hs-var">ts</span></a></span></span><span> </span><span id="local-6989586621679100384"><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100384"><span class="hs-identifier hs-var">wu</span></a></span></span><span> </span><span id="local-6989586621679100383"><span class="annot"><span class="annottext">&lt;&gt; :: Effect -&gt; Effect -&gt; Effect
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var hs-var hs-var hs-var">&lt;&gt;</span></a></span></span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span> </span><span id="local-6989586621679100382"><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100382"><span class="hs-identifier hs-var">r'</span></a></span></span><span> </span><span id="local-6989586621679100381"><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100381"><span class="hs-identifier hs-var">w'</span></a></span></span><span> </span><span id="local-6989586621679100380"><span class="annot"><span class="annottext">Set ThreadId
+</span><a href="#local-6989586621679100380"><span class="hs-identifier hs-var">s'</span></a></span></span><span> </span><span id="local-6989586621679100379"><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679100379"><span class="hs-identifier hs-var">b'</span></a></span></span><span> </span><span id="local-6989586621679100378"><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100378"><span class="hs-identifier hs-var">ts'</span></a></span></span><span> </span><span id="local-6989586621679100377"><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100377"><span class="hs-identifier hs-var">wu'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-28"></span><span>    </span><span class="annot"><span class="annottext">Set TVarId
+-&gt; Set TVarId
+-&gt; Set ThreadId
+-&gt; Bool
+-&gt; [ThreadId]
+-&gt; [ThreadId]
+-&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-var">Effect</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100389"><span class="hs-identifier hs-var">r</span></a></span><span class="annot"><span class="annottext">Set TVarId -&gt; Set TVarId -&gt; Set TVarId
+forall a. Semigroup a =&gt; a -&gt; a -&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100382"><span class="hs-identifier hs-var">r'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100388"><span class="hs-identifier hs-var">w</span></a></span><span class="annot"><span class="annottext">Set TVarId -&gt; Set TVarId -&gt; Set TVarId
+forall a. Semigroup a =&gt; a -&gt; a -&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span class="annot"><span class="annottext">Set TVarId
+</span><a href="#local-6989586621679100381"><span class="hs-identifier hs-var">w'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Set ThreadId
+</span><a href="#local-6989586621679100387"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Set ThreadId -&gt; Set ThreadId -&gt; Set ThreadId
+forall a. Semigroup a =&gt; a -&gt; a -&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span class="annot"><span class="annottext">Set ThreadId
+</span><a href="#local-6989586621679100380"><span class="hs-identifier hs-var">s'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679100386"><span class="hs-identifier hs-var">b</span></a></span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679100379"><span class="hs-identifier hs-var">b'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100385"><span class="hs-identifier hs-var">ts</span></a></span><span class="annot"><span class="annottext">[ThreadId] -&gt; [ThreadId] -&gt; [ThreadId]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">++</span></a></span><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100378"><span class="hs-identifier hs-var">ts'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100384"><span class="hs-identifier hs-var">wu</span></a></span><span class="annot"><span class="annottext">[ThreadId] -&gt; [ThreadId] -&gt; [ThreadId]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">++</span></a></span><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100377"><span class="hs-identifier hs-var">wu'</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-29"></span><span>
+</span><span id="line-30"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679100370"><span id="local-6989586621679100372"><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Monoid</span></a></span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-31"></span><span>  </span><span id="local-6989586621679100368"><span class="annot"><span class="annottext">mempty :: Effect
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">mempty</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Set TVarId
+-&gt; Set TVarId
+-&gt; Set ThreadId
+-&gt; Bool
+-&gt; [ThreadId]
+-&gt; [ThreadId]
+-&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-var">Effect</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId
+forall a. Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.empty</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId
+forall a. Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.empty</span></a></span><span> </span><span class="annot"><span class="annottext">Set ThreadId
+forall a. Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.empty</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">False</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span>
+</span><span id="line-32"></span><span>
+</span><span id="line-33"></span><span class="hs-comment">-- readEffect :: SomeTVar s -&gt; Effect</span><span>
+</span><span id="line-34"></span><span class="hs-comment">-- readEffect r = mempty{effectReads = Set.singleton $ someTvarId r }</span><span>
+</span><span id="line-35"></span><span>
+</span><span id="line-36"></span><span id="local-6989586621679100366"><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#readEffects"><span class="hs-identifier hs-type">readEffects</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#SomeTVar"><span class="hs-identifier hs-type">SomeTVar</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100366"><span class="hs-identifier hs-type">s</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span></span><span>
+</span><span id="line-37"></span><span id="readEffects"><span class="annot"><span class="annottext">readEffects :: [SomeTVar s] -&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#readEffects"><span class="hs-identifier hs-var hs-var">readEffects</span></a></span></span><span> </span><span id="local-6989586621679100364"><span class="annot"><span class="annottext">[SomeTVar s]
+</span><a href="#local-6989586621679100364"><span class="hs-identifier hs-var">rs</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span class="annot"><span class="annottext">effectReads :: Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var">effectReads</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[TVarId] -&gt; Set TVarId
+forall a. Ord a =&gt; [a] -&gt; Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.fromList</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(SomeTVar s -&gt; TVarId) -&gt; [SomeTVar s] -&gt; [TVarId]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">map</span></a></span><span> </span><span class="annot"><span class="annottext">SomeTVar s -&gt; TVarId
+forall s. SomeTVar s -&gt; TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#someTvarId"><span class="hs-identifier hs-var">someTvarId</span></a></span><span> </span><span class="annot"><span class="annottext">[SomeTVar s]
+</span><a href="#local-6989586621679100364"><span class="hs-identifier hs-var">rs</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
+</span><span id="line-38"></span><span>
+</span><span id="line-39"></span><span class="hs-comment">-- writeEffect :: SomeTVar s -&gt; Effect</span><span>
+</span><span id="line-40"></span><span class="hs-comment">-- writeEffect r = mempty{effectWrites = Set.singleton $ someTvarId r }</span><span>
+</span><span id="line-41"></span><span>
+</span><span id="line-42"></span><span id="local-6989586621679100361"><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#writeEffects"><span class="hs-identifier hs-type">writeEffects</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#SomeTVar"><span class="hs-identifier hs-type">SomeTVar</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100361"><span class="hs-identifier hs-type">s</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span></span><span>
+</span><span id="line-43"></span><span id="writeEffects"><span class="annot"><span class="annottext">writeEffects :: [SomeTVar s] -&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#writeEffects"><span class="hs-identifier hs-var hs-var">writeEffects</span></a></span></span><span> </span><span id="local-6989586621679100359"><span class="annot"><span class="annottext">[SomeTVar s]
+</span><a href="#local-6989586621679100359"><span class="hs-identifier hs-var">rs</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span class="annot"><span class="annottext">effectWrites :: Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var">effectWrites</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[TVarId] -&gt; Set TVarId
+forall a. Ord a =&gt; [a] -&gt; Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.fromList</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(SomeTVar s -&gt; TVarId) -&gt; [SomeTVar s] -&gt; [TVarId]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">map</span></a></span><span> </span><span class="annot"><span class="annottext">SomeTVar s -&gt; TVarId
+forall s. SomeTVar s -&gt; TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#someTvarId"><span class="hs-identifier hs-var">someTvarId</span></a></span><span> </span><span class="annot"><span class="annottext">[SomeTVar s]
+</span><a href="#local-6989586621679100359"><span class="hs-identifier hs-var">rs</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
+</span><span id="line-44"></span><span>
+</span><span id="line-45"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#forkEffect"><span class="hs-identifier hs-type">forkEffect</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span>
+</span><span id="line-46"></span><span id="forkEffect"><span class="annot"><span class="annottext">forkEffect :: ThreadId -&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#forkEffect"><span class="hs-identifier hs-var hs-var">forkEffect</span></a></span></span><span> </span><span id="local-6989586621679100357"><span class="annot"><span class="annottext">ThreadId
+</span><a href="#local-6989586621679100357"><span class="hs-identifier hs-var">tid</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span class="annot"><span class="annottext">effectForks :: Set ThreadId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectForks"><span class="hs-identifier hs-var">effectForks</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ThreadId -&gt; Set ThreadId
+forall a. a -&gt; Set a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.singleton</span></a></span><span> </span><span class="annot"><span class="annottext">(ThreadId -&gt; Set ThreadId) -&gt; ThreadId -&gt; Set ThreadId
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">ThreadId
+</span><a href="#local-6989586621679100357"><span class="hs-identifier hs-var">tid</span></a></span><span class="hs-special">}</span><span>
+</span><span id="line-47"></span><span>
+</span><span id="line-48"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#liftSTEffect"><span class="hs-identifier hs-type">liftSTEffect</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span>
+</span><span id="line-49"></span><span id="liftSTEffect"><span class="annot"><span class="annottext">liftSTEffect :: Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#liftSTEffect"><span class="hs-identifier hs-var hs-var">liftSTEffect</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">effectLiftST :: Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectLiftST"><span class="hs-identifier hs-var">effectLiftST</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">True</span></a></span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-50"></span><span>
+</span><span id="line-51"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#throwToEffect"><span class="hs-identifier hs-type">throwToEffect</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span>
+</span><span id="line-52"></span><span id="throwToEffect"><span class="annot"><span class="annottext">throwToEffect :: ThreadId -&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#throwToEffect"><span class="hs-identifier hs-var hs-var">throwToEffect</span></a></span></span><span> </span><span id="local-6989586621679100353"><span class="annot"><span class="annottext">ThreadId
+</span><a href="#local-6989586621679100353"><span class="hs-identifier hs-var">tid</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">effectThrows :: [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectThrows"><span class="hs-identifier hs-var">effectThrows</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">ThreadId
+</span><a href="#local-6989586621679100353"><span class="hs-identifier hs-var">tid</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-53"></span><span>
+</span><span id="line-54"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#wakeupEffects"><span class="hs-identifier hs-type">wakeupEffects</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#ThreadId"><span class="hs-identifier hs-type">ThreadId</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span>
+</span><span id="line-55"></span><span id="wakeupEffects"><span class="annot"><span class="annottext">wakeupEffects :: [ThreadId] -&gt; Effect
+</span><a href="Control.Monad.IOSimPOR.Types.html#wakeupEffects"><span class="hs-identifier hs-var hs-var">wakeupEffects</span></a></span></span><span> </span><span id="local-6989586621679100351"><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100351"><span class="hs-identifier hs-var">tids</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span class="hs-special">{</span><span class="annot"><span class="annottext">effectWakeup :: [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWakeup"><span class="hs-identifier hs-var">effectWakeup</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[ThreadId]
+</span><a href="#local-6989586621679100351"><span class="hs-identifier hs-var">tids</span></a></span><span class="hs-special">}</span><span>
+</span><span id="line-56"></span><span>
+</span><span id="line-57"></span><span id="local-6989586621679100433"><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#someTvarId"><span class="hs-identifier hs-type">someTvarId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#SomeTVar"><span class="hs-identifier hs-type">SomeTVar</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100433"><span class="hs-identifier hs-type">s</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#TVarId"><span class="hs-identifier hs-type">TVarId</span></a></span></span><span>
+</span><span id="line-58"></span><span id="someTvarId"><span class="annot"><span class="annottext">someTvarId :: SomeTVar s -&gt; TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#someTvarId"><span class="hs-identifier hs-var hs-var">someTvarId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Control.Monad.IOSim.CommonTypes.html#SomeTVar"><span class="hs-identifier hs-type">SomeTVar</span></a></span><span> </span><span id="local-6989586621679100349"><span class="annot"><span class="annottext">TVar s a
+</span><a href="#local-6989586621679100349"><span class="hs-identifier hs-var">r</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TVar s a -&gt; TVarId
+forall s a. TVar s a -&gt; TVarId
+</span><a href="Control.Monad.IOSim.CommonTypes.html#tvarId"><span class="hs-identifier hs-var hs-var">tvarId</span></a></span><span> </span><span class="annot"><span class="annottext">TVar s a
+</span><a href="#local-6989586621679100349"><span class="hs-identifier hs-var">r</span></a></span><span>
+</span><span id="line-59"></span><span>
+</span><span id="line-60"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#onlyReadEffect"><span class="hs-identifier hs-type">onlyReadEffect</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Bool</span></a></span><span>
+</span><span id="line-61"></span><span id="onlyReadEffect"><span class="annot"><span class="annottext">onlyReadEffect :: Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#onlyReadEffect"><span class="hs-identifier hs-var hs-var">onlyReadEffect</span></a></span></span><span> </span><span id="local-6989586621679100346"><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100346"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100346"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">effectReads :: Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var">effectReads</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var hs-var">effectReads</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span> </span><span class="hs-special">}</span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Effect -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">==</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+forall a. Monoid a =&gt; a
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">mempty</span></a></span><span>
+</span><span id="line-62"></span><span>
+</span><span id="line-63"></span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#racingEffects"><span class="hs-identifier hs-type">racingEffects</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Control.Monad.IOSimPOR.Types.html#Effect"><span class="hs-identifier hs-type">Effect</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Bool</span></a></span><span>
+</span><span id="line-64"></span><span id="racingEffects"><span class="annot"><span class="annottext">racingEffects :: Effect -&gt; Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#racingEffects"><span class="hs-identifier hs-var hs-var">racingEffects</span></a></span></span><span> </span><span id="local-6989586621679100344"><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span id="local-6989586621679100343"><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-65"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectLiftST"><span class="hs-identifier hs-var hs-var">effectLiftST</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span>  </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&amp;&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="#local-6989586621679100341"><span class="hs-identifier hs-var">racesWithLiftST</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-66"></span><span>   </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectLiftST"><span class="hs-identifier hs-var hs-var">effectLiftST</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&amp;&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="#local-6989586621679100341"><span class="hs-identifier hs-var">racesWithLiftST</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-67"></span><span>   </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectThrows"><span class="hs-identifier hs-var hs-var">effectThrows</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">[ThreadId] -&gt; [ThreadId] -&gt; Bool
+forall a. Eq a =&gt; [a] -&gt; [a] -&gt; Bool
+</span><a href="#local-6989586621679100340"><span class="hs-operator hs-var">`intersectsL`</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; [ThreadId]
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectThrows"><span class="hs-identifier hs-var hs-var">effectThrows</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span>
+</span><span id="line-68"></span><span>   </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var hs-var">effectReads</span></a></span><span>  </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId -&gt; Set TVarId -&gt; Bool
+forall a. Ord a =&gt; Set a -&gt; Set a -&gt; Bool
+</span><a href="#local-6989586621679100339"><span class="hs-operator hs-var">`intersects`</span></a></span><span>  </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span>
+</span><span id="line-69"></span><span>   </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId -&gt; Set TVarId -&gt; Bool
+forall a. Ord a =&gt; Set a -&gt; Set a -&gt; Bool
+</span><a href="#local-6989586621679100339"><span class="hs-operator hs-var">`intersects`</span></a></span><span>  </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var hs-var">effectReads</span></a></span><span>  </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span>
+</span><span id="line-70"></span><span>   </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100344"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId -&gt; Set TVarId -&gt; Bool
+forall a. Ord a =&gt; Set a -&gt; Set a -&gt; Bool
+</span><a href="#local-6989586621679100339"><span class="hs-operator hs-var">`intersects`</span></a></span><span>  </span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100343"><span class="hs-identifier hs-var">e'</span></a></span><span>
+</span><span id="line-71"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-72"></span><span>    </span><span id="local-6989586621679100421"><span class="annot"><a href="#local-6989586621679100339"><span class="hs-identifier hs-type">intersects</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Ord</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100421"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-type">Set</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100421"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-type">Set</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100421"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Bool</span></a></span></span><span>
+</span><span id="line-73"></span><span>    </span><span id="local-6989586621679100339"><span class="annot"><span class="annottext">intersects :: Set a -&gt; Set a -&gt; Bool
+</span><a href="#local-6989586621679100339"><span class="hs-identifier hs-var hs-var">intersects</span></a></span></span><span> </span><span id="local-6989586621679100338"><span class="annot"><span class="annottext">Set a
+</span><a href="#local-6989586621679100338"><span class="hs-identifier hs-var">a</span></a></span></span><span> </span><span id="local-6989586621679100337"><span class="annot"><span class="annottext">Set a
+</span><a href="#local-6989586621679100337"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">not</span></a></span><span> </span><span class="annot"><span class="annottext">(Bool -&gt; Bool) -&gt; Bool -&gt; Bool
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Set a
+</span><a href="#local-6989586621679100338"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">Set a -&gt; Set a -&gt; Bool
+forall a. Ord a =&gt; Set a -&gt; Set a -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-operator hs-var">`Set.disjoint`</span></a></span><span> </span><span class="annot"><span class="annottext">Set a
+</span><a href="#local-6989586621679100337"><span class="hs-identifier hs-var">b</span></a></span><span>
+</span><span id="line-74"></span><span>
+</span><span id="line-75"></span><span>    </span><span id="local-6989586621679100422"><span class="annot"><a href="#local-6989586621679100340"><span class="hs-identifier hs-type">intersectsL</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Eq</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679100422"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="#local-6989586621679100422"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="#local-6989586621679100422"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Bool</span></a></span></span><span>
+</span><span id="line-76"></span><span>    </span><span id="local-6989586621679100340"><span class="annot"><span class="annottext">intersectsL :: [a] -&gt; [a] -&gt; Bool
+</span><a href="#local-6989586621679100340"><span class="hs-identifier hs-var hs-var">intersectsL</span></a></span></span><span> </span><span id="local-6989586621679100334"><span class="annot"><span class="annottext">[a]
+</span><a href="#local-6989586621679100334"><span class="hs-identifier hs-var">a</span></a></span></span><span> </span><span id="local-6989586621679100333"><span class="annot"><span class="annottext">[a]
+</span><a href="#local-6989586621679100333"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">not</span></a></span><span> </span><span class="annot"><span class="annottext">(Bool -&gt; Bool) -&gt; Bool -&gt; Bool
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">[a] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; t a -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">null</span></a></span><span> </span><span class="annot"><span class="annottext">([a] -&gt; Bool) -&gt; [a] -&gt; Bool
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">[a]
+</span><a href="#local-6989586621679100334"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">[a] -&gt; [a] -&gt; [a]
+forall a. Eq a =&gt; [a] -&gt; [a] -&gt; [a]
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">`List.intersect`</span></a></span><span> </span><span class="annot"><span class="annottext">[a]
+</span><a href="#local-6989586621679100333"><span class="hs-identifier hs-var">b</span></a></span><span>
+</span><span id="line-77"></span><span>
+</span><span id="line-78"></span><span>    </span><span id="local-6989586621679100341"><span class="annot"><span class="annottext">racesWithLiftST :: Effect -&gt; Bool
+</span><a href="#local-6989586621679100341"><span class="hs-identifier hs-var hs-var">racesWithLiftST</span></a></span></span><span> </span><span id="local-6989586621679100330"><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100330"><span class="hs-identifier hs-var">eff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-79"></span><span>         </span><span class="annot"><span class="annottext">Effect -&gt; Bool
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectLiftST"><span class="hs-identifier hs-var hs-var">effectLiftST</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100330"><span class="hs-identifier hs-var">eff</span></a></span><span>
+</span><span id="line-80"></span><span>      </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">||</span></a></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">not</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Set TVarId -&gt; Bool
+forall a. Set a -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.null</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectReads"><span class="hs-identifier hs-var hs-var">effectReads</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100330"><span class="hs-identifier hs-var">eff</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&amp;&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">Set TVarId -&gt; Bool
+forall a. Set a -&gt; Bool
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/containers-0.6.2.1/src"><span class="hs-identifier hs-var">Set.null</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Effect -&gt; Set TVarId
+</span><a href="Control.Monad.IOSimPOR.Types.html#effectWrites"><span class="hs-identifier hs-var hs-var">effectWrites</span></a></span><span> </span><span class="annot"><span class="annottext">Effect
+</span><a href="#local-6989586621679100330"><span class="hs-identifier hs-var">eff</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-81"></span><span>
+</span><span id="line-82"></span></pre></body></html>
