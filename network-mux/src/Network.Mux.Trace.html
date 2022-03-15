@@ -36,7 +36,7 @@
 </span><span id="line-36"></span><span class="hs-comment">-- Errors</span><span>
 </span><span id="line-37"></span><span class="hs-comment">--</span><span>
 </span><span id="line-38"></span><span>
-</span><span id="line-39"></span><span class="hs-comment">-- | Error type used in accross the mux layer.</span><span>
+</span><span id="line-39"></span><span class="hs-comment">-- | Error type used in across the mux layer.</span><span>
 </span><span id="line-40"></span><span class="hs-comment">--</span><span>
 </span><span id="line-41"></span><span id="local-6989586621679106630"><span id="local-6989586621679106631"></span></span><span class="hs-keyword">data</span><span> </span><span id="MuxError"><span class="annot"><a href="Network.Mux.Trace.html#MuxError"><span class="hs-identifier hs-var">MuxError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="MuxError"><span class="annot"><a href="Network.Mux.Trace.html#MuxError"><span class="hs-identifier hs-var">MuxError</span></a></span></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-42"></span><span>      </span><span id="errorType"><span class="annot"><span class="annottext">MuxError -&gt; MuxErrorType
@@ -142,7 +142,7 @@ forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">String
 </span><a href="#local-6989586621679106584"><span class="hs-identifier hs-var">errorMsg</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-80"></span><span>
-</span><span id="line-81"></span><span class="hs-comment">-- | Handler for 'IOException's which wrappes them in 'MuxError'.</span><span>
+</span><span id="line-81"></span><span class="hs-comment">-- | Handler for 'IOException's which wraps them in 'MuxError'.</span><span>
 </span><span id="line-82"></span><span class="hs-comment">--</span><span>
 </span><span id="line-83"></span><span class="hs-comment">-- It is used various 'MuxBearer' implementations:</span><span>
 </span><span id="line-84"></span><span class="hs-comment">-- * 'socketAsMuxBearer'</span><span>
@@ -313,7 +313,7 @@ Int -&gt; WithMuxBearer peerid a -&gt; ShowS
 </span><span id="line-114"></span><span>
 </span><span id="line-115"></span><span>
 </span><span id="line-116"></span><span class="hs-keyword">data</span><span> </span><span id="MuxBearerState"><span class="annot"><a href="Network.Mux.Trace.html#MuxBearerState"><span class="hs-identifier hs-var">MuxBearerState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Mature"><span class="annot"><a href="Network.Mux.Trace.html#Mature"><span class="hs-identifier hs-var">Mature</span></a></span></span><span>
-</span><span id="line-117"></span><span>                    </span><span class="hs-comment">-- ^ MuxBearer has successufully completed the handshake.</span><span>
+</span><span id="line-117"></span><span>                    </span><span class="hs-comment">-- ^ MuxBearer has successfully completed the handshake.</span><span>
 </span><span id="line-118"></span><span>                    </span><span class="hs-glyph">|</span><span> </span><span id="Dead"><span class="annot"><a href="Network.Mux.Trace.html#Dead"><span class="hs-identifier hs-var">Dead</span></a></span></span><span>
 </span><span id="line-119"></span><span>                    </span><span class="hs-comment">-- ^ MuxBearer is dead and the underlying bearer has been</span><span>
 </span><span id="line-120"></span><span>                    </span><span class="hs-comment">-- closed.</span><span>

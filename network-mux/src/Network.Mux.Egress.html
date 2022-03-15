@@ -50,7 +50,7 @@
 </span><span id="line-50"></span><span class="hs-comment">--      prioritisation between such traffic.</span><span>
 </span><span id="line-51"></span><span class="hs-comment">--</span><span>
 </span><span id="line-52"></span><span class="hs-comment">--   2) We are assuming that the underlying TCP/IP bearer is managed</span><span>
-</span><span id="line-53"></span><span class="hs-comment">--      so that indivual Mux-layer PDUs are paced. a) this is necessary</span><span>
+</span><span id="line-53"></span><span class="hs-comment">--      so that individual Mux-layer PDUs are paced. a) this is necessary</span><span>
 </span><span id="line-54"></span><span class="hs-comment">--      to mitigate head-of-line blocking effects (i.e. arbitrary</span><span>
 </span><span id="line-55"></span><span class="hs-comment">--      amounts of data accruing in the O/S kernel); b) ensuring that</span><span>
 </span><span id="line-56"></span><span class="hs-comment">--      any host egress data rate limits can be respected / enforced.</span><span>
@@ -277,7 +277,7 @@ forall (m :: * -&gt; *). Wanton m -&gt; StrictTVar m ByteString
 </span><a href="#local-6989586621679106910"><span class="hs-identifier hs-var">wanton</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/bytestring-0.10.12.0/src"><span class="hs-identifier hs-var">BL.empty</span></a></span><span>
 </span><span id="line-173"></span><span>        </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-174"></span><span>          </span><span class="hs-comment">-- Note that to preserve bytestream ordering withing a given</span><span>
+</span><span id="line-174"></span><span>          </span><span class="hs-comment">-- Note that to preserve bytestream ordering within a given</span><span>
 </span><span id="line-175"></span><span>          </span><span class="hs-comment">-- miniprotocol the readTVar and writeTVar operations</span><span>
 </span><span id="line-176"></span><span>          </span><span class="hs-comment">-- must be inside the same STM transaction.</span><span>
 </span><span id="line-177"></span><span>          </span><span class="annot"><span class="annottext">StrictTVar m ByteString -&gt; ByteString -&gt; STM m ()

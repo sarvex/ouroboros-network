@@ -174,7 +174,7 @@ forall a. Maybe a
 </span><span id="line-102"></span><span>    </span><span class="hs-comment">-- | Mux failed with 'SomeException'</span><span>
 </span><span id="line-103"></span><span>    </span><span class="hs-glyph">|</span><span> </span><span id="MuxFailed"><span class="annot"><a href="Network.Mux.html#MuxFailed"><span class="hs-identifier hs-var">MuxFailed</span></a></span></span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">SomeException</span></a></span><span>
 </span><span id="line-104"></span><span>
-</span><span id="line-105"></span><span>    </span><span class="hs-comment">-- | Mux is beeing stopped; mux will not accept any new mini-protocols to</span><span>
+</span><span id="line-105"></span><span>    </span><span class="hs-comment">-- | Mux is being stopped; mux will not accept any new mini-protocols to</span><span>
 </span><span id="line-106"></span><span>    </span><span class="hs-comment">-- start.</span><span>
 </span><span id="line-107"></span><span>    </span><span class="hs-glyph">|</span><span> </span><span id="MuxStopping"><span class="annot"><a href="Network.Mux.html#MuxStopping"><span class="hs-identifier hs-var">MuxStopping</span></a></span></span><span>
 </span><span id="line-108"></span><span>
@@ -411,15 +411,15 @@ $cp1Ord :: Eq MuxGroup
 </span><span id="line-165"></span><span class="hs-comment">--</span><span>
 </span><span id="line-166"></span><span class="hs-comment">-- __Isometric flow control: analysis of head-of-line blocking of the ingress side of the multiplexer__</span><span>
 </span><span id="line-167"></span><span class="hs-comment">--</span><span>
-</span><span id="line-168"></span><span class="hs-comment">-- For each mini-protocol (enumeratated by @ptcl@), mux will create two</span><span>
+</span><span id="line-168"></span><span class="hs-comment">-- For each mini-protocol (enumerated by @ptcl@), mux will create two</span><span>
 </span><span id="line-169"></span><span class="hs-comment">-- channels. One for initiator and one for the responder.  Each channel will use</span><span>
 </span><span id="line-170"></span><span class="hs-comment">-- a single 'Wanton'.  When it is filled, it is put in a common queue</span><span>
 </span><span id="line-171"></span><span class="hs-comment">-- 'tsrQueue'.  This means that the queue is bound by @2 * |ptcl|@.  Every side</span><span>
-</span><span id="line-172"></span><span class="hs-comment">-- of a mini-protocol is served by a single 'Wanton': when an applicaiton sends</span><span>
+</span><span id="line-172"></span><span class="hs-comment">-- of a mini-protocol is served by a single 'Wanton': when an application sends</span><span>
 </span><span id="line-173"></span><span class="hs-comment">-- data, the channel will try to put it into the 'Wanton' (which might block).</span><span>
 </span><span id="line-174"></span><span class="hs-comment">-- 'Wanton's are taken from the 'tsrQueue' queue by one of mux threads.  This</span><span>
-</span><span id="line-175"></span><span class="hs-comment">-- elimnates head of line blocking: each mini-protocol thread can block on</span><span>
-</span><span id="line-176"></span><span class="hs-comment">-- puting more bytes into its 'Wanton', but it cannot block the other</span><span>
+</span><span id="line-175"></span><span class="hs-comment">-- eliminates head of line blocking: each mini-protocol thread can block on</span><span>
+</span><span id="line-176"></span><span class="hs-comment">-- putting more bytes into its 'Wanton', but it cannot block the other</span><span>
 </span><span id="line-177"></span><span class="hs-comment">-- mini-protocols or the thread that is reading the 'tsrQueue' queue.  This is</span><span>
 </span><span id="line-178"></span><span class="hs-comment">-- ensured since the 'muxChannel' will put only a non-empty 'Wanton' to the</span><span>
 </span><span id="line-179"></span><span class="hs-comment">-- 'tsrQueue' queue, and on such wantons the queue is never blocked.  This means</span><span>
@@ -427,7 +427,7 @@ $cp1Ord :: Eq MuxGroup
 </span><span id="line-181"></span><span class="hs-comment">-- none of the mini-protocols wanted to send.  The egress part will read</span><span>
 </span><span id="line-182"></span><span class="hs-comment">-- a 'Wanton', take a fixed amount of bytes encode them in as an 'MuxSDU'; if</span><span>
 </span><span id="line-183"></span><span class="hs-comment">-- there are leftovers it will put them back in the 'Wanton' and place it at the</span><span>
-</span><span id="line-184"></span><span class="hs-comment">-- end of the queue (reading and writting to it will happen in a single STM</span><span>
+</span><span id="line-184"></span><span class="hs-comment">-- end of the queue (reading and writing to it will happen in a single STM</span><span>
 </span><span id="line-185"></span><span class="hs-comment">-- transaction which assures that the order of requests from a mini-protocol is</span><span>
 </span><span id="line-186"></span><span class="hs-comment">-- preserved.</span><span>
 </span><span id="line-187"></span><span class="hs-comment">--</span><span>
@@ -530,7 +530,7 @@ forall (m :: * -&gt; *) a. Tracer m a -&gt; a -&gt; m ()
 </span><a href="Network.Mux.Trace.html#Mature"><span class="hs-identifier hs-var">Mature</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-220"></span><span>
 </span><span id="line-221"></span><span>        </span><span class="hs-comment">-- Wait for someone to shut us down by calling muxStop or an error.</span><span>
-</span><span id="line-222"></span><span>        </span><span class="hs-comment">-- Outstaning jobs are shut down Upon completion of withJobPool.</span><span>
+</span><span id="line-222"></span><span>        </span><span class="hs-comment">-- Outstanding jobs are shut down Upon completion of withJobPool.</span><span>
 </span><span id="line-223"></span><span>        </span><span class="annot"><span class="annottext">(TimeoutFn m -&gt; m ()) -&gt; m ()
 forall (m :: * -&gt; *) b.
 (MonadAsync m, MonadFork m, MonadMonotonicTime m, MonadTimer m,
@@ -950,7 +950,7 @@ $c== :: StartOnDemandOrEagerly -&gt; StartOnDemandOrEagerly -&gt; Bool
 </span><span id="line-329"></span><span class="hs-keyword">type</span><span> </span><span id="MiniProtocolKey"><span class="annot"><a href="Network.Mux.html#MiniProtocolKey"><span class="hs-identifier hs-var">MiniProtocolKey</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Network.Mux.Types.html#MiniProtocolNum"><span class="hs-identifier hs-type">MiniProtocolNum</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Network.Mux.Types.html#MiniProtocolDir"><span class="hs-identifier hs-type">MiniProtocolDir</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-330"></span><span>
 </span><span id="line-331"></span><span class="hs-keyword">newtype</span><span> </span><span id="MonitorCtx"><span class="annot"><a href="Network.Mux.html#MonitorCtx"><span class="hs-identifier hs-var">MonitorCtx</span></a></span></span><span> </span><span id="local-6989586621679108021"><span class="annot"><a href="#local-6989586621679108021"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679108022"><span class="annot"><a href="#local-6989586621679108022"><span class="hs-identifier hs-type">mode</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="MonitorCtx"><span class="annot"><a href="Network.Mux.html#MonitorCtx"><span class="hs-identifier hs-var">MonitorCtx</span></a></span></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-332"></span><span>    </span><span class="hs-comment">-- | Mini-Protocols started on deman and waiting to be scheduled.</span><span>
+</span><span id="line-332"></span><span>    </span><span class="hs-comment">-- | Mini-Protocols started on demand and waiting to be scheduled.</span><span>
 </span><span id="line-333"></span><span>    </span><span class="hs-comment">--</span><span>
 </span><span id="line-334"></span><span>    </span><span id="mcOnDemandProtocols"><span class="annot"><span class="annottext">MonitorCtx m mode
 -&gt; Map
@@ -963,8 +963,8 @@ $c== :: StartOnDemandOrEagerly -&gt; StartOnDemandOrEagerly -&gt; Bool
 </span><span id="line-338"></span><span>
 </span><span id="line-339"></span><span class="hs-comment">-- | The monitoring loop does two jobs:</span><span>
 </span><span id="line-340"></span><span class="hs-comment">--</span><span>
-</span><span id="line-341"></span><span class="hs-comment">--  1. it waits for mini-protocol threads to terminate</span><span>
-</span><span id="line-342"></span><span class="hs-comment">--  2. it starts responder protocol threads on demand when the first</span><span>
+</span><span id="line-341"></span><span class="hs-comment">--  1. It waits for mini-protocol threads to terminate.</span><span>
+</span><span id="line-342"></span><span class="hs-comment">--  2. It starts responder protocol threads on demand when the first</span><span>
 </span><span id="line-343"></span><span class="hs-comment">--     incoming message arrives.</span><span>
 </span><span id="line-344"></span><span class="hs-comment">--</span><span>
 </span><span id="line-345"></span><span class="annot"><a href="Network.Mux.html#monitor"><span class="hs-identifier hs-type">monitor</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679108079"><span class="annot"><a href="#local-6989586621679108079"><span class="hs-identifier hs-type">mode</span></a></span></span><span> </span><span id="local-6989586621679108081"><span class="annot"><a href="#local-6989586621679108081"><span class="hs-identifier hs-type">m</span></a></span></span><span class="hs-operator">.</span><span>
@@ -1817,7 +1817,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-576"></span><span>    </span><span id="local-6989586621679107707"><span class="annot"><span class="annottext">recv :: m (Maybe ByteString)
 </span><a href="#local-6989586621679107707"><span class="hs-identifier hs-var hs-var">recv</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
 </span><span id="line-577"></span><span>        </span><span class="hs-comment">-- We receive CBOR encoded messages as ByteStrings (possibly partial) from the</span><span>
-</span><span id="line-578"></span><span>        </span><span class="hs-comment">-- matching ingress queueu. This is the same queue the 'demux' thread writes to.</span><span>
+</span><span id="line-578"></span><span>        </span><span class="hs-comment">-- matching ingress queue. This is the same queue the 'demux' thread writes to.</span><span>
 </span><span id="line-579"></span><span>        </span><span class="annot"><span class="annottext">Tracer m MuxTrace -&gt; MuxTrace -&gt; m ()
 forall (m :: * -&gt; *) a. Tracer m a -&gt; a -&gt; m ()
 </span><span class="hs-identifier hs-var">traceWith</span></span><span> </span><span class="annot"><span class="annottext">Tracer m MuxTrace
@@ -1917,7 +1917,7 @@ forall (m :: * -&gt; *) a. Tracer m a -&gt; a -&gt; m ()
 </span><span id="line-610"></span><span class="hs-comment">-- The result is a STM action to block and wait on the protocol completion.</span><span>
 </span><span id="line-611"></span><span class="hs-comment">-- It is safe to call this completion action multiple times: it will always</span><span>
 </span><span id="line-612"></span><span class="hs-comment">-- return the same result once the protocol thread completes.</span><span>
-</span><span id="line-613"></span><span class="hs-comment">-- Incase the Mux has stopped, either due to an exception or because of a call</span><span>
+</span><span id="line-613"></span><span class="hs-comment">-- In case the Mux has stopped, either due to an exception or because of a call</span><span>
 </span><span id="line-614"></span><span class="hs-comment">-- to muxStop a `Left MuxError` will be returned from the STM action.</span><span>
 </span><span id="line-615"></span><span class="hs-comment">--</span><span>
 </span><span id="line-616"></span><span class="hs-comment">-- It is an error to start a new protocol thread while one is still running,</span><span>
