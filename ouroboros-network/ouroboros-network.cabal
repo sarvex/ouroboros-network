@@ -392,6 +392,7 @@ test-suite cddl
                        mtl,
                        process-extras,
                        serialise,
+                       singletons,
                        text,
                        temporary,
 
@@ -402,6 +403,7 @@ test-suite cddl
                        tasty-quickcheck,
 
                        typed-protocols,
+                       typed-protocols-stateful,
                        ouroboros-network-framework,
                        ouroboros-network,
                        protocol-tests
