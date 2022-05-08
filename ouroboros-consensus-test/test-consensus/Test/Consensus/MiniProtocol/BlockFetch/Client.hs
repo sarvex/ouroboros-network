@@ -32,7 +32,7 @@ import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import           Data.Traversable (for)
 
-import           Network.TypedProtocol.Codec (AnyMessageAndAgency (..))
+import           Network.TypedProtocol.Codec (AnyMessage (..))
 
 import           Test.QuickCheck
 import           Test.Tasty
@@ -53,6 +53,8 @@ import qualified Ouroboros.Network.MockChain.Chain as Chain
 import qualified Ouroboros.Network.Mux as Mux
 import           Ouroboros.Network.NodeToNode.Version (NodeToNodeVersion,
                      isPipeliningEnabled)
+import           Ouroboros.Network.Protocol.BlockFetch.Client
+                     (blockFetchClientPeerPipelined)
 import           Ouroboros.Network.Protocol.BlockFetch.Codec (codecBlockFetchId)
 import           Ouroboros.Network.Protocol.BlockFetch.Server
                      (BlockFetchBlockSender (SendMsgNoBlocks, SendMsgStartBatch),
@@ -168,7 +170,7 @@ runBlockFetchTest BlockFetchClientTestSetup{..} = withRegistry \registry -> do
 
     let runBlockFetchClient peerId =
           bracketFetchClient fetchClientRegistry ntnVersion isPipeliningEnabled peerId \clientCtx -> do
-            let bfClient = blockFetchClient
+            let bfClient = blockFetchClientPeerPipelined $ blockFetchClient
                     ntnVersion
                     (readTVar varControlMessage)
                     nullTracer
@@ -181,13 +183,13 @@ runBlockFetchTest BlockFetchClientTestSetup{..} = withRegistry \registry -> do
                 blockFetchTracer = Tracer \case
                     (Driver.Client, ev) -> do
                       atomically case ev of
-                        Driver.TraceRecvMsg (AnyMessageAndAgency _ (MsgBlock _)) ->
+                        Driver.TraceRecvMsg (AnyMessage (MsgBlock _)) ->
                            modifyTVar varFetchedBlocks $ Map.adjust (+ 1) peerId
                         _ -> pure ()
                       traceWith tracer $
                         show peerId <> ": BlockFetchClient: " <> show ev
                     _ -> pure ()
-            fst <$> Driver.runConnectedPeersPipelined
+            fst <$> Driver.runConnectedPeers
               createConnectedChannels
               blockFetchTracer
               codecBlockFetchId

@@ -101,6 +101,7 @@ library
                      , quiet             >=0.2   && <0.3
                      , random
                      , serialise         >=0.2   && <0.3
+                     , singletons
                      , sop-core
                      , strict-containers
                      , tasty
@@ -170,6 +171,7 @@ test-suite test-consensus
                      , QuickCheck
                      , quickcheck-state-machine
                      , quiet
+                     , singletons
                      , serialise
                      , sop-core
                      , tasty
@@ -183,6 +185,7 @@ test-suite test-consensus
                      , io-classes
                      , io-sim
                      , typed-protocols
+                     , typed-protocols-stateful
                      , ouroboros-network
                      , ouroboros-network-framework
                      , ouroboros-consensus

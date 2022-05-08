@@ -13,7 +13,7 @@ import           Control.Monad.IOSim (runSimOrThrow)
 
 import           Cardano.Crypto.DSIGN.Mock
 
-import           Network.TypedProtocol.Proofs (connect)
+import           Network.TypedProtocol.Stateful.Proofs (connect)
 import           Ouroboros.Network.MockChain.Chain (Chain (..))
 import qualified Ouroboros.Network.MockChain.Chain as Chain
 import           Ouroboros.Network.Protocol.LocalStateQuery.Client
@@ -21,7 +21,7 @@ import           Ouroboros.Network.Protocol.LocalStateQuery.Examples
                      (localStateQueryClient)
 import           Ouroboros.Network.Protocol.LocalStateQuery.Server
 import           Ouroboros.Network.Protocol.LocalStateQuery.Type
-                     (AcquireFailure (..))
+                     (AcquireFailure (..), State (StateIdle))
 
 import           Ouroboros.Consensus.Block
 import           Ouroboros.Consensus.BlockchainTime
@@ -92,7 +92,7 @@ prop_localStateQueryServer k bt p (Positive (Small n)) = checkOutcome k chain ac
       let client = mkClient points
       server <- mkServer k chain
       (\(a, _, _) -> a) <$>
-        connect
+        connect [] [] StateIdle
           (localStateQueryClientPeer client)
           (localStateQueryServerPeer server)
 
