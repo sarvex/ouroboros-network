@@ -51,7 +51,7 @@ newtype ChainSyncClientPipelined header point tip m a =
   }
 
 
-type PipelinedTr :: StNextKind -> Trans (ChainSync header point tip)
+type PipelinedTr :: StNextKind -> Transition (ChainSync header point tip)
 type PipelinedTr k = Tr (StNext k) StIdle
 
 singPipelinedTr :: SingTrans (PipelinedTr StCanAwait)
@@ -144,7 +144,7 @@ data ClientPipelinedStIntersect header point tip m a =
 
 
 lemma_cons_snoc_proof
-    :: forall ps (q :: Queue ps) (x :: Trans ps) (y :: Trans ps).
+    :: forall ps (q :: Queue ps) (x :: Transition ps) (y :: Transition ps).
        SingTrans y
      -> SingQueue q
      -> (    (x <| (q  |> y))
@@ -169,8 +169,8 @@ type family MapSt st = r where
   MapSt  StIntersect           = StIntersect
   MapSt  StDone                = StDone
 
-type        MapTr :: Trans (ChainSync header  point  tip)
-                  -> Trans (ChainSync header' point' tip')
+type        MapTr :: Transition (ChainSync header  point  tip)
+                  -> Transition (ChainSync header' point' tip')
 type family MapTr tr = r where
   MapTr (Tr from to) = Tr (MapSt from) (MapSt to)
 

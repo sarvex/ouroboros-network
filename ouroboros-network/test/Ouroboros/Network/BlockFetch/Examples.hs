@@ -39,7 +39,7 @@ import qualified Ouroboros.Network.AnchoredFragment as AnchoredFragment
 import           Ouroboros.Network.Block
 
 import           Network.TypedProtocol.Core
-import           Network.TypedProtocol.Pipelined
+import           Network.TypedProtocol.Peer.Client (Client)
 import           Ouroboros.Network.Mux (ControlMessageSTM)
 
 import           Ouroboros.Network.BlockFetch
@@ -49,6 +49,7 @@ import           Ouroboros.Network.DeltaQ
 import           Ouroboros.Network.Driver
 import           Ouroboros.Network.NodeToNode (NodeToNodeVersion (..))
 import qualified Ouroboros.Network.NodeToNode as NodeToNode
+import           Ouroboros.Network.Protocol.BlockFetch.Client
 import           Ouroboros.Network.Protocol.BlockFetch.Codec
 import           Ouroboros.Network.Protocol.BlockFetch.Server
 import           Ouroboros.Network.Protocol.BlockFetch.Type
@@ -90,7 +91,8 @@ blockFetchExample0 decisionTracer clientStateTracer clientMsgTracer
                     NodeToNode.isPipeliningEnabled
                     clientDelay serverDelay
                     registry peerno
-                    (blockFetchClient NodeToNodeV_7 controlMessageSTM nullTracer)
+                    ( blockFetchClientPeerPipelined .
+                      blockFetchClient NodeToNodeV_7 controlMessageSTM nullTracer)
                     (mockBlockFetchServer1 candidateChain)
 
     fetchAsync  <- async $ do
@@ -198,7 +200,8 @@ blockFetchExample1 decisionTracer clientStateTracer clientMsgTracer
                         NodeToNode.isPipeliningEnabled
                         clientDelay serverDelay
                         registry peerno
-                        (blockFetchClient NodeToNodeV_7 controlMessageSTM nullTracer)
+                        ( blockFetchClientPeerPipelined .
+                          blockFetchClient NodeToNodeV_7 controlMessageSTM nullTracer)
                         (mockBlockFetchServer1 candidateChain)
                     | (peerno, candidateChain) <- zip [1..] candidateChains
                     ]
@@ -327,12 +330,12 @@ runFetchClient :: (MonadAsync m, MonadFork m, MonadMask m, MonadThrow (STM m),
                 -> peerid
                 -> Channel m LBS.ByteString
                 -> (  FetchClientContext header block m
-                   -> PeerPipelined (BlockFetch block point) AsClient BFIdle m a)
+                   -> Client (BlockFetch block point) 'Pipelined Empty BFIdle m (STM m) a)
                 -> m a
 runFetchClient tracer version isPipeliningEnabled registry peerid channel client =
     bracketFetchClient registry version isPipeliningEnabled peerid $ \clientCtx ->
       fst <$>
-        runPipelinedPeerWithLimits tracer codec (byteLimitsBlockFetch (fromIntegral . LBS.length))
+        runPeerWithLimits tracer codec (byteLimitsBlockFetch (fromIntegral . LBS.length))
           timeLimitsBlockFetch channel (client clientCtx)
   where
     codec = codecBlockFetch encode decode encode decode
@@ -372,7 +375,7 @@ runFetchClientAndServerAsync
                 -> FetchClientRegistry peerid header block m
                 -> peerid
                 -> (  FetchClientContext header block m
-                   -> PeerPipelined (BlockFetch block (Point block)) AsClient BFIdle m a)
+                   -> Client (BlockFetch block (Point block)) 'Pipelined Empty BFIdle m (STM m) a)
                 -> BlockFetchServer block (Point block) m b
                 -> m (Async m a, Async m b, Async m (), Async m ())
 runFetchClientAndServerAsync clientTracer serverTracer
