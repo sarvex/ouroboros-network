@@ -2,9 +2,9 @@
 </span><span id="line-2"></span><span>
 </span><span id="line-3"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Control.Monad.IOSimPOR.QuickCheckUtils</span><span> </span><span class="hs-keyword">where</span><span>
 </span><span id="line-4"></span><span>
-</span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Test.QuickCheck.Property</span></span><span>
-</span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Test.QuickCheck.Gen</span></span><span>
-</span><span id="line-7"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Parallel</span></span><span>
+</span><span id="line-5"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Control.Parallel</span></span><span>
+</span><span id="line-6"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Test.QuickCheck.Gen</span></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Test.QuickCheck.Property</span></span><span>
 </span><span id="line-8"></span><span>
 </span><span id="line-9"></span><span class="hs-comment">-- Take the conjunction of several properties, in parallel This is a</span><span>
 </span><span id="line-10"></span><span class="hs-comment">-- modification of code from Test.QuickCheck.Property, to run non-IO</span><span>
@@ -119,7 +119,7 @@ forall a. a -&gt; a
 </span><a href="#local-6989586621679107062"><span class="hs-identifier hs-var">spec</span></a></span><span> </span><span class="annot"><span class="annottext">[Rose Result]
 </span><a href="#local-6989586621679107058"><span class="hs-identifier hs-var">roses</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-39"></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-40"></span><span>          </span><span>
+</span><span id="line-40"></span><span>
 </span><span id="line-41"></span><span>  </span><span id="local-6989586621679107051"><span class="annot"><span class="annottext">conj :: (Result -&gt; Result) -&gt; [Rose Result] -&gt; Rose Result
 </span><a href="#local-6989586621679107051"><span class="hs-identifier hs-var hs-var">conj</span></a></span></span><span> </span><span id="local-6989586621679107050"><span class="annot"><span class="annottext">Result -&gt; Result
 </span><a href="#local-6989586621679107050"><span class="hs-identifier hs-var">k</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">=</span><span>
@@ -185,7 +185,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-identifier hs-var hs-var">ok</span></span><span> </span><span class="annot"><span class="annottext">Result
 </span><a href="#local-6989586621679107037"><span class="hs-identifier hs-var">result2</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-56"></span><span>          </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">True</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Result -&gt; [Rose Result] -&gt; Rose Result
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">True</span></a></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Result -&gt; [Rose Result] -&gt; Rose Result
 forall a. a -&gt; [Rose a] -&gt; Rose a
 </span><span class="hs-identifier hs-var">MkRose</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Result
 </span><a href="#local-6989586621679107037"><span class="hs-identifier hs-var">result2</span></a></span><span> </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">ok :: Maybe Bool
@@ -196,7 +196,7 @@ forall a. Maybe a
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var">False</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Rose Result
 </span><a href="#local-6989586621679107038"><span class="hs-identifier hs-var">rest</span></a></span><span>
 </span><span id="line-58"></span><span>          </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Rose Result
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span>    </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Rose Result
 </span><a href="#local-6989586621679107038"><span class="hs-identifier hs-var">rest</span></a></span><span>
 </span><span id="line-59"></span><span>
 </span><span id="line-60"></span><span>  </span><span id="local-6989586621679107039"><span class="annot"><span class="annottext">addCallbacksAndCoverage :: Result -&gt; Result -&gt; Result

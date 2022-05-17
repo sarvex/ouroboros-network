@@ -7,7 +7,7 @@
 </span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToNode.Version.html#ConnectionMode"><span class="hs-identifier">ConnectionMode</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
 </span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToNode.Version.html#nodeToNodeVersionCodec"><span class="hs-identifier">nodeToNodeVersionCodec</span></a></span><span>
 </span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToNode.Version.html#nodeToNodeCodecCBORTerm"><span class="hs-identifier">nodeToNodeCodecCBORTerm</span></a></span><span>
-</span><span id="line-10"></span><span>  </span><span class="annot"><span class="hs-comment">-- * Feature checks</span></span><span>
+</span><span id="line-10"></span><span>    </span><span class="annot"><span class="hs-comment">-- * Feature checks</span></span><span>
 </span><span id="line-11"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToNode.Version.html#isPipeliningEnabled"><span class="hs-identifier">isPipeliningEnabled</span></a></span><span>
 </span><span id="line-12"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
 </span><span id="line-13"></span><span>
@@ -173,15 +173,15 @@ decodeTerm :: Term -&gt; Either (Text, Maybe Int) NodeToNodeVersion
 </span><span id="line-50"></span><span>  </span><span class="hs-keyword">where</span><span>
 </span><span id="line-51"></span><span>    </span><span id="local-6989586621679245689"><span class="annot"><span class="annottext">encodeTerm :: NodeToNodeVersion -&gt; Term
 </span><a href="#local-6989586621679245689"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span></span><span> </span><span class="annot"><span class="annottext">NodeToNodeVersion
-</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_7"><span class="hs-identifier hs-var">NodeToNodeV_7</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
+</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_7"><span class="hs-identifier hs-var">NodeToNodeV_7</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">7</span></span><span>
 </span><span id="line-52"></span><span>    </span><span class="annot"><a href="#local-6989586621679245689"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToNodeVersion
-</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_8"><span class="hs-identifier hs-var">NodeToNodeV_8</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
+</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_8"><span class="hs-identifier hs-var">NodeToNodeV_8</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">8</span></span><span>
 </span><span id="line-53"></span><span>    </span><span class="annot"><a href="#local-6989586621679245689"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToNodeVersion
-</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_9"><span class="hs-identifier hs-var">NodeToNodeV_9</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
+</span><a href="Ouroboros.Network.NodeToNode.Version.html#NodeToNodeV_9"><span class="hs-identifier hs-var">NodeToNodeV_9</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">9</span></span><span>
 </span><span id="line-54"></span><span>    </span><span class="annot"><a href="#local-6989586621679245689"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToNodeVersion
