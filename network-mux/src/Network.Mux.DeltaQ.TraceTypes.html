@@ -7,14 +7,14 @@
 </span><span id="line-7"></span><span>
 </span><span id="line-8"></span><span class="hs-comment">-- Map time intervals to real numbers, for the arithmetic.</span><span>
 </span><span id="line-9"></span><span class="hs-keyword">newtype</span><span> </span><span id="SISec"><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#SISec"><span class="hs-identifier hs-var">SISec</span></a></span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="S"><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#S"><span class="hs-identifier hs-var">S</span></a></span></span><span>  </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Float</span></a></span><span> </span><span class="hs-comment">-- this is all the precision we need,</span><span>
-</span><span id="line-10"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679109894"><span id="local-6989586621679109896"><span class="annot"><span class="annottext">SISec -&gt; SISec -&gt; Bool
+</span><span id="line-10"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679110894"><span id="local-6989586621679110896"><span class="annot"><span class="annottext">SISec -&gt; SISec -&gt; Bool
 (SISec -&gt; SISec -&gt; Bool) -&gt; (SISec -&gt; SISec -&gt; Bool) -&gt; Eq SISec
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 /= :: SISec -&gt; SISec -&gt; Bool
 $c/= :: SISec -&gt; SISec -&gt; Bool
 == :: SISec -&gt; SISec -&gt; Bool
 $c== :: SISec -&gt; SISec -&gt; Bool
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679109878"><span id="local-6989586621679109880"><span id="local-6989586621679109882"><span id="local-6989586621679109884"><span id="local-6989586621679109886"><span id="local-6989586621679109888"><span id="local-6989586621679109890"><span class="annot"><span class="annottext">Eq SISec
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679110878"><span id="local-6989586621679110880"><span id="local-6989586621679110882"><span id="local-6989586621679110884"><span id="local-6989586621679110886"><span id="local-6989586621679110888"><span id="local-6989586621679110890"><span class="annot"><span class="annottext">Eq SISec
 Eq SISec
 -&gt; (SISec -&gt; SISec -&gt; Ordering)
 -&gt; (SISec -&gt; SISec -&gt; Bool)
@@ -52,7 +52,7 @@ $c&lt; :: SISec -&gt; SISec -&gt; Bool
 compare :: SISec -&gt; SISec -&gt; Ordering
 $ccompare :: SISec -&gt; SISec -&gt; Ordering
 $cp1Ord :: Eq SISec
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679109863"><span id="local-6989586621679109865"><span id="local-6989586621679109867"><span id="local-6989586621679109869"><span id="local-6989586621679109871"><span id="local-6989586621679109873"><span id="local-6989586621679109875"><span class="annot"><span class="annottext">Integer -&gt; SISec
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679110863"><span id="local-6989586621679110865"><span id="local-6989586621679110867"><span id="local-6989586621679110869"><span id="local-6989586621679110871"><span id="local-6989586621679110873"><span id="local-6989586621679110875"><span class="annot"><span class="annottext">Integer -&gt; SISec
 SISec -&gt; SISec
 SISec -&gt; SISec -&gt; SISec
 (SISec -&gt; SISec -&gt; SISec)
@@ -88,7 +88,7 @@ $c- :: SISec -&gt; SISec -&gt; SISec
 $c+ :: SISec -&gt; SISec -&gt; SISec
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-11"></span><span class="hs-keyword">newtype</span><span> </span><span id="SISec2"><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#SISec2"><span class="hs-identifier hs-var">SISec2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="S2"><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#S2"><span class="hs-identifier hs-var">S2</span></a></span></span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Float</span></a></span><span> </span><span class="hs-comment">-- are there performance reasons to use Double?</span><span>
-</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679109857"><span id="local-6989586621679109859"><span class="annot"><span class="annottext">SISec2 -&gt; SISec2 -&gt; Bool
+</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679110857"><span id="local-6989586621679110859"><span class="annot"><span class="annottext">SISec2 -&gt; SISec2 -&gt; Bool
 (SISec2 -&gt; SISec2 -&gt; Bool)
 -&gt; (SISec2 -&gt; SISec2 -&gt; Bool) -&gt; Eq SISec2
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -96,7 +96,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: SISec2 -&gt; SISec2 -&gt; Bool
 == :: SISec2 -&gt; SISec2 -&gt; Bool
 $c== :: SISec2 -&gt; SISec2 -&gt; Bool
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679109842"><span id="local-6989586621679109844"><span id="local-6989586621679109846"><span id="local-6989586621679109848"><span id="local-6989586621679109850"><span id="local-6989586621679109852"><span id="local-6989586621679109854"><span class="annot"><span class="annottext">Eq SISec2
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679110842"><span id="local-6989586621679110844"><span id="local-6989586621679110846"><span id="local-6989586621679110848"><span id="local-6989586621679110850"><span id="local-6989586621679110852"><span id="local-6989586621679110854"><span class="annot"><span class="annottext">Eq SISec2
 Eq SISec2
 -&gt; (SISec2 -&gt; SISec2 -&gt; Ordering)
 -&gt; (SISec2 -&gt; SISec2 -&gt; Bool)
@@ -134,7 +134,7 @@ $c&lt; :: SISec2 -&gt; SISec2 -&gt; Bool
 compare :: SISec2 -&gt; SISec2 -&gt; Ordering
 $ccompare :: SISec2 -&gt; SISec2 -&gt; Ordering
 $cp1Ord :: Eq SISec2
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679109828"><span id="local-6989586621679109830"><span id="local-6989586621679109832"><span id="local-6989586621679109834"><span id="local-6989586621679109836"><span id="local-6989586621679109838"><span id="local-6989586621679109840"><span class="annot"><span class="annottext">Integer -&gt; SISec2
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679110828"><span id="local-6989586621679110830"><span id="local-6989586621679110832"><span id="local-6989586621679110834"><span id="local-6989586621679110836"><span id="local-6989586621679110838"><span id="local-6989586621679110840"><span class="annot"><span class="annottext">Integer -&gt; SISec2
 SISec2 -&gt; SISec2
 SISec2 -&gt; SISec2 -&gt; SISec2
 (SISec2 -&gt; SISec2 -&gt; SISec2)
@@ -172,13 +172,13 @@ $c+ :: SISec2 -&gt; SISec2 -&gt; SISec2
 </span><span id="line-13"></span><span>
 </span><span id="line-14"></span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#squareSISec"><span class="hs-identifier hs-type">squareSISec</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#SISec"><span class="hs-identifier hs-type">SISec</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#SISec2"><span class="hs-identifier hs-type">SISec2</span></a></span><span>
 </span><span id="line-15"></span><span id="squareSISec"><span class="annot"><span class="annottext">squareSISec :: SISec -&gt; SISec2
-</span><a href="Network.Mux.DeltaQ.TraceTypes.html#squareSISec"><span class="hs-identifier hs-var hs-var">squareSISec</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#S"><span class="hs-identifier hs-type">S</span></a></span><span> </span><span id="local-6989586621679109827"><span class="annot"><span class="annottext">Float
-</span><a href="#local-6989586621679109827"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Float -&gt; SISec2
+</span><a href="Network.Mux.DeltaQ.TraceTypes.html#squareSISec"><span class="hs-identifier hs-var hs-var">squareSISec</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html#S"><span class="hs-identifier hs-type">S</span></a></span><span> </span><span id="local-6989586621679110827"><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679110827"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Float -&gt; SISec2
 </span><a href="Network.Mux.DeltaQ.TraceTypes.html#S2"><span class="hs-identifier hs-var">S2</span></a></span><span> </span><span class="annot"><span class="annottext">(Float -&gt; SISec2) -&gt; Float -&gt; SISec2
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Float
-</span><a href="#local-6989586621679109827"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+</span><a href="#local-6989586621679110827"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
 forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">*</span></a></span><span> </span><span class="annot"><span class="annottext">Float
-</span><a href="#local-6989586621679109827"><span class="hs-identifier hs-var">x</span></a></span><span>
+</span><a href="#local-6989586621679110827"><span class="hs-identifier hs-var">x</span></a></span><span>
 </span><span id="line-16"></span></pre></body></html>
