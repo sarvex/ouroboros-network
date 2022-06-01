@@ -1072,8 +1072,8 @@ Ticked (TPraosState c)
 -&gt; SystemStart
 -&gt; Globals
 </span><span class="hs-identifier hs-type">SL.Globals</span></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-406"></span><span>      </span><span class="annot"><span class="annottext">epochInfoWithErr :: EpochInfo (Either Text)
-</span><span class="hs-identifier hs-var">epochInfoWithErr</span></span><span>              </span><span class="hs-glyph">=</span><span>
+</span><span id="line-406"></span><span>      </span><span class="annot"><span class="annottext">epochInfo :: EpochInfo (Either Text)
+</span><span class="hs-identifier hs-var">epochInfo</span></span><span>                     </span><span class="hs-glyph">=</span><span>
 </span><span id="line-407"></span><span>        </span><span class="annot"><span class="annottext">(forall a. Except PastHorizonException a -&gt; Either Text a)
 -&gt; EpochInfo (Except PastHorizonException)
 -&gt; EpochInfo (Either Text)
