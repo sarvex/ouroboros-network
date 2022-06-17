@@ -310,7 +310,7 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="#local-6989586621679270962"><span class="hs-identifier hs-var">vrfOutputAsBytes</span></a></span><span>
 </span><span id="line-100"></span><span>
 </span><span id="line-101"></span><span class="hs-comment">-- | Range-extend a VRF output to be used for leader checks from the relevant</span><span>
-</span><span id="line-102"></span><span class="hs-comment">-- hash. See section 2.1 of the linked paper for details.</span><span>
+</span><span id="line-102"></span><span class="hs-comment">-- hash. See section 4.1 of the linked paper for details.</span><span>
 </span><span id="line-103"></span><span class="annot"><a href="Ouroboros.Consensus.Protocol.Praos.VRF.html#vrfLeaderValue"><span class="hs-identifier hs-type">vrfLeaderValue</span></a></span><span> </span><span class="hs-glyph">::</span><span>
 </span><span id="line-104"></span><span>  </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679270961"><span class="annot"><a href="#local-6989586621679270961"><span class="hs-identifier hs-type">c</span></a></span></span><span> </span><span id="local-6989586621679270960"><span class="annot"><a href="#local-6989586621679270960"><span class="hs-identifier hs-type">proxy</span></a></span></span><span class="hs-operator">.</span><span>
 </span><span id="line-105"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Crypto</span></span><span> </span><span class="annot"><a href="#local-6989586621679270961"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
@@ -361,7 +361,7 @@ proxy c
 </span><a href="#local-6989586621679270958"><span class="hs-identifier hs-var">cvrf</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-113"></span><span>
 </span><span id="line-114"></span><span class="hs-comment">-- | Range-extend a VRF output to be used for the evolving nonce. See section</span><span>
-</span><span id="line-115"></span><span class="hs-comment">-- 2.1 of the linked paper for details.</span><span>
+</span><span id="line-115"></span><span class="hs-comment">-- 4.1 of the linked paper for details.</span><span>
 </span><span id="line-116"></span><span class="annot"><a href="Ouroboros.Consensus.Protocol.Praos.VRF.html#vrfNonceValue"><span class="hs-identifier hs-type">vrfNonceValue</span></a></span><span> </span><span class="hs-glyph">::</span><span>
 </span><span id="line-117"></span><span>  </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679270955"><span class="annot"><a href="#local-6989586621679270955"><span class="hs-identifier hs-type">c</span></a></span></span><span> </span><span id="local-6989586621679270954"><span class="annot"><a href="#local-6989586621679270954"><span class="hs-identifier hs-type">proxy</span></a></span></span><span class="hs-operator">.</span><span>
 </span><span id="line-118"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Crypto</span></span><span> </span><span class="annot"><a href="#local-6989586621679270955"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
