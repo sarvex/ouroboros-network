@@ -7,6 +7,7 @@ import qualified Test.Consensus.HardFork.Combinator (tests)
 import qualified Test.Consensus.HardFork.Forecast (tests)
 import qualified Test.Consensus.HardFork.History (tests)
 import qualified Test.Consensus.HardFork.Summary (tests)
+import qualified Test.Consensus.Ledger (tests)
 import qualified Test.Consensus.Mempool (tests)
 import qualified Test.Consensus.MiniProtocol.ChainSync.Client (tests)
 import qualified Test.Consensus.MiniProtocol.LocalStateQuery.Server (tests)
@@ -22,6 +23,7 @@ tests :: TestTree
 tests =
   testGroup "ouroboros-consensus"
   [ Test.Consensus.BlockchainTime.Simple.tests
+  , Test.Consensus.Ledger.tests
   , Test.Consensus.MiniProtocol.ChainSync.Client.tests
   , Test.Consensus.MiniProtocol.LocalStateQuery.Server.tests
   , Test.Consensus.Mempool.tests
