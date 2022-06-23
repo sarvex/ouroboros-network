@@ -1145,6 +1145,7 @@ extendDbChangelog dblog newState =
     DbChangelog {
         changelogDiffAnchor
       , changelogDiffs           =
+        -- How to zip ledger tables along ext is defided in TableStuff
           zipLedgerTables ext changelogDiffs tablesDiff
       , changelogImmutableStates
       , changelogVolatileStates  =
