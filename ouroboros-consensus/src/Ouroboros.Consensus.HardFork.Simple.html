@@ -13,13 +13,16 @@
 </span><span id="line-13"></span><span id="local-6989586621679991338"><span id="local-6989586621679991339"></span></span><span class="hs-keyword">data</span><span> </span><span id="TriggerHardFork"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardFork"><span class="hs-identifier hs-var">TriggerHardFork</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-14"></span><span>    </span><span class="hs-comment">-- | Trigger the transition when the on-chain protocol major version (from</span><span>
 </span><span id="line-15"></span><span>    </span><span class="hs-comment">-- the ledger state) reaches this number.</span><span>
-</span><span id="line-16"></span><span>    </span><span id="TriggerHardForkAtVersion"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkAtVersion"><span class="hs-identifier hs-var">TriggerHardForkAtVersion</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Word16</span></a></span><span>
-</span><span id="line-17"></span><span>    </span><span class="hs-comment">-- | For testing only, trigger the transition at a specific hard-coded</span><span>
-</span><span id="line-18"></span><span>    </span><span class="hs-comment">-- epoch, irrespective of the ledger state.</span><span>
-</span><span id="line-19"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkAtEpoch"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkAtEpoch"><span class="hs-identifier hs-var">TriggerHardForkAtEpoch</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">EpochNo</span></span><span>
-</span><span id="line-20"></span><span>    </span><span class="hs-comment">-- | Never trigger a hard fork</span><span>
-</span><span id="line-21"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkNever"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkNever"><span class="hs-identifier hs-var">TriggerHardForkNever</span></a></span></span><span>
-</span><span id="line-22"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679991329"><span id="local-6989586621679991331"><span id="local-6989586621679991333"><span class="annot"><span class="annottext">Int -&gt; TriggerHardFork -&gt; ShowS
+</span><span id="line-16"></span><span>    </span><span class="hs-comment">--</span><span>
+</span><span id="line-17"></span><span>    </span><span class="hs-comment">-- Note: The HFC logic does not require the trigger version for one era to</span><span>
+</span><span id="line-18"></span><span>    </span><span class="hs-comment">-- be the successor of the trigger version for the previous era.</span><span>
+</span><span id="line-19"></span><span>    </span><span id="TriggerHardForkAtVersion"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkAtVersion"><span class="hs-identifier hs-var">TriggerHardForkAtVersion</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.4/share/doc/ghc-8.10.4/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Word16</span></a></span><span>
+</span><span id="line-20"></span><span>    </span><span class="hs-comment">-- | For testing only, trigger the transition at a specific hard-coded</span><span>
+</span><span id="line-21"></span><span>    </span><span class="hs-comment">-- epoch, irrespective of the ledger state.</span><span>
+</span><span id="line-22"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkAtEpoch"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkAtEpoch"><span class="hs-identifier hs-var">TriggerHardForkAtEpoch</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">EpochNo</span></span><span>
+</span><span id="line-23"></span><span>    </span><span class="hs-comment">-- | Never trigger a hard fork</span><span>
+</span><span id="line-24"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkNever"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkNever"><span class="hs-identifier hs-var">TriggerHardForkNever</span></a></span></span><span>
+</span><span id="line-25"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679991329"><span id="local-6989586621679991331"><span id="local-6989586621679991333"><span class="annot"><span class="annottext">Int -&gt; TriggerHardFork -&gt; ShowS
 [TriggerHardFork] -&gt; ShowS
 TriggerHardFork -&gt; String
 (Int -&gt; TriggerHardFork -&gt; ShowS)
@@ -61,4 +64,4 @@ $cwNoThunks :: Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo)
 noThunks :: Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo)
 $cnoThunks :: Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-23"></span></pre></body></html>
+</span><span id="line-26"></span></pre></body></html>
