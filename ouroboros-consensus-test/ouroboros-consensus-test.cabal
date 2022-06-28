@@ -173,6 +173,7 @@ test-suite test-consensus
                      , quiet
                      , serialise
                      , sop-core
+                     , strict-containers
                      , tasty
                      , tasty-hunit
                      , tasty-quickcheck
