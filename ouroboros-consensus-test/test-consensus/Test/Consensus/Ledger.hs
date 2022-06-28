@@ -1,10 +1,7 @@
 {-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE NamedFieldPuns    #-}
-module Test.Consensus.Ledger (
-    gen
-  , tests
-  ) where
+module Test.Consensus.Ledger (tests) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
 import           Control.Applicative (liftA2)
@@ -12,6 +9,7 @@ import           Control.Monad (foldM)
 import qualified Data.FingerTree.Strict as FT
 import           Data.Foldable (foldl')
 import qualified Data.List.NonEmpty as NE
+import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam)
 import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
 import qualified Ouroboros.Network.AnchoredSeq as AS
@@ -27,7 +25,9 @@ tests = testGroup "Ledger"
   [ testGroup "DbChangelog"
       [ testProperty "emptyDbChangelog immutableAnchored" prop_emptyDbImmutableAnchored
       , testProperty "emptyDbChangelog volatileTipAnchorsImmutable" prop_emptyDbVolatileTipAnchorsImmutable
+--      , testProperty "prune changelog leaves length invariant" prop_pruneKeepsTotalLength
       ]
+
   ]
 
 genAnchoredSequence :: AS.Anchorable v a a => a -> (a -> Gen a) -> Gen (AS.AnchoredSeq v a a)
@@ -65,8 +65,13 @@ genDbChangelog anchor gen = do
     , changelogVolatileStates = vol
     }
 
-gen :: Gen (DbChangelog (LedgerState TestBlock))
-gen = genDbChangelog (forgetLedgerTables $ testInitLedger) genTestLedgerDbChangelogState
+-- instance Arbitrary (LedgerState TestBlock mk) where
+--   arbitrary =
+--     pure $ forgetLedgerTables testInitLedger { lastAppliedPoint = Point undefined }
+
+
+instance Arbitrary (DbChangelog (LedgerState TestBlock)) where
+  arbitrary = genDbChangelog (forgetLedgerTables $ testInitLedger) genTestLedgerDbChangelogState
 
 prop_emptyDbImmutableAnchored :: Property
 prop_emptyDbImmutableAnchored = property $ immutableAnchored $
@@ -76,11 +81,14 @@ prop_emptyDbVolatileTipAnchorsImmutable :: Property
 prop_emptyDbVolatileTipAnchorsImmutable = property $ volatileTipAnchorsImmutable $
   emptyDbChangeLog $ forgetLedgerTables testInitLedger
 
-prop_extendDbChangelogKeepsImmutableStates :: Property
-prop_extendDbChangelogKeepsImmutableStates = undefined
+prop_extendDbChangelogKeepsImmutableStates :: Int -> Property
+prop_extendDbChangelogKeepsImmutableStates i = undefined
 
-prop_pruneKeepsTotalLength :: Property
-prop_pruneKeepsTotalLength = undefined
+prop_pruneKeepsTotalLength :: SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
+prop_pruneKeepsTotalLength sp log =
+  let log' = pruneVolatilePartDbChangelog sp log
+  in property $ AS.length (changelogImmutableStates log) + AS.length (changelogVolatileStates log)
+     == AS.length (changelogImmutableStates log') + AS.length (changelogVolatileStates log')
 
 immutableAnchored :: DbChangelog (LedgerState TestBlock) -> Bool
 immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } =
@@ -106,9 +114,9 @@ volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVol
 -- | Combinators to test
 --
 -- emptyDbChangeLog
--- extendDbChangeLog
--- pruneVolatilePartDbChangelog (sic)
--- flushDbChangelog
+-- pruneVolatilePartDbChangelog (sic) :: GetTip (l EmptyMK) => SecurityParam -> DbChangelog l -> DbChangelog l
+-- extendDbChangeLog :: (TableStuff l, GetTip (l EmptyMK)) => DbChangelog l -> l DiffMK -> DbChangelog l
+-- flushDbChangelog :: => DbChangelogFlushPolicy -> DbChangelog l -> (DbChangelog l, DbChangelog l)
 -- prefixDbChangelog
 -- prefixBackToAnchorDbChangelog
 -- rollbackDbChangelog
