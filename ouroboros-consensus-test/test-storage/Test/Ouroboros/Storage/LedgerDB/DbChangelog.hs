@@ -1,7 +1,7 @@
 {-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE NamedFieldPuns    #-}
-module Test.Consensus.Ledger (tests) where
+module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
 import           Control.Applicative (liftA2)
@@ -105,7 +105,7 @@ volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVol
 -- Either
 --  1. Via the internals <- this one!
 --  2. Via the public API
-
+--
 -- | Invariants:
 --   1. changeLogDiffAnchor is the anchor of changeLogImmutableStates
 --   2. the tip of changeLogImmutableStates is the anchor of changeLogVolatileStates
