@@ -1255,6 +1255,7 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
       , changelogVolatileStates  = vol
       }
 
+-- | Roll back the volatile states up to the specified point.
 prefixDbChangelog ::
      ( HasHeader blk
      , HeaderHash blk ~ HeaderHash (l EmptyMK)
