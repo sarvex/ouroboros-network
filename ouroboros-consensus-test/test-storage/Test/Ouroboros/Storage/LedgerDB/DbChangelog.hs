@@ -4,17 +4,14 @@
 module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
-import           Control.Applicative (liftA2)
-import           Control.Monad (foldM)
-import qualified Data.FingerTree.Strict as FT
-import           Data.Foldable (foldl')
 import qualified Data.List.NonEmpty as NE
-import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam)
+import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
 import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
 import qualified Ouroboros.Network.AnchoredSeq as AS
-import           Ouroboros.Network.Block (Point (..), blockPoint)
+import           Ouroboros.Network.Block (Point (..))
 import qualified Ouroboros.Network.Point as Point
+import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.QuickCheck hiding (elements)
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
@@ -23,12 +20,21 @@ import           Test.Util.TestBlock
 tests :: TestTree
 tests = testGroup "Ledger"
   [ testGroup "DbChangelog"
-      [ testProperty "emptyDbChangelog immutableAnchored" prop_emptyDbImmutableAnchored
-      , testProperty "emptyDbChangelog volatileTipAnchorsImmutable" prop_emptyDbVolatileTipAnchorsImmutable
---      , testProperty "prune changelog leaves length invariant" prop_pruneKeepsTotalLength
+      [ testProperty "empty changelog satisfies invariants"
+        prop_emptyDbSatisfiesInvariants
+      , testProperty "pruning changelog does not discard states"
+        prop_pruneKeepsStates
+      , testProperty "pruning changelog keeps at most maxRollback volatile states"
+        prop_pruneKeepsAtMostMaxRollbacksVolatileStates
+      , testProperty "pruning keeps changelog invariants"
+        prop_pruneKeepsInvariants
+      , testProperty "flushing keeps changelog invariants"
+        prop_flushingKeepsInvariants
       ]
 
   ]
+
+-- | Generators
 
 genAnchoredSequence :: AS.Anchorable v a a => a -> (a -> Gen a) -> Gen (AS.AnchoredSeq v a a)
 genAnchoredSequence anchor genNext = sized $ \n -> do
@@ -65,30 +71,58 @@ genDbChangelog anchor gen = do
     , changelogVolatileStates = vol
     }
 
--- instance Arbitrary (LedgerState TestBlock mk) where
---   arbitrary =
---     pure $ forgetLedgerTables testInitLedger { lastAppliedPoint = Point undefined }
-
-
 instance Arbitrary (DbChangelog (LedgerState TestBlock)) where
   arbitrary = genDbChangelog (forgetLedgerTables $ testInitLedger) genTestLedgerDbChangelogState
 
-prop_emptyDbImmutableAnchored :: Property
-prop_emptyDbImmutableAnchored = property $ immutableAnchored $
-  emptyDbChangeLog $ forgetLedgerTables testInitLedger
+-- | Properties
 
-prop_emptyDbVolatileTipAnchorsImmutable :: Property
-prop_emptyDbVolatileTipAnchorsImmutable = property $ volatileTipAnchorsImmutable $
-  emptyDbChangeLog $ forgetLedgerTables testInitLedger
+prop_emptyDbSatisfiesInvariants :: Property
+prop_emptyDbSatisfiesInvariants =
+  let dblog = emptyDbChangeLog $ forgetLedgerTables testInitLedger
+  in property $ immutableAnchored dblog && volatileTipAnchorsImmutable dblog
 
-prop_extendDbChangelogKeepsImmutableStates :: Int -> Property
-prop_extendDbChangelogKeepsImmutableStates i = undefined
+prop_pruneKeepsStates ::
+  SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
+prop_pruneKeepsStates sp dblog = property $ AS.unsafeJoin imm vol == AS.unsafeJoin imm' vol'
+  where imm = changelogImmutableStates dblog
+        vol = changelogVolatileStates dblog
+        dblog' = pruneVolatilePartDbChangelog sp dblog
+        imm' = changelogImmutableStates dblog'
+        vol' = changelogVolatileStates dblog'
 
-prop_pruneKeepsTotalLength :: SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
-prop_pruneKeepsTotalLength sp log =
-  let log' = pruneVolatilePartDbChangelog sp log
-  in property $ AS.length (changelogImmutableStates log) + AS.length (changelogVolatileStates log)
-     == AS.length (changelogImmutableStates log') + AS.length (changelogVolatileStates log')
+-- TODO: Whether this checks anything might depend too much on the distribution of maxRollbacks
+prop_pruneKeepsAtMostMaxRollbacksVolatileStates ::
+  SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
+prop_pruneKeepsAtMostMaxRollbacksVolatileStates (sp@SecurityParam { maxRollbacks }) dblog =
+  property $ fromIntegral (AS.length vol') <= maxRollbacks
+  where DbChangelog { changelogVolatileStates = vol' } = pruneVolatilePartDbChangelog sp dblog
+
+prop_pruneKeepsInvariants ::
+  SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
+prop_pruneKeepsInvariants sp dblog =
+  property $ checkInvariants $ pruneVolatilePartDbChangelog sp dblog
+
+prop_flushingKeepsInvariants :: DbChangelog (LedgerState TestBlock) -> Property
+prop_flushingKeepsInvariants dblog =
+  let (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
+  in property $ checkInvariants toFlush && checkInvariants toKeep
+
+
+-- prop_extendDbChangelogKeepsImmutableStates :: Int -> Property
+-- prop_extendDbChangelogKeepsImmutableStates i = undefined
+
+-- prop_pruneTrimsVolatile :: SecurityParam -> DbChangelog (LedgerState TestBlock) -> Property
+-- prop_pruneTrimsVolatile sp log = vol' AS.isPrefixOf vol
+--   where log' = pruneVolatilePartDbChangelog sp log
+--         vol = changelogVolatileStates log
+--         vol' = changelogVolatileStates log'
+
+
+-- | Invariants
+
+volatileTipAnchorsImmutable :: (GetTip (l EmptyMK), Eq (l EmptyMK)) => DbChangelog l -> Bool
+volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVolatileStates } =
+  AS.anchor changelogVolatileStates == AS.headAnchor changelogImmutableStates
 
 immutableAnchored :: DbChangelog (LedgerState TestBlock) -> Bool
 immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } =
@@ -96,10 +130,8 @@ immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } 
   where
     point = getPoint $ lastAppliedPoint $ unDbChangelogState $ AS.anchor $ changelogImmutableStates
 
-volatileTipAnchorsImmutable :: DbChangelog (LedgerState TestBlock) -> Bool
-volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVolatileStates } =
-  AS.anchor changelogVolatileStates == AS.headAnchor changelogImmutableStates
-
+checkInvariants :: DbChangelog (LedgerState TestBlock) -> Bool
+checkInvariants dblog = volatileTipAnchorsImmutable dblog && immutableAnchored dblog
 
 -- | Generators:
 -- Either
@@ -117,7 +149,10 @@ volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVol
 -- pruneVolatilePartDbChangelog (sic) :: GetTip (l EmptyMK) => SecurityParam -> DbChangelog l -> DbChangelog l
 -- extendDbChangeLog :: (TableStuff l, GetTip (l EmptyMK)) => DbChangelog l -> l DiffMK -> DbChangelog l
 -- flushDbChangelog :: => DbChangelogFlushPolicy -> DbChangelog l -> (DbChangelog l, DbChangelog l)
+--
+-- TODO: Play around with AS.rollback to understand this function
 -- prefixDbChangelog
+--
 -- prefixBackToAnchorDbChangelog
 -- rollbackDbChangelog
 -- youngestImmutableSlotDbChangelog
