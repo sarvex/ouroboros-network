@@ -12,7 +12,6 @@ maintainer:            operations@iohk.io
 category:              Network
 build-type:            Simple
 cabal-version:         >=1.10
-
 source-repository head
   type:     git
   location: https://github.com/input-output-hk/ouroboros-network
@@ -209,6 +208,7 @@ test-suite test-storage
   hs-source-dirs:      test-storage
   main-is:             Main.hs
   other-modules:
+                       Test.Scratch
                        Test.Ouroboros.Storage
                        Test.Ouroboros.Storage.ChainDB
                        Test.Ouroboros.Storage.ChainDB.Iterator
