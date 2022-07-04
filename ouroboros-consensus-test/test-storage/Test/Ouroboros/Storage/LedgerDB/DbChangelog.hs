@@ -11,14 +11,14 @@
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
+module Test.Ouroboros.Storage.LedgerDB.DbChangelog (
+    run
+  , tests
+  ) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
-import qualified Data.FingerTree.Strict as FT
 import           Data.Foldable
-import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as Map
-import           Data.Typeable
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
@@ -26,13 +26,13 @@ import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
 import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
-                     StandardHash, pattern BlockPoint, pattern GenesisPoint)
+                     StandardHash, pattern BlockPoint)
 import qualified Ouroboros.Network.Point as Point
 import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.QuickCheck hiding (elements)
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
-import           Test.Util.TestBlock
+
 import           Text.Show.Pretty (ppShow)
 
 tests :: TestTree
@@ -42,7 +42,6 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
       , testProperty "constructor generated changelog satisfies invariants"
         prop_generatedSatisfiesInvariants
       ]
-
   ]
 
 -- | Invariants
@@ -60,7 +59,7 @@ sameNumberOfDiffsAsStates :: DbChangelog TestLedger -> Bool
 sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == count diffs
   where imm = changelogImmutableStates dblog
         vol = changelogVolatileStates dblog
-        ApplySeqDiffMK (SeqUtxoDiff diffs) = unTestLedger $ changelogDiffs dblog
+        ApplySeqDiffMK (SeqUtxoDiff diffs) = unTestTables $ changelogDiffs dblog
         count = foldr (const (+ 1)) 0
 
 checkInvariants :: DbChangelog TestLedger -> Bool
@@ -86,14 +85,12 @@ initDbChangelog = emptyDbChangeLog anchor
 data Op l = Extend (l DiffMK) | Prune SecurityParam
 deriving instance Show (l DiffMK) => Show (Op l)
 
-newtype ValidOpSeq l = ValidOpSeq [Op l]
-
 -- TODO: This doesn't work since the points in the diff sequence need to be non-decreasing:
 -- see Ouroboros.Consensus.Storage.LedgerDB.HD:397
 apply :: (TableStuff l, GetTip (l EmptyMK)) => [Op l] -> DbChangelog l -> DbChangelog l
 apply ops dblog = foldr' apply' dblog ops
-  where apply' (Extend newState) dblog = extendDbChangelog dblog newState
-        apply' (Prune sp) dblog        = pruneVolatilePartDbChangelog sp dblog
+  where apply' (Extend newState) dblog' = extendDbChangelog dblog' newState
+        apply' (Prune sp) dblog'        = pruneVolatilePartDbChangelog sp dblog'
 
 instance Arbitrary (l DiffMK) => Arbitrary (Op l) where
   arbitrary = oneof [Extend <$> arbitrary,
@@ -125,6 +122,7 @@ data TestLedger (mk :: MapKind) = TestLedger {
   pt           :: Point (TestLedger EmptyMK)
 }
 
+-- TODO: Make this more useful
 instance Show (TestLedger mk) where
   show _ = "TestLedger mk"
 
@@ -142,33 +140,36 @@ deriving instance Eq (LedgerTables TestLedger DiffMK)
 deriving instance Eq (LedgerTables TestLedger ValuesMK)
 
 instance ShowLedgerState (LedgerTables TestLedger) where
-  showsLedgerState _ (TestLedger t) = showString "TestLedger " . shows t
+  showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
 
 instance Show (ApplyMapKind' mk' Char Int) where
   show ap = showsApplyMapKind ap ""
 
+-- TODO: Make this more useful
 instance ShowLedgerState TestLedger where
   showsLedgerState _ (TestLedger _ _) = showString "L"
 
 instance TableStuff TestLedger where
-  data LedgerTables TestLedger mk = TestLedger { unTestLedger :: ApplyMapKind mk Char Int }
-  projectLedgerTables = TestLedger . unTestLedger
-  withLedgerTables st (TestLedger x) = st { unTestLedger = x }
-  pureLedgerTables = T
-  mapLedgerTables f (TestLedger x) = TestLedger (f x)
-  traverseLedgerTables f (TestLedger x) = TestLedger <$> f x
-  zipLedgerTables f (TestLedger x) (TestLedger y) = TestLedger (f x y)
-  zipLedgerTables2 f (TestLedger x) (TestLedger y) (TestLedger z) = TestLedger (f x y z)
-  zipLedgerTablesA f (TestLedger x) (TestLedger y) = TestLedger <$> f x y
-  zipLedgerTables2A f (TestLedger x) (TestLedger y) (TestLedger z) = TestLedger <$> f x y z
-  foldLedgerTables f (TestLedger x) = f x
-  foldLedgerTables2 f (TestLedger x) (TestLedger y) = f x y
-  namesLedgerTables = TestLedger $ NameMK "T"
+  data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Char Int }
+  projectLedgerTables = TestTables . unTestLedger
+  withLedgerTables st (TestTables x) = st { unTestLedger = x }
+  pureLedgerTables = TestTables
+  mapLedgerTables f (TestTables x) = TestTables (f x)
+  traverseLedgerTables f (TestTables x) = TestTables <$> f x
+  zipLedgerTables f (TestTables x) (TestTables y) = TestTables (f x y)
+  zipLedgerTables2 f (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
+  zipLedgerTablesA f (TestTables x) (TestTables y) = TestTables <$> f x y
+  zipLedgerTables2A f (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
+  foldLedgerTables f (TestTables x) = f x
+  foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
+  namesLedgerTables = TestTables $ NameMK "T"
+
+-- | Scratch
 
 example :: DbChangelog TestLedger
 example = extendDbChangelog initDbChangelog (TestLedger {unTestLedger = diff, pt = point})
   where point = Point $ At $ Point.Block 2 H
         diff = ApplyDiffMK $ UtxoDiff $ Map.empty
 
-run = do
-  sample $ (arbitrary :: Gen (DbChangelog TestLedger))
+run :: IO ()
+run = print example
