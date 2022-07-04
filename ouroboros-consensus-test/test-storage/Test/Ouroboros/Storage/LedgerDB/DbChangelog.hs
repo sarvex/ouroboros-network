@@ -2,11 +2,13 @@
 {-# LANGUAGE DeriveAnyClass       #-}
 {-# LANGUAGE DeriveGeneric        #-}
 {-# LANGUAGE DerivingStrategies   #-}
+{-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE LambdaCase           #-}
 {-# LANGUAGE NamedFieldPuns       #-}
 {-# LANGUAGE PatternSynonyms      #-}
+{-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE StandaloneDeriving   #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -17,8 +19,13 @@ module Test.Ouroboros.Storage.LedgerDB.DbChangelog (
   ) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
+import           Control.Monad hiding (ap)
+import           Control.Monad.Trans.Class (lift)
+import           Control.Monad.Trans.State.Strict
 import           Data.Foldable
+import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
+import           Data.Maybe (catMaybes)
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
@@ -26,14 +33,16 @@ import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
 import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
-                     StandardHash, pattern BlockPoint)
+                     StandardHash, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
 import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
-import           Test.QuickCheck hiding (elements)
+import           Test.QuickCheck
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
+import           Text.Show.Pretty (ppShow)
 
 import           Text.Show.Pretty (ppShow)
+
 
 tests :: TestTree
 tests = testGroup "Ledger" [ testGroup "DbChangelog"
@@ -44,7 +53,43 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
       ]
   ]
 
--- | Invariants
+{-------------------------------------------------------------------------------
+  Test setup
+-------------------------------------------------------------------------------}
+
+data DbChangelogTestSetup l = DbChangelogTestSetup
+  { operations          :: [Operation l]
+  , originalDbChangelog :: DbChangelog l
+  }
+
+instance (Show (l DiffMK)) => Show (DbChangelogTestSetup l) where
+  show = ppShow . operations
+
+instance Arbitrary (DbChangelogTestSetup TestLedger) where
+  arbitrary = sized $ \n -> do
+    slotNo <- oneof [pure Origin, At <$> SlotNo <$> chooseEnum (1, 1000)]
+    operations <- genOperations slotNo n
+    pure $ DbChangelogTestSetup
+      { operations = operations
+      , originalDbChangelog = emptyDbChangelogAtSlot slotNo
+      }
+
+emptyDbChangelogAtSlot :: WithOrigin SlotNo -> DbChangelog TestLedger
+emptyDbChangelogAtSlot slotNo = emptyDbChangeLog (TestLedger ApplyEmptyMK $ pointAtSlot slotNo)
+
+resultingDbChangelog :: (TableStuff l, GetTip (l EmptyMK))
+  => DbChangelogTestSetup l -> DbChangelog l
+resultingDbChangelog setup = applyOperations (operations setup) (originalDbChangelog setup)
+
+applyOperations :: (TableStuff l, GetTip (l EmptyMK))
+  => [Operation l] -> DbChangelog l -> DbChangelog l
+applyOperations ops dblog = foldr' apply' dblog ops
+  where apply' (Extend newState) dblog' = extendDbChangelog dblog' newState
+        apply' (Prune sp) dblog'        = pruneVolatilePartDbChangelog sp dblog'
+
+{-------------------------------------------------------------------------------
+  Invariants
+-------------------------------------------------------------------------------}
 
 volatileTipAnchorsImmutable :: (GetTip (l EmptyMK), Eq (l EmptyMK)) => DbChangelog l -> Bool
 volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVolatileStates } =
@@ -53,81 +98,141 @@ volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVol
 immutableAnchored :: DbChangelog TestLedger -> Bool
 immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } =
   changelogDiffAnchor == fmap Point.blockPointSlot point
-  where point = getPoint $ pt $ unDbChangelogState $ AS.anchor $ changelogImmutableStates
+  where point = getPoint $ getTip $ unDbChangelogState $ AS.anchor $ changelogImmutableStates
 
 sameNumberOfDiffsAsStates :: DbChangelog TestLedger -> Bool
-sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == count diffs
+sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == lengthSeqUtxoDiff diffs
   where imm = changelogImmutableStates dblog
         vol = changelogVolatileStates dblog
-        ApplySeqDiffMK (SeqUtxoDiff diffs) = unTestTables $ changelogDiffs dblog
-        count = foldr (const (+ 1)) 0
+        ApplySeqDiffMK diffs = unTestTables $ changelogDiffs dblog
+--      REVIEW: This is not a good idea. Why?
+--      count = foldr (const (+ 1)) 0
 
 checkInvariants :: DbChangelog TestLedger -> Bool
 checkInvariants dblog = volatileTipAnchorsImmutable dblog &&
                         immutableAnchored dblog &&
                         sameNumberOfDiffsAsStates dblog
 
--- | Properties
+
+{-------------------------------------------------------------------------------
+  Properties
+-------------------------------------------------------------------------------}
 
 prop_emptySatisfiesInvariants :: Property
-prop_emptySatisfiesInvariants = property $ checkInvariants initDbChangelog
+prop_emptySatisfiesInvariants = property $ checkInvariants (emptyDbChangelogAtSlot Origin)
 
-prop_generatedSatisfiesInvariants :: DbChangelog TestLedger -> Property
-prop_generatedSatisfiesInvariants dblog = property $ checkInvariants dblog
+prop_generatedSatisfiesInvariants :: DbChangelogTestSetup TestLedger -> Property
+prop_generatedSatisfiesInvariants setup = property $ checkInvariants (resultingDbChangelog setup)
 
--- | Generators
 
-initDbChangelog :: DbChangelog TestLedger
-initDbChangelog = emptyDbChangeLog anchor
-  where anchor = TestLedger ApplyEmptyMK point
-        point = Point Origin
+{-------------------------------------------------------------------------------
+  Generators
+-------------------------------------------------------------------------------}
 
-data Op l = Extend (l DiffMK) | Prune SecurityParam
-deriving instance Show (l DiffMK) => Show (Op l)
+data Operation l = Extend (l DiffMK) | Prune SecurityParam
+deriving instance Show (l DiffMK) => Show (Operation l)
 
--- TODO: This doesn't work since the points in the diff sequence need to be non-decreasing:
--- see Ouroboros.Consensus.Storage.LedgerDB.HD:397
-apply :: (TableStuff l, GetTip (l EmptyMK)) => [Op l] -> DbChangelog l -> DbChangelog l
-apply ops dblog = foldr' apply' dblog ops
-  where apply' (Extend newState) dblog' = extendDbChangelog dblog' newState
-        apply' (Prune sp) dblog'        = pruneVolatilePartDbChangelog sp dblog'
+pointAtSlot :: WithOrigin SlotNo -> Point (TestLedger EmptyMK)
+pointAtSlot = Point.withOrigin GenesisPoint (\slotNo -> Point $ At $ Point.Block slotNo H)
 
-instance Arbitrary (l DiffMK) => Arbitrary (Op l) where
-  arbitrary = oneof [Extend <$> arbitrary,
-                     Prune <$> arbitrary]
+type Key = String
 
-instance (TableStuff l, GetTip (l EmptyMK),
-          Arbitrary (l EmptyMK), Arbitrary (Op l)) => Arbitrary (DbChangelog l) where
-  arbitrary = apply <$> arbitrary <*> (emptyDbChangeLog <$> arbitrary)
+data GenOperationsState = GenOperationsState {
+    osSlotNo            :: !(WithOrigin SlotNo)
+  , osOps               :: ![Operation TestLedger]
+  , osVisibleUtxos      :: !(Map Key Int)
+  , osPendingInsertions :: !(Map Key Int)
+  , osPendingDeletions  :: !(Map Key Int)
+  } deriving (Show)
 
-instance Arbitrary H where
-  arbitrary = pure H
+applyPending :: GenOperationsState -> GenOperationsState
+applyPending gosState = gosState
+  { osVisibleUtxos = Map.union (osVisibleUtxos gosState) (osPendingInsertions gosState)
+  , osPendingDeletions = Map.empty
+  , osPendingInsertions = Map.empty
+  }
 
-instance Arbitrary (HeaderHash blk) => Arbitrary (Point blk) where
-  arbitrary = BlockPoint <$> (SlotNo <$> arbitrary) <*> arbitrary
 
-instance Arbitrary (TestLedger EmptyMK) where
-  arbitrary = TestLedger ApplyEmptyMK <$> arbitrary
+genOperations :: WithOrigin SlotNo -> Int -> Gen [Operation TestLedger]
+genOperations slotNo n = osOps <$> genOperations' slotNo n
 
-instance Arbitrary (UtxoEntryDiff Int) where
-  arbitrary = UtxoEntryDiff <$> arbitrary <*> diffState
-    where diffState = oneof [pure UedsDel, pure UedsIns, pure UedsInsAndDel]
+genOperations' :: WithOrigin SlotNo -> Int -> Gen GenOperationsState
+genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initState
+  where
+    -- TODO: This should probably be modified to take into account the invalidity of reinserting an
+    -- already deleted key.
+    initState = GenOperationsState {
+        osSlotNo = slotNo
+      , osVisibleUtxos = Map.empty
+      , osPendingInsertions = Map.empty
+      , osPendingDeletions = Map.empty
+      , osOps = []
+      }
 
-instance Arbitrary (TestLedger DiffMK) where
-  arbitrary = TestLedger <$> diff <*> arbitrary
-    where diff = ApplyDiffMK . UtxoDiff <$> arbitrary
+    genOperation = do
+      op <- oneof' [ genPrune, genExtend ]
+      modify' $ \st -> st { osOps = op:osOps st }
+
+    genPrune = Prune <$> SecurityParam <$> lift (chooseEnum (1, 10))
+
+    genExtend = do
+      nextSlotNo <- advanceSlotNo =<< (lift $ chooseEnum (1, 5))
+      diff <- genUtxoDiff
+      pure $ Extend $ TestLedger (ApplyDiffMK diff) (pointAtSlot nextSlotNo)
+
+    advanceSlotNo by = do
+      nextSlotNo <- gets (At . Point.withOrigin by (+ by) . osSlotNo)
+      modify' $ \st -> st { osSlotNo = nextSlotNo }
+      pure nextSlotNo
+
+    genUtxoDiff = do
+      nEntries <- lift $ chooseInt (0, 3)
+      entries <- replicateM nEntries genUtxoDiffEntry
+      modify' applyPending
+      pure $ UtxoDiff $ Map.fromList entries
+
+    genUtxoDiffEntry = do
+      visibleUtxos <- gets osVisibleUtxos
+      pendingDeletions <- gets osPendingDeletions
+      oneof' $ catMaybes [
+        genDelEntry visibleUtxos,
+        genInsertEntry (Map.union visibleUtxos pendingDeletions)]
+
+    genDelEntry visibleUtxos =
+      if Map.null visibleUtxos then Nothing
+      else Just $ do
+        (k, v) <- lift $ elements (Map.toList visibleUtxos)
+        modify' $ \st -> st
+          { osVisibleUtxos = Map.delete k (osVisibleUtxos st)
+          , osPendingDeletions = Map.insert k v (osPendingDeletions st)
+          }
+        pure (k, UtxoEntryDiff v UedsDel)
+
+    genInsertEntry unusableUtxos = Just $ do
+      k <- lift $ genKey `suchThat` (\a -> Map.notMember a unusableUtxos)
+      v <- lift $ arbitrary
+      modify' $ \st -> st
+        { osPendingInsertions = Map.insert k v (osPendingInsertions st)
+        }
+      pure (k, UtxoEntryDiff v UedsIns)
+
+oneof' :: [StateT s Gen a] -> StateT s Gen a
+oneof' [] = error "QuickCheck.oneof used with empty list"
+oneof' gs = lift (chooseInt (0,length gs - 1)) >>= (gs !!)
+
+genKey :: Gen Key
+genKey = replicateM 2 $ elements ['A'..'Z']
 
 data TestLedger (mk :: MapKind) = TestLedger {
-  unTestLedger :: ApplyMapKind mk Char Int,
-  pt           :: Point (TestLedger EmptyMK)
+  tlUtxos :: ApplyMapKind mk Key Int,
+  tlTip   :: Point (TestLedger EmptyMK)
 }
 
--- TODO: Make this more useful
-instance Show (TestLedger mk) where
-  show _ = "TestLedger mk"
+deriving instance Show (TestLedger EmptyMK)
+deriving instance Show (TestLedger DiffMK)
 
 instance GetTip (TestLedger EmptyMK) where
-  getTip = pt
+  getTip = tlTip
 
 data H = H deriving (Eq, Ord, Show, Generic)
 deriving anyclass instance NoThunks H
@@ -142,7 +247,8 @@ deriving instance Eq (LedgerTables TestLedger ValuesMK)
 instance ShowLedgerState (LedgerTables TestLedger) where
   showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
 
-instance Show (ApplyMapKind' mk' Char Int) where
+-- TODO: Remove orphan instance
+instance Show (ApplyMapKind' mk' Key Int) where
   show ap = showsApplyMapKind ap ""
 
 -- TODO: Make this more useful
@@ -150,9 +256,9 @@ instance ShowLedgerState TestLedger where
   showsLedgerState _ (TestLedger _ _) = showString "L"
 
 instance TableStuff TestLedger where
-  data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Char Int }
-  projectLedgerTables = TestTables . unTestLedger
-  withLedgerTables st (TestTables x) = st { unTestLedger = x }
+  data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
+  projectLedgerTables = TestTables . tlUtxos
+  withLedgerTables st (TestTables x) = st { tlUtxos = x }
   pureLedgerTables = TestTables
   mapLedgerTables f (TestTables x) = TestTables (f x)
   traverseLedgerTables f (TestTables x) = TestTables <$> f x
@@ -162,14 +268,12 @@ instance TableStuff TestLedger where
   zipLedgerTables2A f (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
   foldLedgerTables f (TestTables x) = f x
   foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
-  namesLedgerTables = TestTables $ NameMK "T"
+  namesLedgerTables = TestTables $ NameMK "TestTables"
 
 -- | Scratch
 
-example :: DbChangelog TestLedger
-example = extendDbChangelog initDbChangelog (TestLedger {unTestLedger = diff, pt = point})
-  where point = Point $ At $ Point.Block 2 H
-        diff = ApplyDiffMK $ UtxoDiff $ Map.empty
-
 run :: IO ()
-run = print example
+run = do
+  setup <- (generate arbitrary :: IO (DbChangelogTestSetup TestLedger))
+  print (resultingDbChangelog setup)
+
