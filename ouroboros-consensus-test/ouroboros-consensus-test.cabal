@@ -208,7 +208,6 @@ test-suite test-storage
   hs-source-dirs:      test-storage
   main-is:             Main.hs
   other-modules:
-                       Test.Scratch
                        Test.Ouroboros.Storage
                        Test.Ouroboros.Storage.ChainDB
                        Test.Ouroboros.Storage.ChainDB.Iterator
