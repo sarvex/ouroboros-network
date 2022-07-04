@@ -19,59 +19,59 @@
 --
 -- The network layer does not make any concrete assumptions about what blocks
 -- look like.
-module Ouroboros.Network.Block (
-    BlockNo (..)
-  , ChainHash (..)
-  , ChainUpdate (..)
-  , HasFullHeader (..)
-  , HasHeader (..)
-  , HeaderFields (..)
+module Ouroboros.Network.Block
+  ( SlotNo (..)
+  , BlockNo (..)
   , HeaderHash
-  , MaxSlotNo (..)
-  , Point (..)
-  , SlotNo (..)
-  , StandardHash
-  , Tip (..)
-  , atSlot
-  , blockHash
-  , blockNo
-  , blockPoint
-  , blockSlot
-  , castHash
+  , HeaderFields (..)
   , castHeaderFields
+  , HasHeader (..)
+  , blockNo
+  , blockSlot
+  , blockHash
+  , HasFullHeader (..)
+  , StandardHash
+  , ChainHash (..)
+  , castHash
+  , Point (..)
+  , pointSlot
+  , pointHash
   , castPoint
+  , blockPoint
+  , pattern GenesisPoint
+  , pattern BlockPoint
+  , atSlot
+  , withHash
+  , Tip (..)
   , castTip
-  , decodeTip
+  , getTipPoint
+  , getTipBlockNo
+  , getTipSlotNo
+  , getLegacyTipBlockNo
+  , tipFromHeader
+  , legacyTip
+  , toLegacyTip
   , encodeTip
   , encodedTipSize
-  , genesisPoint
-  , getLegacyTipBlockNo
-  , getTipBlockNo
-  , getTipPoint
-  , getTipSlotNo
-  , legacyTip
+  , decodeTip
+  , ChainUpdate (..)
+  , MaxSlotNo (..)
   , maxSlotNoFromMaybe
-  , maxSlotNoFromWithOrigin
   , maxSlotNoToMaybe
-  , pattern BlockPoint
-  , pattern GenesisPoint
-  , pointHash
-  , pointSlot
-  , tipFromHeader
-  , toLegacyTip
-  , withHash
+  , maxSlotNoFromWithOrigin
+  , genesisPoint
     -- * Serialisation
-  , decodeChainHash
-  , decodePoint
-  , encodeChainHash
   , encodePoint
   , encodedPointSize
+  , encodeChainHash
+  , decodePoint
+  , decodeChainHash
     -- * Serialised block/header
   , Serialised (..)
-  , fromSerialised
-  , mkSerialised
-  , unwrapCBORinCBOR
   , wrapCBORinCBOR
+  , unwrapCBORinCBOR
+  , mkSerialised
+  , fromSerialised
   ) where
 
 import           Codec.CBOR.Decoding (Decoder)
