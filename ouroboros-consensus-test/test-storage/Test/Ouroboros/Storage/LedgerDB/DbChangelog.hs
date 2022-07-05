@@ -25,7 +25,9 @@ import           Control.Monad.Trans.State.Strict
 import           Data.Foldable
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import           Data.Maybe (catMaybes)
+import           Data.Maybe (catMaybes, isJust)
+import           Data.Set (Set)
+import qualified Data.Set as Set
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
@@ -35,7 +37,6 @@ import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
                      StandardHash, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
-import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.QuickCheck
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
@@ -66,6 +67,7 @@ instance (Show (l DiffMK)) => Show (DbChangelogTestSetup l) where
   show = ppShow . operations
 
 instance Arbitrary (DbChangelogTestSetup TestLedger) where
+
   arbitrary = sized $ \n -> do
     slotNo <- oneof [pure Origin, At <$> SlotNo <$> chooseEnum (1, 1000)]
     operations <- genOperations slotNo n
@@ -73,6 +75,12 @@ instance Arbitrary (DbChangelogTestSetup TestLedger) where
       { operations = operations
       , originalDbChangelog = emptyDbChangelogAtSlot slotNo
       }
+
+  shrink dblog = takeWhileJust $ tail (iterate reduce (Just dblog))
+    where
+      reduce (Just (DbChangelogTestSetup (_:ops) dblog)) = Just $ DbChangelogTestSetup ops dblog
+      reduce _ = Nothing
+      takeWhileJust = catMaybes . takeWhile isJust
 
 emptyDbChangelogAtSlot :: WithOrigin SlotNo -> DbChangelog TestLedger
 emptyDbChangelogAtSlot slotNo = emptyDbChangeLog (TestLedger ApplyEmptyMK $ pointAtSlot slotNo)
@@ -105,8 +113,6 @@ sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == lengthSeqUtxo
   where imm = changelogImmutableStates dblog
         vol = changelogVolatileStates dblog
         ApplySeqDiffMK diffs = unTestTables $ changelogDiffs dblog
---      REVIEW: This is not a good idea. Why?
---      count = foldr (const (+ 1)) 0
 
 checkInvariants :: DbChangelog TestLedger -> Bool
 checkInvariants dblog = volatileTipAnchorsImmutable dblog &&
@@ -140,15 +146,14 @@ type Key = String
 data GenOperationsState = GenOperationsState {
     osSlotNo            :: !(WithOrigin SlotNo)
   , osOps               :: ![Operation TestLedger]
-  , osVisibleUtxos      :: !(Map Key Int)
+  , osActiveUtxos       :: !(Map Key Int)
   , osPendingInsertions :: !(Map Key Int)
-  , osPendingDeletions  :: !(Map Key Int)
+  , osConsumedUtxos     :: !(Set Key)
   } deriving (Show)
 
 applyPending :: GenOperationsState -> GenOperationsState
 applyPending gosState = gosState
-  { osVisibleUtxos = Map.union (osVisibleUtxos gosState) (osPendingInsertions gosState)
-  , osPendingDeletions = Map.empty
+  { osActiveUtxos = Map.union (osActiveUtxos gosState) (osPendingInsertions gosState)
   , osPendingInsertions = Map.empty
   }
 
@@ -159,18 +164,16 @@ genOperations slotNo n = osOps <$> genOperations' slotNo n
 genOperations' :: WithOrigin SlotNo -> Int -> Gen GenOperationsState
 genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initState
   where
-    -- TODO: This should probably be modified to take into account the invalidity of reinserting an
-    -- already deleted key.
     initState = GenOperationsState {
         osSlotNo = slotNo
-      , osVisibleUtxos = Map.empty
+      , osActiveUtxos = Map.empty
       , osPendingInsertions = Map.empty
-      , osPendingDeletions = Map.empty
+      , osConsumedUtxos = Set.empty
       , osOps = []
       }
 
     genOperation = do
-      op <- oneof' [ genPrune, genExtend ]
+      op <- frequency' [ (1, genPrune), (10, genExtend) ]
       modify' $ \st -> st { osOps = op:osOps st }
 
     genPrune = Prune <$> SecurityParam <$> lift (chooseEnum (1, 10))
@@ -186,39 +189,55 @@ genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initStat
       pure nextSlotNo
 
     genUtxoDiff = do
-      nEntries <- lift $ chooseInt (0, 3)
+      nEntries <- lift $ chooseInt (1, 10)
       entries <- replicateM nEntries genUtxoDiffEntry
       modify' applyPending
       pure $ UtxoDiff $ Map.fromList entries
 
     genUtxoDiffEntry = do
-      visibleUtxos <- gets osVisibleUtxos
-      pendingDeletions <- gets osPendingDeletions
+      activeUtxos <- gets osActiveUtxos
+      consumedUtxos <- gets osConsumedUtxos
       oneof' $ catMaybes [
-        genDelEntry visibleUtxos,
-        genInsertEntry (Map.union visibleUtxos pendingDeletions)]
+        genDelEntry activeUtxos,
+        genInsertEntry consumedUtxos]
 
-    genDelEntry visibleUtxos =
-      if Map.null visibleUtxos then Nothing
+    genDelEntry activeUtxos =
+      if Map.null activeUtxos then Nothing
       else Just $ do
-        (k, v) <- lift $ elements (Map.toList visibleUtxos)
+        (k, v) <- lift $ elements (Map.toList activeUtxos)
         modify' $ \st -> st
-          { osVisibleUtxos = Map.delete k (osVisibleUtxos st)
-          , osPendingDeletions = Map.insert k v (osPendingDeletions st)
+          { osActiveUtxos = Map.delete k (osActiveUtxos st)
           }
         pure (k, UtxoEntryDiff v UedsDel)
 
-    genInsertEntry unusableUtxos = Just $ do
-      k <- lift $ genKey `suchThat` (\a -> Map.notMember a unusableUtxos)
+    genInsertEntry consumedUtxos = Just $ do
+      k <- lift $ genKey `suchThat` (\a -> Set.notMember a consumedUtxos)
       v <- lift $ arbitrary
       modify' $ \st -> st
         { osPendingInsertions = Map.insert k v (osPendingInsertions st)
+        , osConsumedUtxos = Set.insert k (osConsumedUtxos st)
         }
       pure (k, UtxoEntryDiff v UedsIns)
 
 oneof' :: [StateT s Gen a] -> StateT s Gen a
 oneof' [] = error "QuickCheck.oneof used with empty list"
 oneof' gs = lift (chooseInt (0,length gs - 1)) >>= (gs !!)
+
+frequency' :: [(Int, StateT s Gen a)] -> StateT s Gen a
+frequency' [] = error "QuickCheck.frequency used with empty list"
+frequency' xs
+  | any (< 0) (map fst xs) =
+    error "QuickCheck.frequency: negative weight"
+  | all (== 0) (map fst xs) =
+    error "QuickCheck.frequency: all weights were zero"
+frequency' xs0 = lift (chooseInt (1, tot)) >>= (`pick` xs0)
+  where
+    tot = sum (map fst xs0)
+
+    pick n ((k,x):xs)
+        | n <= k    = x
+        | otherwise = pick (n-k) xs
+    pick _ _  = error "QuickCheck.pick used with empty list"
 
 genKey :: Gen Key
 genKey = replicateM 2 $ elements ['A'..'Z']
@@ -275,5 +294,5 @@ instance TableStuff TestLedger where
 run :: IO ()
 run = do
   setup <- (generate arbitrary :: IO (DbChangelogTestSetup TestLedger))
-  print (resultingDbChangelog setup)
+  print setup
 
