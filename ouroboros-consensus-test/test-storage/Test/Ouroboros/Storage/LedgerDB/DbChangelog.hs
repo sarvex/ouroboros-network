@@ -21,7 +21,7 @@ module Test.Ouroboros.Storage.LedgerDB.DbChangelog (
 import           Cardano.Slotting.Slot (WithOrigin (..))
 import           Control.Monad hiding (ap)
 import           Control.Monad.Trans.Class (lift)
-import           Control.Monad.Trans.State.Strict
+import           Control.Monad.Trans.State.Strict hiding (state)
 import           Data.Foldable
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
@@ -35,8 +35,9 @@ import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
 import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
-                     StandardHash, pattern GenesisPoint)
+                     StandardHash, castPoint, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
+import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.QuickCheck
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
@@ -51,6 +52,14 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         prop_emptySatisfiesInvariants
       , testProperty "constructor generated changelog satisfies invariants"
         prop_generatedSatisfiesInvariants
+      , testProperty "flushing keeps immutable tip"
+        prop_flushingKeepsImmutableTip
+      , testProperty "extending adds head to volatile states"
+        prop_extendingAdvancesTipOfVolatileStates
+      , testProperty "rollback after extension is noop"
+        prop_rollbackAfterExtendIsNoop
+      , testProperty "pruning leaves at most maxRollback volatile states"
+        prop_pruningLeavesAtMostMaxRollbacksVolatileStates
       ]
   ]
 
@@ -78,7 +87,7 @@ instance Arbitrary (DbChangelogTestSetup TestLedger) where
 
   shrink dblog = takeWhileJust $ tail (iterate reduce (Just dblog))
     where
-      reduce (Just (DbChangelogTestSetup (_:ops) dblog)) = Just $ DbChangelogTestSetup ops dblog
+      reduce (Just (DbChangelogTestSetup (_:ops) dblog')) = Just $ DbChangelogTestSetup ops dblog'
       reduce _ = Nothing
       takeWhileJust = catMaybes . takeWhile isJust
 
@@ -125,10 +134,59 @@ checkInvariants dblog = volatileTipAnchorsImmutable dblog &&
 -------------------------------------------------------------------------------}
 
 prop_emptySatisfiesInvariants :: Property
-prop_emptySatisfiesInvariants = property $ checkInvariants (emptyDbChangelogAtSlot Origin)
+prop_emptySatisfiesInvariants =
+  property $ checkInvariants (emptyDbChangelogAtSlot Origin)
 
 prop_generatedSatisfiesInvariants :: DbChangelogTestSetup TestLedger -> Property
-prop_generatedSatisfiesInvariants setup = property $ checkInvariants (resultingDbChangelog setup)
+prop_generatedSatisfiesInvariants setup =
+  property $ checkInvariants (resultingDbChangelog setup)
+
+prop_flushingKeepsImmutableTip :: DbChangelogTestSetup TestLedger -> Property
+prop_flushingKeepsImmutableTip setup =
+  property $ (toKeepTip == toFlushTip) && (toFlushTip == dblogTip)
+  where
+    dblog = resultingDbChangelog setup
+    (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
+    dblogTip = youngestImmutableSlotDbChangelog dblog
+    toFlushTip = youngestImmutableSlotDbChangelog toFlush
+    toKeepTip = youngestImmutableSlotDbChangelog toKeep
+
+prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup TestLedger -> Property
+prop_extendingAdvancesTipOfVolatileStates setup =
+  property $ (tlTip state) == (tlTip new)
+  where
+    dblog = resultingDbChangelog setup
+    state = nextState dblog
+    dblog' = extendDbChangelog dblog state
+    new = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog')
+
+prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup TestLedger -> Positive Int -> Property
+prop_rollbackAfterExtendIsNoop setup (Positive n) =
+  property (dblog == rollbackDbChangelog n (iterate addState dblog !! n))
+  where
+    dblog = resultingDbChangelog setup
+    addState dblog' = extendDbChangelog dblog' (nextState dblog')
+
+prop_pruningLeavesAtMostMaxRollbacksVolatileStates ::
+  DbChangelogTestSetup TestLedger -> SecurityParam -> Property
+prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRollbacks) =
+  property $ AS.length (changelogVolatileStates dblog') <= fromIntegral maxRollbacks
+  where
+    dblog = resultingDbChangelog setup
+    dblog' = pruneVolatilePartDbChangelog sp dblog
+
+prop_extendingWithAConsumedUtxoFails :: DbChangelogTestSetup TestLedger -> Property
+prop_extendingWithAConsumedUtxoFails = undefined
+
+nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
+nextState dblog = TestLedger
+            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
+            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
+            }
+  where
+    old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
+    nextSlot Origin = At 1
+    nextSlot (At x) = At (x + 1)
 
 
 {-------------------------------------------------------------------------------
@@ -181,7 +239,7 @@ genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initStat
     genExtend = do
       nextSlotNo <- advanceSlotNo =<< (lift $ chooseEnum (1, 5))
       diff <- genUtxoDiff
-      pure $ Extend $ TestLedger (ApplyDiffMK diff) (pointAtSlot nextSlotNo)
+      pure $ Extend $ TestLedger (ApplyDiffMK diff) (castPoint $ pointAtSlot nextSlotNo)
 
     advanceSlotNo by = do
       nextSlotNo <- gets (At . Point.withOrigin by (+ by) . osSlotNo)
@@ -253,9 +311,12 @@ deriving instance Show (TestLedger DiffMK)
 instance GetTip (TestLedger EmptyMK) where
   getTip = tlTip
 
+instance GetTip (TestLedger DiffMK) where
+  getTip = castPoint . tlTip
+
 data H = H deriving (Eq, Ord, Show, Generic)
 deriving anyclass instance NoThunks H
-type instance HeaderHash (TestLedger EmptyMK) = H
+type instance HeaderHash (TestLedger mk) = H
 
 instance StandardHash (TestLedger EmptyMK)
 
@@ -288,6 +349,8 @@ instance TableStuff TestLedger where
   foldLedgerTables f (TestTables x) = f x
   foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
   namesLedgerTables = TestTables $ NameMK "TestTables"
+
+deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
 
 -- | Scratch
 
