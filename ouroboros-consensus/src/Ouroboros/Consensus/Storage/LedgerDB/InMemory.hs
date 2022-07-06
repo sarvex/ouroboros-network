@@ -574,12 +574,13 @@ forwardTableKeySets dblog = \(UnforwardedReadSets seqNo' values keys) ->
       ApplyValuesMK $ forwardValuesAndKeys values keys (cumulativeDiffSeqUtxoDiff diffs)
 
 dbChangelogPrefix ::
-     ( HasHeader blk, HeaderHash blk ~ HeaderHash (l EmptyMK)
+     ( HeaderHash blk ~ HeaderHash (l EmptyMK)
      , GetTip (l EmptyMK)
      , TableStuff l
+     , StandardHash (l EmptyMK)
      )
   => Point blk -> DbChangelog l -> Maybe (DbChangelog l)
-dbChangelogPrefix pt = prefixDbChangelog (pointSlot pt) ((== pt) . castPoint)
+dbChangelogPrefix pt = prefixDbChangelog (castPoint pt)
 
 -- | Isolates the prefix of the changelog that should be flushed
 --
@@ -729,7 +730,7 @@ ledgerDbIsSaturated (SecurityParam k) db =
 -- returned.
 ledgerDbPast ::
      ( HasHeader blk, IsLedger l, HeaderHash l ~ HeaderHash blk
-     , TableStuff l
+     , TableStuff l, StandardHash (l EmptyMK)
      )
   => Point blk
   -> LedgerDB l
@@ -744,7 +745,7 @@ ledgerDbPast pt db = ledgerDbCurrent <$> ledgerDbPrefix pt db
 -- returned.
 ledgerDbPrefix ::
      ( HasHeader blk, IsLedger l, HeaderHash l ~ HeaderHash blk
-     , TableStuff l
+     , TableStuff l, StandardHash (l EmptyMK)
      )
   => Point blk
   -> LedgerDB l

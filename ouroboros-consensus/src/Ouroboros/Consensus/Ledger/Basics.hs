@@ -1256,17 +1256,18 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
 
 -- | Roll back the volatile states up to the specified point.
 prefixDbChangelog ::
-     ( GetTip (l EmptyMK)
+  -- REVIEW: What does StandardHash (l EmptyMK) mean in the domain?
+     ( StandardHash (l EmptyMK)
+     , GetTip (l EmptyMK)
      , TableStuff l
      )
-  => WithOrigin SlotNo -> (Point (l EmptyMK) -> Bool) -> DbChangelog l
-  -> Maybe (DbChangelog l)
-prefixDbChangelog slotNo p dblog = do
+  => Point (l EmptyMK) -> DbChangelog l -> Maybe (DbChangelog l)
+prefixDbChangelog pt dblog = do
     let vol = changelogVolatileStates
     vol' <-
       AS.rollback
-        slotNo
-        (p . getTip . unDbChangelogState . either id id)
+        (pointSlot pt)
+        ((== pt) . getTip . unDbChangelogState . either id id)
         vol
     let ndropped                  = AS.length vol - AS.length vol'
         diffs'                    =
