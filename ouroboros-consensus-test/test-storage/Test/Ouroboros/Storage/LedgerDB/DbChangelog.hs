@@ -22,6 +22,7 @@ import           Cardano.Slotting.Slot (WithOrigin (..))
 import           Control.Monad hiding (ap)
 import           Control.Monad.Trans.Class (lift)
 import           Control.Monad.Trans.State.Strict hiding (state)
+import qualified Data.FingerTree.Strict as FT
 import           Data.Foldable
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
@@ -51,6 +52,12 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         prop_emptySatisfiesInvariants
       , testProperty "constructor generated changelog satisfies invariants"
         prop_generatedSatisfiesInvariants
+      , testProperty "flushing keeps invariants"
+        prop_flushDbChangelogKeepsInvariants
+      -- , testProperty "rolling back keeps invariants"
+      --   prop_rollbackDbChangelogKeepsInvariants
+      , testProperty "prefixing back to anchor keeps invariants"
+        prop_prefixBackToAnchorKeepsInvariants
       , testProperty "flushing keeps immutable tip"
         prop_flushingKeepsImmutableTip
       , testProperty "extending adds head to volatile states"
@@ -59,6 +66,10 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         prop_rollbackAfterExtendIsNoop
       , testProperty "pruning leaves at most maxRollback volatile states"
         prop_pruningLeavesAtMostMaxRollbacksVolatileStates
+      , testProperty "flushing splits immutable and volatile"
+        prop_flushingSplitsImmutableAndVolatile
+      , testProperty "prefixing back to anchor is rolling back volatile states"
+        prop_prefixBackToAnchorIsRollingBackVolatileStates
       ]
   ]
 
@@ -175,9 +186,63 @@ prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRo
     dblog = resultingDbChangelog setup
     dblog' = pruneVolatilePartDbChangelog sp dblog
 
-prop_extendingWithAConsumedUtxoFails :: DbChangelogTestSetup TestLedger -> Property
-prop_extendingWithAConsumedUtxoFails = undefined
+prop_flushingSplitsImmutableAndVolatile :: DbChangelogTestSetup TestLedger -> Property
+prop_flushingSplitsImmutableAndVolatile setup =
+  property $ AS.length (changelogVolatileStates toFlush) == 0 &&
+             AS.length (changelogImmutableStates toKeep) == 0 &&
+             diffSeqDblog == diffSeqJoined
+  where
+    dblog = resultingDbChangelog setup
+    (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
+    (ApplySeqDiffMK diffSeqToFlush) = unTestTables $ changelogDiffs toFlush
+    (ApplySeqDiffMK diffSeqToKeep) = unTestTables $ changelogDiffs toKeep
+    diffSeqJoined = unsafeJoinSeqUtxoDiffs diffSeqToFlush diffSeqToKeep
+    (ApplySeqDiffMK diffSeqDblog) = unTestTables $ changelogDiffs dblog
 
+prop_prefixBackToAnchorKeepsInvariants ::
+  DbChangelogTestSetup TestLedger -> Property
+prop_prefixBackToAnchorKeepsInvariants setup = property $ checkInvariants dblog
+  where
+    dblog = prefixBackToAnchorDbChangelog $ resultingDbChangelog setup
+
+prop_flushDbChangelogKeepsInvariants ::
+  DbChangelogTestSetup TestLedger -> Property
+prop_flushDbChangelogKeepsInvariants setup =
+  property $ checkInvariants toFlush && checkInvariants toKeep
+  where
+    (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable $
+      resultingDbChangelog setup
+
+-- TODO: This fails due to rollbackDbChangelog being partial. We need n to be at most
+-- the length of the changelog (or maybe the volatile part of it).
+prop_rollbackDbChangelogKeepsInvariants ::
+  DbChangelogTestSetup TestLedger -> Int -> Property
+prop_rollbackDbChangelogKeepsInvariants setup n = property $ checkInvariants dblog
+  where
+    dblog = rollbackDbChangelog n (resultingDbChangelog setup)
+
+prop_prefixBackToAnchorIsRollingBackVolatileStates ::
+  DbChangelogTestSetup TestLedger -> Property
+prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
+  property $ rolledBack == toAnchor
+  where
+    dblog = resultingDbChangelog setup
+    n = AS.length (changelogVolatileStates dblog)
+    rolledBack = rollbackDbChangelog n dblog
+    toAnchor = prefixBackToAnchorDbChangelog dblog
+
+-- prop_rollBackToVolatileTipIsNoop ::
+--   DbChangelogTestSetup TestLedger -> Property
+-- prop_rollBackToVolatileTipIsNoop setup = property $ Just dblog == dblog'
+--   where
+--     dblog = resultingDbChangelog setup
+--     pt = getTip $ unDbChangelogState $ AS.headAnchor $ changelogVolatileStates dblog
+--     state = nextState dblog
+--     dblog' = prefixDbChangelog pt $ extendDbChangelog dblog state
+
+unsafeJoinSeqUtxoDiffs :: Ord k => SeqUtxoDiff k v -> SeqUtxoDiff k v -> SeqUtxoDiff k v
+unsafeJoinSeqUtxoDiffs (SeqUtxoDiff ft1) (SeqUtxoDiff ft2) =
+  SeqUtxoDiff (ft1 FT.>< ft2)
 
 {-------------------------------------------------------------------------------
   Generators
@@ -332,13 +397,13 @@ deriving instance Eq (LedgerTables TestLedger ValuesMK)
 instance ShowLedgerState (LedgerTables TestLedger) where
   showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
 
--- TODO: Remove orphan instance
+-- REVIEW: What to do with this orphan instance?
 instance Show (ApplyMapKind' mk' Key Int) where
   show ap = showsApplyMapKind ap ""
 
 -- TODO: Make this more useful
 instance ShowLedgerState TestLedger where
-  showsLedgerState _ (TestLedger _ _) = showString "L"
+  showsLedgerState _ (TestLedger _ _) = showString "TestLedger"
 
 instance TableStuff TestLedger where
   data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
