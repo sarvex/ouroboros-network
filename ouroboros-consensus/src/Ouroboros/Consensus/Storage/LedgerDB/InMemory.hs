@@ -579,7 +579,7 @@ dbChangelogPrefix ::
      , TableStuff l
      )
   => Point blk -> DbChangelog l -> Maybe (DbChangelog l)
-dbChangelogPrefix = prefixDbChangelog
+dbChangelogPrefix pt = prefixDbChangelog (pointSlot pt) ((== pt) . castPoint)
 
 -- | Isolates the prefix of the changelog that should be flushed
 --

@@ -1256,18 +1256,17 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
 
 -- | Roll back the volatile states up to the specified point.
 prefixDbChangelog ::
-     ( HasHeader blk
-     , HeaderHash blk ~ HeaderHash (l EmptyMK)
-     , GetTip (l EmptyMK)
+     ( GetTip (l EmptyMK)
      , TableStuff l
      )
-  => Point blk -> DbChangelog l -> Maybe (DbChangelog l)
-prefixDbChangelog pt dblog = do
+  => WithOrigin SlotNo -> (Point (l EmptyMK) -> Bool) -> DbChangelog l
+  -> Maybe (DbChangelog l)
+prefixDbChangelog slotNo p dblog = do
     let vol = changelogVolatileStates
     vol' <-
       AS.rollback
-        (pointSlot pt)
-        ((== pt) . castPoint . getTip . unDbChangelogState . either id id)
+        slotNo
+        (p . getTip . unDbChangelogState . either id id)
         vol
     let ndropped                  = AS.length vol - AS.length vol'
         diffs'                    =
