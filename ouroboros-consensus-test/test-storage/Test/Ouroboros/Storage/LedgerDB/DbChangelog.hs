@@ -70,6 +70,8 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         prop_flushingSplitsImmutableAndVolatile
       , testProperty "prefixing back to anchor is rolling back volatile states"
         prop_prefixBackToAnchorIsRollingBackVolatileStates
+      , testProperty "prefix back to volatile tip is a noop"
+        prop_rollBackToVolatileTipIsNoop
       ]
   ]
 
@@ -84,6 +86,7 @@ data DbChangelogTestSetup l = DbChangelogTestSetup
 
 instance (Show (l DiffMK)) => Show (DbChangelogTestSetup l) where
   show = ppShow . operations
+
 
 instance Arbitrary (DbChangelogTestSetup TestLedger) where
 
@@ -173,10 +176,9 @@ prop_extendingAdvancesTipOfVolatileStates setup =
 
 prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup TestLedger -> Positive Int -> Property
 prop_rollbackAfterExtendIsNoop setup (Positive n) =
-  property (dblog == rollbackDbChangelog n (iterate addState dblog !! n))
+  property (dblog == rollbackDbChangelog n (nExtensions n dblog))
   where
     dblog = resultingDbChangelog setup
-    addState dblog' = extendDbChangelog dblog' (nextState dblog')
 
 prop_pruningLeavesAtMostMaxRollbacksVolatileStates ::
   DbChangelogTestSetup TestLedger -> SecurityParam -> Property
@@ -231,14 +233,13 @@ prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
     rolledBack = rollbackDbChangelog n dblog
     toAnchor = prefixBackToAnchorDbChangelog dblog
 
--- prop_rollBackToVolatileTipIsNoop ::
---   DbChangelogTestSetup TestLedger -> Property
--- prop_rollBackToVolatileTipIsNoop setup = property $ Just dblog == dblog'
---   where
---     dblog = resultingDbChangelog setup
---     pt = getTip $ unDbChangelogState $ AS.headAnchor $ changelogVolatileStates dblog
---     state = nextState dblog
---     dblog' = prefixDbChangelog pt $ extendDbChangelog dblog state
+prop_rollBackToVolatileTipIsNoop ::
+  Positive Int -> DbChangelogTestSetup TestLedger -> Property
+prop_rollBackToVolatileTipIsNoop (Positive n) setup = property $ Just dblog == dblog'
+  where
+    dblog = resultingDbChangelog setup
+    pt = getTip $ unDbChangelogState $ AS.headAnchor $ changelogVolatileStates dblog
+    dblog' = prefixDbChangelog pt $ nExtensions n dblog
 
 unsafeJoinSeqUtxoDiffs :: Ord k => SeqUtxoDiff k v -> SeqUtxoDiff k v -> SeqUtxoDiff k v
 unsafeJoinSeqUtxoDiffs (SeqUtxoDiff ft1) (SeqUtxoDiff ft2) =
@@ -374,6 +375,10 @@ nextState dblog = TestLedger
     old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
     nextSlot Origin = At 1
     nextSlot (At x) = At (x + 1)
+
+nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
+nExtensions n dblog = (iterate extend dblog) !! n
+  where extend dblog' = extendDbChangelog dblog' (nextState dblog')
 
 deriving instance Show (TestLedger EmptyMK)
 deriving instance Show (TestLedger DiffMK)
