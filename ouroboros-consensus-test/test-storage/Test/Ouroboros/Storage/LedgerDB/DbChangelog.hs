@@ -43,7 +43,6 @@ import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
 import           Text.Show.Pretty (ppShow)
 
-import           Text.Show.Pretty (ppShow)
 
 
 tests :: TestTree
@@ -103,6 +102,7 @@ applyOperations :: (TableStuff l, GetTip (l EmptyMK))
 applyOperations ops dblog = foldr' apply' dblog ops
   where apply' (Extend newState) dblog' = extendDbChangelog dblog' newState
         apply' (Prune sp) dblog'        = pruneVolatilePartDbChangelog sp dblog'
+
 
 {-------------------------------------------------------------------------------
   Invariants
@@ -177,16 +177,6 @@ prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRo
 
 prop_extendingWithAConsumedUtxoFails :: DbChangelogTestSetup TestLedger -> Property
 prop_extendingWithAConsumedUtxoFails = undefined
-
-nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
-nextState dblog = TestLedger
-            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
-            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
-            }
-  where
-    old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
-    nextSlot Origin = At 1
-    nextSlot (At x) = At (x + 1)
 
 
 {-------------------------------------------------------------------------------
@@ -300,10 +290,25 @@ frequency' xs0 = lift (chooseInt (1, tot)) >>= (`pick` xs0)
 genKey :: Gen Key
 genKey = replicateM 2 $ elements ['A'..'Z']
 
+
+{-------------------------------------------------------------------------------
+  Generators
+-------------------------------------------------------------------------------}
+
 data TestLedger (mk :: MapKind) = TestLedger {
   tlUtxos :: ApplyMapKind mk Key Int,
   tlTip   :: Point (TestLedger EmptyMK)
 }
+
+nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
+nextState dblog = TestLedger
+            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
+            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
+            }
+  where
+    old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
+    nextSlot Origin = At 1
+    nextSlot (At x) = At (x + 1)
 
 deriving instance Show (TestLedger EmptyMK)
 deriving instance Show (TestLedger DiffMK)
