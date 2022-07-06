@@ -76,10 +76,80 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
   Test setup
 -------------------------------------------------------------------------------}
 
+data TestLedger (mk :: MapKind) = TestLedger {
+  tlUtxos :: ApplyMapKind mk Key Int,
+  tlTip   :: Point (TestLedger EmptyMK)
+}
+
+nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
+nextState dblog = TestLedger
+            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
+            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
+            }
+  where
+    old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
+    nextSlot Origin = At 1
+    nextSlot (At x) = At (x + 1)
+
+nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
+nExtensions n dblog = (iterate extend dblog) !! n
+  where extend dblog' = extendDbChangelog dblog' (nextState dblog')
+
+deriving instance Show (TestLedger EmptyMK)
+deriving instance Show (TestLedger DiffMK)
+
+instance GetTip (TestLedger EmptyMK) where
+  getTip = tlTip
+
+instance GetTip (TestLedger DiffMK) where
+  getTip = castPoint . tlTip
+
+data H = H deriving (Eq, Ord, Show, Generic)
+deriving anyclass instance NoThunks H
+type instance HeaderHash (TestLedger mk) = H
+
+instance StandardHash (TestLedger EmptyMK)
+
+deriving instance Eq (TestLedger EmptyMK)
+deriving instance Eq (LedgerTables TestLedger DiffMK)
+deriving instance Eq (LedgerTables TestLedger ValuesMK)
+
+instance ShowLedgerState (LedgerTables TestLedger) where
+  showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
+
+-- REVIEW: What to do with this orphan instance?
+instance Show (ApplyMapKind' mk' Key Int) where
+  show ap = showsApplyMapKind ap ""
+
+instance ShowLedgerState TestLedger where
+  showsLedgerState _ (TestLedger {tlUtxos, tlTip}) =
+    showString "TestLedger" . showSpace . showString "{" . shows tlUtxos .
+    showCommaSpace . shows tlTip . showString "}"
+
+instance TableStuff TestLedger where
+  data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
+  projectLedgerTables = TestTables . tlUtxos
+  withLedgerTables st (TestTables x) = st { tlUtxos = x }
+  pureLedgerTables = TestTables
+  mapLedgerTables f (TestTables x) = TestTables (f x)
+  traverseLedgerTables f (TestTables x) = TestTables <$> f x
+  zipLedgerTables f (TestTables x) (TestTables y) = TestTables (f x y)
+  zipLedgerTables2 f (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
+  zipLedgerTablesA f (TestTables x) (TestTables y) = TestTables <$> f x y
+  zipLedgerTables2A f (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
+  foldLedgerTables f (TestTables x) = f x
+  foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
+  namesLedgerTables = TestTables $ NameMK "TestTables"
+
+deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
+
 data DbChangelogTestSetup = DbChangelogTestSetup
   { operations          :: [Operation TestLedger]
   , originalDbChangelog :: DbChangelog TestLedger
   }
+
+data Operation l = Extend (l DiffMK) | Prune SecurityParam
+deriving instance Show (l DiffMK) => Show (Operation l)
 
 data DbChangelogTestSetupWithRollbacks = DbChangelogTestSetupWithRollbacks
   { testSetup :: DbChangelogTestSetup
@@ -251,12 +321,10 @@ unsafeJoinSeqUtxoDiffs :: Ord k => SeqUtxoDiff k v -> SeqUtxoDiff k v -> SeqUtxo
 unsafeJoinSeqUtxoDiffs (SeqUtxoDiff ft1) (SeqUtxoDiff ft2) =
   SeqUtxoDiff (ft1 FT.>< ft2)
 
+
 {-------------------------------------------------------------------------------
   Generators
 -------------------------------------------------------------------------------}
-
-data Operation l = Extend (l DiffMK) | Prune SecurityParam
-deriving instance Show (l DiffMK) => Show (Operation l)
 
 pointAtSlot :: WithOrigin SlotNo -> Point (TestLedger EmptyMK)
 pointAtSlot = Point.withOrigin GenesisPoint (\slotNo -> Point $ At $ Point.Block slotNo H)
@@ -277,12 +345,8 @@ applyPending gosState = gosState
   , osPendingInsertions = Map.empty
   }
 
-
 genOperations :: WithOrigin SlotNo -> Int -> Gen [Operation TestLedger]
-genOperations slotNo n = osOps <$> genOperations' slotNo n
-
-genOperations' :: WithOrigin SlotNo -> Int -> Gen GenOperationsState
-genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initState
+genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation) initState
   where
     initState = GenOperationsState {
         osSlotNo = slotNo
@@ -339,6 +403,9 @@ genOperations' slotNo nOps = execStateT (replicateM_ nOps genOperation) initStat
         }
       pure (k, UtxoEntryDiff v UedsIns)
 
+genKey :: Gen Key
+genKey = replicateM 2 $ elements ['A'..'Z']
+
 oneof' :: [StateT s Gen a] -> StateT s Gen a
 oneof' [] = error "QuickCheck.oneof used with empty list"
 oneof' gs = lift (chooseInt (0,length gs - 1)) >>= (gs !!)
@@ -358,78 +425,3 @@ frequency' xs0 = lift (chooseInt (1, tot)) >>= (`pick` xs0)
         | n <= k    = x
         | otherwise = pick (n-k) xs
     pick _ _  = error "QuickCheck.pick used with empty list"
-
-genKey :: Gen Key
-genKey = replicateM 2 $ elements ['A'..'Z']
-
-
-{-------------------------------------------------------------------------------
-  Generators
--------------------------------------------------------------------------------}
-
-data TestLedger (mk :: MapKind) = TestLedger {
-  tlUtxos :: ApplyMapKind mk Key Int,
-  tlTip   :: Point (TestLedger EmptyMK)
-}
-
-nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
-nextState dblog = TestLedger
-            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
-            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
-            }
-  where
-    old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
-    nextSlot Origin = At 1
-    nextSlot (At x) = At (x + 1)
-
-nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
-nExtensions n dblog = (iterate extend dblog) !! n
-  where extend dblog' = extendDbChangelog dblog' (nextState dblog')
-
-deriving instance Show (TestLedger EmptyMK)
-deriving instance Show (TestLedger DiffMK)
-
-instance GetTip (TestLedger EmptyMK) where
-  getTip = tlTip
-
-instance GetTip (TestLedger DiffMK) where
-  getTip = castPoint . tlTip
-
-data H = H deriving (Eq, Ord, Show, Generic)
-deriving anyclass instance NoThunks H
-type instance HeaderHash (TestLedger mk) = H
-
-instance StandardHash (TestLedger EmptyMK)
-
-deriving instance Eq (TestLedger EmptyMK)
-deriving instance Eq (LedgerTables TestLedger DiffMK)
-deriving instance Eq (LedgerTables TestLedger ValuesMK)
-
-instance ShowLedgerState (LedgerTables TestLedger) where
-  showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
-
--- REVIEW: What to do with this orphan instance?
-instance Show (ApplyMapKind' mk' Key Int) where
-  show ap = showsApplyMapKind ap ""
-
-instance ShowLedgerState TestLedger where
-  showsLedgerState _ (TestLedger {tlUtxos, tlTip}) =
-    showString "TestLedger" . showSpace . showString "{" . shows tlUtxos .
-    showCommaSpace . shows tlTip . showString "}"
-
-instance TableStuff TestLedger where
-  data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
-  projectLedgerTables = TestTables . tlUtxos
-  withLedgerTables st (TestTables x) = st { tlUtxos = x }
-  pureLedgerTables = TestTables
-  mapLedgerTables f (TestTables x) = TestTables (f x)
-  traverseLedgerTables f (TestTables x) = TestTables <$> f x
-  zipLedgerTables f (TestTables x) (TestTables y) = TestTables (f x y)
-  zipLedgerTables2 f (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
-  zipLedgerTablesA f (TestTables x) (TestTables y) = TestTables <$> f x y
-  zipLedgerTables2A f (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
-  foldLedgerTables f (TestTables x) = f x
-  foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
-  namesLedgerTables = TestTables $ NameMK "TestTables"
-
-deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
