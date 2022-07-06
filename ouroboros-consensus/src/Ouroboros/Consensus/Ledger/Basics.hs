@@ -1256,7 +1256,6 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
 
 -- | Roll back the volatile states up to the specified point.
 prefixDbChangelog ::
-  -- REVIEW: What does StandardHash (l EmptyMK) mean in the domain?
      ( StandardHash (l EmptyMK)
      , GetTip (l EmptyMK)
      , TableStuff l
