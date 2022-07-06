@@ -13,10 +13,7 @@
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Test.Ouroboros.Storage.LedgerDB.DbChangelog (
-    run
-  , tests
-  ) where
+module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
 import           Cardano.Slotting.Slot (WithOrigin (..))
 import           Control.Monad hiding (ap)
@@ -30,6 +27,7 @@ import           Data.Maybe (catMaybes, isJust)
 import           Data.Set (Set)
 import qualified Data.Set as Set
 import           GHC.Generics (Generic)
+import           GHC.Show (showCommaSpace, showSpace)
 import           NoThunks.Class (NoThunks)
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
 import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
@@ -43,7 +41,6 @@ import           Test.QuickCheck
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
 import           Text.Show.Pretty (ppShow)
-
 
 
 tests :: TestTree
@@ -226,15 +223,12 @@ prop_flushDbChangelogKeepsInvariants setup =
     (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable $
       resultingDbChangelog setup
 
--- TODO: This fails due to rollbackDbChangelog being partial. We need n to be at most
--- the length of the changelog (or maybe the volatile part of it).
 prop_rollbackDbChangelogKeepsInvariants ::
   DbChangelogTestSetupWithRollbacks -> Property
 prop_rollbackDbChangelogKeepsInvariants setup = property $ checkInvariants dblog
   where
     n = rollbacks setup
     dblog = rollbackDbChangelog n (resultingDbChangelog $ testSetup setup)
-
 
 prop_prefixBackToAnchorIsRollingBackVolatileStates :: DbChangelogTestSetup -> Property
 prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
@@ -418,9 +412,10 @@ instance ShowLedgerState (LedgerTables TestLedger) where
 instance Show (ApplyMapKind' mk' Key Int) where
   show ap = showsApplyMapKind ap ""
 
--- TODO: Make this more useful
 instance ShowLedgerState TestLedger where
-  showsLedgerState _ (TestLedger _ _) = showString "TestLedger"
+  showsLedgerState _ (TestLedger {tlUtxos, tlTip}) =
+    showString "TestLedger" . showSpace . showString "{" . shows tlUtxos .
+    showCommaSpace . shows tlTip . showString "}"
 
 instance TableStuff TestLedger where
   data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
@@ -438,11 +433,3 @@ instance TableStuff TestLedger where
   namesLedgerTables = TestTables $ NameMK "TestTables"
 
 deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
-
--- | Scratch
-
-run :: IO ()
-run = do
-  setup <- (generate arbitrary :: IO (DbChangelogTestSetup))
-  print setup
-
