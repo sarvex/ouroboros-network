@@ -54,8 +54,8 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         prop_generatedSatisfiesInvariants
       , testProperty "flushing keeps invariants"
         prop_flushDbChangelogKeepsInvariants
-      -- , testProperty "rolling back keeps invariants"
-      --   prop_rollbackDbChangelogKeepsInvariants
+      , testProperty "rolling back keeps invariants"
+        prop_rollbackDbChangelogKeepsInvariants
       , testProperty "prefixing back to anchor keeps invariants"
         prop_prefixBackToAnchorKeepsInvariants
       , testProperty "flushing keeps immutable tip"
@@ -79,16 +79,20 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
   Test setup
 -------------------------------------------------------------------------------}
 
-data DbChangelogTestSetup l = DbChangelogTestSetup
-  { operations          :: [Operation l]
-  , originalDbChangelog :: DbChangelog l
+data DbChangelogTestSetup = DbChangelogTestSetup
+  { operations          :: [Operation TestLedger]
+  , originalDbChangelog :: DbChangelog TestLedger
   }
 
-instance (Show (l DiffMK)) => Show (DbChangelogTestSetup l) where
+data DbChangelogTestSetupWithRollbacks = DbChangelogTestSetupWithRollbacks
+  { testSetup :: DbChangelogTestSetup
+  , rollbacks :: Int
+  } deriving (Show)
+
+instance Show DbChangelogTestSetup where
   show = ppShow . operations
 
-
-instance Arbitrary (DbChangelogTestSetup TestLedger) where
+instance Arbitrary DbChangelogTestSetup where
 
   arbitrary = sized $ \n -> do
     slotNo <- oneof [pure Origin, At <$> SlotNo <$> chooseEnum (1, 1000)]
@@ -104,11 +108,20 @@ instance Arbitrary (DbChangelogTestSetup TestLedger) where
       reduce _ = Nothing
       takeWhileJust = catMaybes . takeWhile isJust
 
+instance Arbitrary DbChangelogTestSetupWithRollbacks where
+  arbitrary = do
+    setup <- arbitrary
+    let dblog = resultingDbChangelog setup
+    rollbacks <- chooseInt (0, AS.length (changelogVolatileStates dblog))
+    pure $ DbChangelogTestSetupWithRollbacks
+      { testSetup = setup
+      , rollbacks = rollbacks
+      }
+
 emptyDbChangelogAtSlot :: WithOrigin SlotNo -> DbChangelog TestLedger
 emptyDbChangelogAtSlot slotNo = emptyDbChangeLog (TestLedger ApplyEmptyMK $ pointAtSlot slotNo)
 
-resultingDbChangelog :: (TableStuff l, GetTip (l EmptyMK))
-  => DbChangelogTestSetup l -> DbChangelog l
+resultingDbChangelog :: DbChangelogTestSetup -> DbChangelog TestLedger
 resultingDbChangelog setup = applyOperations (operations setup) (originalDbChangelog setup)
 
 applyOperations :: (TableStuff l, GetTip (l EmptyMK))
@@ -151,11 +164,11 @@ prop_emptySatisfiesInvariants :: Property
 prop_emptySatisfiesInvariants =
   property $ checkInvariants (emptyDbChangelogAtSlot Origin)
 
-prop_generatedSatisfiesInvariants :: DbChangelogTestSetup TestLedger -> Property
+prop_generatedSatisfiesInvariants :: DbChangelogTestSetup -> Property
 prop_generatedSatisfiesInvariants setup =
   property $ checkInvariants (resultingDbChangelog setup)
 
-prop_flushingKeepsImmutableTip :: DbChangelogTestSetup TestLedger -> Property
+prop_flushingKeepsImmutableTip :: DbChangelogTestSetup -> Property
 prop_flushingKeepsImmutableTip setup =
   property $ (toKeepTip == toFlushTip) && (toFlushTip == dblogTip)
   where
@@ -165,7 +178,7 @@ prop_flushingKeepsImmutableTip setup =
     toFlushTip = youngestImmutableSlotDbChangelog toFlush
     toKeepTip = youngestImmutableSlotDbChangelog toKeep
 
-prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup TestLedger -> Property
+prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup -> Property
 prop_extendingAdvancesTipOfVolatileStates setup =
   property $ (tlTip state) == (tlTip new)
   where
@@ -174,21 +187,21 @@ prop_extendingAdvancesTipOfVolatileStates setup =
     dblog' = extendDbChangelog dblog state
     new = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog')
 
-prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup TestLedger -> Positive Int -> Property
+prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup -> Positive Int -> Property
 prop_rollbackAfterExtendIsNoop setup (Positive n) =
   property (dblog == rollbackDbChangelog n (nExtensions n dblog))
   where
     dblog = resultingDbChangelog setup
 
 prop_pruningLeavesAtMostMaxRollbacksVolatileStates ::
-  DbChangelogTestSetup TestLedger -> SecurityParam -> Property
+  DbChangelogTestSetup -> SecurityParam -> Property
 prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRollbacks) =
   property $ AS.length (changelogVolatileStates dblog') <= fromIntegral maxRollbacks
   where
     dblog = resultingDbChangelog setup
     dblog' = pruneVolatilePartDbChangelog sp dblog
 
-prop_flushingSplitsImmutableAndVolatile :: DbChangelogTestSetup TestLedger -> Property
+prop_flushingSplitsImmutableAndVolatile :: DbChangelogTestSetup -> Property
 prop_flushingSplitsImmutableAndVolatile setup =
   property $ AS.length (changelogVolatileStates toFlush) == 0 &&
              AS.length (changelogImmutableStates toKeep) == 0 &&
@@ -201,14 +214,12 @@ prop_flushingSplitsImmutableAndVolatile setup =
     diffSeqJoined = unsafeJoinSeqUtxoDiffs diffSeqToFlush diffSeqToKeep
     (ApplySeqDiffMK diffSeqDblog) = unTestTables $ changelogDiffs dblog
 
-prop_prefixBackToAnchorKeepsInvariants ::
-  DbChangelogTestSetup TestLedger -> Property
+prop_prefixBackToAnchorKeepsInvariants :: DbChangelogTestSetup -> Property
 prop_prefixBackToAnchorKeepsInvariants setup = property $ checkInvariants dblog
   where
     dblog = prefixBackToAnchorDbChangelog $ resultingDbChangelog setup
 
-prop_flushDbChangelogKeepsInvariants ::
-  DbChangelogTestSetup TestLedger -> Property
+prop_flushDbChangelogKeepsInvariants :: DbChangelogTestSetup -> Property
 prop_flushDbChangelogKeepsInvariants setup =
   property $ checkInvariants toFlush && checkInvariants toKeep
   where
@@ -218,13 +229,14 @@ prop_flushDbChangelogKeepsInvariants setup =
 -- TODO: This fails due to rollbackDbChangelog being partial. We need n to be at most
 -- the length of the changelog (or maybe the volatile part of it).
 prop_rollbackDbChangelogKeepsInvariants ::
-  DbChangelogTestSetup TestLedger -> Int -> Property
-prop_rollbackDbChangelogKeepsInvariants setup n = property $ checkInvariants dblog
+  DbChangelogTestSetupWithRollbacks -> Property
+prop_rollbackDbChangelogKeepsInvariants setup = property $ checkInvariants dblog
   where
-    dblog = rollbackDbChangelog n (resultingDbChangelog setup)
+    n = rollbacks setup
+    dblog = rollbackDbChangelog n (resultingDbChangelog $ testSetup setup)
 
-prop_prefixBackToAnchorIsRollingBackVolatileStates ::
-  DbChangelogTestSetup TestLedger -> Property
+
+prop_prefixBackToAnchorIsRollingBackVolatileStates :: DbChangelogTestSetup -> Property
 prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
   property $ rolledBack == toAnchor
   where
@@ -234,7 +246,7 @@ prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
     toAnchor = prefixBackToAnchorDbChangelog dblog
 
 prop_rollBackToVolatileTipIsNoop ::
-  Positive Int -> DbChangelogTestSetup TestLedger -> Property
+  Positive Int -> DbChangelogTestSetup -> Property
 prop_rollBackToVolatileTipIsNoop (Positive n) setup = property $ Just dblog == dblog'
   where
     dblog = resultingDbChangelog setup
@@ -431,6 +443,6 @@ deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
 
 run :: IO ()
 run = do
-  setup <- (generate arbitrary :: IO (DbChangelogTestSetup TestLedger))
+  setup <- (generate arbitrary :: IO (DbChangelogTestSetup))
   print setup
 
