@@ -580,7 +580,7 @@ dbChangelogPrefix ::
      , StandardHash (l EmptyMK)
      )
   => Point blk -> DbChangelog l -> Maybe (DbChangelog l)
-dbChangelogPrefix pt = prefixDbChangelog (castPoint pt)
+dbChangelogPrefix = prefixDbChangelog . castPoint
 
 -- | Isolates the prefix of the changelog that should be flushed
 --

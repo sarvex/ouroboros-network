@@ -12,6 +12,7 @@
 {-# LANGUAGE StandaloneDeriving   #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 
 module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
@@ -77,11 +78,11 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
 -------------------------------------------------------------------------------}
 
 data TestLedger (mk :: MapKind) = TestLedger {
-  tlUtxos :: ApplyMapKind mk Key Int,
+  tlUtxos :: mk Key Int,
   tlTip   :: Point (TestLedger EmptyMK)
 }
 
-nextState :: (DbChangelog TestLedger) -> TestLedger DiffMK
+nextState :: DbChangelog TestLedger -> TestLedger DiffMK
 nextState dblog = TestLedger
             { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
             , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
@@ -92,16 +93,12 @@ nextState dblog = TestLedger
     nextSlot (At x) = At (x + 1)
 
 nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
-nExtensions n dblog = (iterate extend dblog) !! n
+nExtensions n dblog = iterate extend dblog !! n
   where extend dblog' = extendDbChangelog dblog' (nextState dblog')
 
-deriving instance Show (TestLedger EmptyMK)
-deriving instance Show (TestLedger DiffMK)
+deriving instance IsApplyMapKind mk => Show (TestLedger mk)
 
-instance GetTip (TestLedger EmptyMK) where
-  getTip = tlTip
-
-instance GetTip (TestLedger DiffMK) where
+instance GetTip (TestLedger mk) where
   getTip = castPoint . tlTip
 
 data H = H deriving (Eq, Ord, Show, Generic)
@@ -117,28 +114,27 @@ deriving instance Eq (LedgerTables TestLedger ValuesMK)
 instance ShowLedgerState (LedgerTables TestLedger) where
   showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
 
--- REVIEW: What to do with this orphan instance?
 instance Show (ApplyMapKind' mk' Key Int) where
   show ap = showsApplyMapKind ap ""
 
 instance ShowLedgerState TestLedger where
-  showsLedgerState _ (TestLedger {tlUtxos, tlTip}) =
+  showsLedgerState _ TestLedger {tlUtxos, tlTip} =
     showString "TestLedger" . showSpace . showString "{" . shows tlUtxos .
     showCommaSpace . shows tlTip . showString "}"
 
 instance TableStuff TestLedger where
   data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
-  projectLedgerTables = TestTables . tlUtxos
-  withLedgerTables st (TestTables x) = st { tlUtxos = x }
-  pureLedgerTables = TestTables
-  mapLedgerTables f (TestTables x) = TestTables (f x)
-  traverseLedgerTables f (TestTables x) = TestTables <$> f x
-  zipLedgerTables f (TestTables x) (TestTables y) = TestTables (f x y)
-  zipLedgerTables2 f (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
-  zipLedgerTablesA f (TestTables x) (TestTables y) = TestTables <$> f x y
-  zipLedgerTables2A f (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
-  foldLedgerTables f (TestTables x) = f x
-  foldLedgerTables2 f (TestTables x) (TestTables y) = f x y
+  projectLedgerTables                                                 = TestTables . tlUtxos
+  withLedgerTables st    (TestTables x)                               = st { tlUtxos = x }
+  pureLedgerTables                                                    = TestTables
+  mapLedgerTables f      (TestTables x)                               = TestTables (f x)
+  traverseLedgerTables f (TestTables x)                               = TestTables <$> f x
+  zipLedgerTables f      (TestTables x) (TestTables y)                = TestTables (f x y)
+  zipLedgerTables2 f     (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
+  zipLedgerTablesA f     (TestTables x) (TestTables y)                = TestTables <$> f x y
+  zipLedgerTables2A f    (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
+  foldLedgerTables f     (TestTables x)                               = f x
+  foldLedgerTables2 f    (TestTables x) (TestTables y)                = f x y
   namesLedgerTables = TestTables $ NameMK "TestTables"
 
 deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
@@ -202,25 +198,30 @@ applyOperations ops dblog = foldr' apply' dblog ops
   Invariants
 -------------------------------------------------------------------------------}
 
-volatileTipAnchorsImmutable :: (GetTip (l EmptyMK), Eq (l EmptyMK)) => DbChangelog l -> Bool
-volatileTipAnchorsImmutable DbChangelog { changelogImmutableStates, changelogVolatileStates } =
+-- The volatile states of the changelog should start where the immutable states end.
+immutableTipAnchorsVolatile :: (GetTip (l EmptyMK), Eq (l EmptyMK)) => DbChangelog l -> Bool
+immutableTipAnchorsVolatile DbChangelog { changelogImmutableStates, changelogVolatileStates } =
   AS.anchor changelogVolatileStates == AS.headAnchor changelogImmutableStates
 
+-- The immutable states should start at the anchor of the diffs
 immutableAnchored :: DbChangelog TestLedger -> Bool
 immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } =
   changelogDiffAnchor == fmap Point.blockPointSlot point
-  where point = getPoint $ getTip $ unDbChangelogState $ AS.anchor $ changelogImmutableStates
+  where
+    point = getPoint . getTip . unDbChangelogState . AS.anchor $ changelogImmutableStates
 
+-- There should be a diff for every state
 sameNumberOfDiffsAsStates :: DbChangelog TestLedger -> Bool
 sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == lengthSeqUtxoDiff diffs
-  where imm = changelogImmutableStates dblog
-        vol = changelogVolatileStates dblog
-        ApplySeqDiffMK diffs = unTestTables $ changelogDiffs dblog
+  where
+    imm = changelogImmutableStates dblog
+    vol = changelogVolatileStates dblog
+    ApplySeqDiffMK diffs = unTestTables $ changelogDiffs dblog
 
 checkInvariants :: DbChangelog TestLedger -> Bool
-checkInvariants dblog = volatileTipAnchorsImmutable dblog &&
-                        immutableAnchored dblog &&
-                        sameNumberOfDiffsAsStates dblog
+checkInvariants dblog = immutableTipAnchorsVolatile dblog
+                     && immutableAnchored dblog
+                     && sameNumberOfDiffsAsStates dblog
 
 
 {-------------------------------------------------------------------------------
@@ -237,22 +238,22 @@ prop_generatedSatisfiesInvariants setup =
 
 prop_flushingKeepsImmutableTip :: DbChangelogTestSetup -> Property
 prop_flushingKeepsImmutableTip setup =
-  property $ (toKeepTip == toFlushTip) && (toFlushTip == dblogTip)
+    property $ (toKeepTip == toFlushTip) && (toFlushTip == dblogTip)
   where
-    dblog = resultingDbChangelog setup
+    dblog             = resultingDbChangelog setup
     (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
-    dblogTip = youngestImmutableSlotDbChangelog dblog
-    toFlushTip = youngestImmutableSlotDbChangelog toFlush
-    toKeepTip = youngestImmutableSlotDbChangelog toKeep
+    dblogTip          = youngestImmutableSlotDbChangelog dblog
+    toFlushTip        = youngestImmutableSlotDbChangelog toFlush
+    toKeepTip         = youngestImmutableSlotDbChangelog toKeep
 
 prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup -> Property
 prop_extendingAdvancesTipOfVolatileStates setup =
   property $ (tlTip state) == (tlTip new)
   where
-    dblog = resultingDbChangelog setup
-    state = nextState dblog
+    dblog  = resultingDbChangelog setup
+    state  = nextState dblog
     dblog' = extendDbChangelog dblog state
-    new = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog')
+    new    = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog')
 
 prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup -> Positive Int -> Property
 prop_rollbackAfterExtendIsNoop setup (Positive n) =
@@ -270,8 +271,8 @@ prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRo
 
 prop_flushingSplitsImmutableAndVolatile :: DbChangelogTestSetup -> Property
 prop_flushingSplitsImmutableAndVolatile setup =
-  property $ AS.length (changelogVolatileStates toFlush) == 0 &&
-             AS.length (changelogImmutableStates toKeep) == 0 &&
+  property $ AS.null (changelogVolatileStates toFlush) &&
+             AS.null (changelogImmutableStates toKeep) &&
              diffSeqDblog == diffSeqJoined
   where
     dblog = resultingDbChangelog setup
@@ -332,33 +333,33 @@ pointAtSlot = Point.withOrigin GenesisPoint (\slotNo -> Point $ At $ Point.Block
 type Key = String
 
 data GenOperationsState = GenOperationsState {
-    osSlotNo            :: !(WithOrigin SlotNo)
-  , osOps               :: ![Operation TestLedger]
-  , osActiveUtxos       :: !(Map Key Int)
-  , osPendingInsertions :: !(Map Key Int)
-  , osConsumedUtxos     :: !(Set Key)
+    gosSlotNo            :: !(WithOrigin SlotNo)
+  , gosOps               :: ![Operation TestLedger]
+  , gosActiveUtxos       :: !(Map Key Int)
+  , gosPendingInsertions :: !(Map Key Int)
+  , gosConsumedUtxos     :: !(Set Key)
   } deriving (Show)
 
 applyPending :: GenOperationsState -> GenOperationsState
 applyPending gosState = gosState
-  { osActiveUtxos = Map.union (osActiveUtxos gosState) (osPendingInsertions gosState)
-  , osPendingInsertions = Map.empty
+  { gosActiveUtxos = Map.union (gosActiveUtxos gosState) (gosPendingInsertions gosState)
+  , gosPendingInsertions = Map.empty
   }
 
 genOperations :: WithOrigin SlotNo -> Int -> Gen [Operation TestLedger]
-genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation) initState
+genOperations slotNo nOps = gosOps <$> execStateT (replicateM_ nOps genOperation) initState
   where
     initState = GenOperationsState {
-        osSlotNo = slotNo
-      , osActiveUtxos = Map.empty
-      , osPendingInsertions = Map.empty
-      , osConsumedUtxos = Set.empty
-      , osOps = []
+        gosSlotNo = slotNo
+      , gosActiveUtxos = Map.empty
+      , gosPendingInsertions = Map.empty
+      , gosConsumedUtxos = Set.empty
+      , gosOps = []
       }
 
     genOperation = do
       op <- frequency' [ (1, genPrune), (10, genExtend) ]
-      modify' $ \st -> st { osOps = op:osOps st }
+      modify' $ \st -> st { gosOps = op:gosOps st }
 
     genPrune = Prune <$> SecurityParam <$> lift (chooseEnum (1, 10))
 
@@ -368,8 +369,8 @@ genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation)
       pure $ Extend $ TestLedger (ApplyDiffMK diff) (castPoint $ pointAtSlot nextSlotNo)
 
     advanceSlotNo by = do
-      nextSlotNo <- gets (At . Point.withOrigin by (+ by) . osSlotNo)
-      modify' $ \st -> st { osSlotNo = nextSlotNo }
+      nextSlotNo <- gets (At . Point.withOrigin by (+ by) . gosSlotNo)
+      modify' $ \st -> st { gosSlotNo = nextSlotNo }
       pure nextSlotNo
 
     genUtxoDiff = do
@@ -379,8 +380,8 @@ genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation)
       pure $ UtxoDiff $ Map.fromList entries
 
     genUtxoDiffEntry = do
-      activeUtxos <- gets osActiveUtxos
-      consumedUtxos <- gets osConsumedUtxos
+      activeUtxos <- gets gosActiveUtxos
+      consumedUtxos <- gets gosConsumedUtxos
       oneof' $ catMaybes [
         genDelEntry activeUtxos,
         genInsertEntry consumedUtxos]
@@ -390,7 +391,7 @@ genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation)
       else Just $ do
         (k, v) <- lift $ elements (Map.toList activeUtxos)
         modify' $ \st -> st
-          { osActiveUtxos = Map.delete k (osActiveUtxos st)
+          { gosActiveUtxos = Map.delete k (gosActiveUtxos st)
           }
         pure (k, UtxoEntryDiff v UedsDel)
 
@@ -398,8 +399,8 @@ genOperations slotNo nOps = osOps <$> execStateT (replicateM_ nOps genOperation)
       k <- lift $ genKey `suchThat` (\a -> Set.notMember a consumedUtxos)
       v <- lift $ arbitrary
       modify' $ \st -> st
-        { osPendingInsertions = Map.insert k v (osPendingInsertions st)
-        , osConsumedUtxos = Set.insert k (osConsumedUtxos st)
+        { gosPendingInsertions = Map.insert k v (gosPendingInsertions st)
+        , gosConsumedUtxos = Set.insert k (gosConsumedUtxos st)
         }
       pure (k, UtxoEntryDiff v UedsIns)
 
