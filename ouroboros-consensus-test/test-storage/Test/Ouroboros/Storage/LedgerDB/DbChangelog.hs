@@ -4,8 +4,6 @@
 {-# LANGUAGE DerivingStrategies   #-}
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE KindSignatures       #-}
-{-# LANGUAGE LambdaCase           #-}
 {-# LANGUAGE NamedFieldPuns       #-}
 {-# LANGUAGE PatternSynonyms      #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
@@ -16,7 +14,7 @@
 
 module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
-import           Cardano.Slotting.Slot (WithOrigin (..))
+import           Cardano.Slotting.Slot (WithOrigin (..), withOrigin)
 import           Control.Monad hiding (ap)
 import           Control.Monad.Trans.Class (lift)
 import           Control.Monad.Trans.State.Strict hiding (state)
@@ -30,6 +28,12 @@ import qualified Data.Set as Set
 import           GHC.Generics (Generic)
 import           GHC.Show (showCommaSpace, showSpace)
 import           NoThunks.Class (NoThunks)
+import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
+import           Test.QuickCheck
+import           Test.Tasty (TestTree, testGroup)
+import           Test.Tasty.QuickCheck (testProperty)
+import           Text.Show.Pretty (ppShow)
+
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
 import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
 import           Ouroboros.Consensus.Storage.LedgerDB.HD
@@ -37,11 +41,7 @@ import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
                      StandardHash, castPoint, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
-import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
-import           Test.QuickCheck
-import           Test.Tasty (TestTree, testGroup)
-import           Test.Tasty.QuickCheck (testProperty)
-import           Text.Show.Pretty (ppShow)
+
 
 
 tests :: TestTree
@@ -57,7 +57,7 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
       , testProperty "prefixing back to anchor keeps invariants"
         prop_prefixBackToAnchorKeepsInvariants
       , testProperty "flushing keeps immutable tip"
-        prop_flushingKeepsImmutableTip
+        prop_flushingSplitsTheChangelog
       , testProperty "extending adds head to volatile states"
         prop_extendingAdvancesTipOfVolatileStates
       , testProperty "rollback after extension is noop"
@@ -83,18 +83,14 @@ data TestLedger (mk :: MapKind) = TestLedger {
 }
 
 nextState :: DbChangelog TestLedger -> TestLedger DiffMK
-nextState dblog = TestLedger
-            { tlTip = pointAtSlot $ nextSlot (getTipSlot old)
-            , tlUtxos = ApplyDiffMK $ emptyUtxoDiff
+nextState dblog = TestLedger {
+              tlTip = pointAtSlot $ nextSlot (getTipSlot old)
+            , tlUtxos = ApplyDiffMK emptyUtxoDiff
             }
   where
     old = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog)
-    nextSlot Origin = At 1
-    nextSlot (At x) = At (x + 1)
+    nextSlot = At . withOrigin 1 (+1)
 
-nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
-nExtensions n dblog = iterate extend dblog !! n
-  where extend dblog' = extendDbChangelog dblog' (nextState dblog')
 
 deriving instance IsApplyMapKind mk => Show (TestLedger mk)
 
@@ -139,9 +135,10 @@ instance TableStuff TestLedger where
 
 deriving instance Eq (LedgerTables TestLedger SeqDiffMK)
 
-data DbChangelogTestSetup = DbChangelogTestSetup
-  { operations          :: [Operation TestLedger]
-  , originalDbChangelog :: DbChangelog TestLedger
+data DbChangelogTestSetup = DbChangelogTestSetup {
+  -- The operations are applied on the right, i.e., the newest operation is at the head of the list.
+    operations          :: [Operation TestLedger]
+  , dbChangelogStartsAt :: WithOrigin SlotNo
   }
 
 data Operation l = Extend (l DiffMK) | Prune SecurityParam
@@ -158,13 +155,16 @@ instance Show DbChangelogTestSetup where
 instance Arbitrary DbChangelogTestSetup where
 
   arbitrary = sized $ \n -> do
-    slotNo <- oneof [pure Origin, At <$> SlotNo <$> chooseEnum (1, 1000)]
+    slotNo <- oneof [pure Origin, At . SlotNo <$> chooseEnum (1, 1000)]
     operations <- genOperations slotNo n
     pure $ DbChangelogTestSetup
       { operations = operations
-      , originalDbChangelog = emptyDbChangelogAtSlot slotNo
+      , dbChangelogStartsAt = slotNo
       }
 
+  -- TODO: Shrinking might not be optimal. Shrinking finds the last operation whose application
+  -- results in a failed property. This might not be the smallest DbChangelog for which the property
+  -- fails.
   shrink dblog = takeWhileJust $ tail (iterate reduce (Just dblog))
     where
       reduce (Just (DbChangelogTestSetup (_:ops) dblog')) = Just $ DbChangelogTestSetup ops dblog'
@@ -185,7 +185,10 @@ emptyDbChangelogAtSlot :: WithOrigin SlotNo -> DbChangelog TestLedger
 emptyDbChangelogAtSlot slotNo = emptyDbChangeLog (TestLedger ApplyEmptyMK $ pointAtSlot slotNo)
 
 resultingDbChangelog :: DbChangelogTestSetup -> DbChangelog TestLedger
-resultingDbChangelog setup = applyOperations (operations setup) (originalDbChangelog setup)
+resultingDbChangelog setup = applyOperations (operations setup) originalDbChangelog
+  where
+    originalDbChangelog = emptyDbChangeLog $ TestLedger ApplyEmptyMK anchor
+    anchor = pointAtSlot (dbChangelogStartsAt setup)
 
 applyOperations :: (TableStuff l, GetTip (l EmptyMK))
   => [Operation l] -> DbChangelog l -> DbChangelog l
@@ -198,30 +201,31 @@ applyOperations ops dblog = foldr' apply' dblog ops
   Invariants
 -------------------------------------------------------------------------------}
 
--- The volatile states of the changelog should start where the immutable states end.
-immutableTipAnchorsVolatile :: (GetTip (l EmptyMK), Eq (l EmptyMK)) => DbChangelog l -> Bool
+-- | The volatile states of the changelog should start where the immutable states end.
+immutableTipAnchorsVolatile :: (ShowLedgerState l, GetTip (l EmptyMK), Eq (l EmptyMK))
+  => DbChangelog l -> Property
 immutableTipAnchorsVolatile DbChangelog { changelogImmutableStates, changelogVolatileStates } =
-  AS.anchor changelogVolatileStates == AS.headAnchor changelogImmutableStates
+  AS.anchor changelogVolatileStates === AS.headAnchor changelogImmutableStates
 
--- The immutable states should start at the anchor of the diffs
-immutableAnchored :: DbChangelog TestLedger -> Bool
+-- | The immutable states should start at the anchor of the diffs.
+immutableAnchored :: DbChangelog TestLedger -> Property
 immutableAnchored DbChangelog { changelogDiffAnchor, changelogImmutableStates } =
-  changelogDiffAnchor == fmap Point.blockPointSlot point
+  changelogDiffAnchor === fmap Point.blockPointSlot point
   where
     point = getPoint . getTip . unDbChangelogState . AS.anchor $ changelogImmutableStates
 
--- There should be a diff for every state
-sameNumberOfDiffsAsStates :: DbChangelog TestLedger -> Bool
-sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol == lengthSeqUtxoDiff diffs
+-- | There should be a diff for every state.
+sameNumberOfDiffsAsStates :: DbChangelog TestLedger -> Property
+sameNumberOfDiffsAsStates dblog = AS.length imm + AS.length vol === lengthSeqUtxoDiff diffs
   where
     imm = changelogImmutableStates dblog
     vol = changelogVolatileStates dblog
     ApplySeqDiffMK diffs = unTestTables $ changelogDiffs dblog
 
-checkInvariants :: DbChangelog TestLedger -> Bool
+checkInvariants :: DbChangelog TestLedger -> Property
 checkInvariants dblog = immutableTipAnchorsVolatile dblog
-                     && immutableAnchored dblog
-                     && sameNumberOfDiffsAsStates dblog
+                   .&&. immutableAnchored dblog
+                   .&&. sameNumberOfDiffsAsStates dblog
 
 
 {-------------------------------------------------------------------------------
@@ -236,19 +240,27 @@ prop_generatedSatisfiesInvariants :: DbChangelogTestSetup -> Property
 prop_generatedSatisfiesInvariants setup =
   property $ checkInvariants (resultingDbChangelog setup)
 
-prop_flushingKeepsImmutableTip :: DbChangelogTestSetup -> Property
-prop_flushingKeepsImmutableTip setup =
-    property $ (toKeepTip == toFlushTip) && (toFlushTip == dblogTip)
+prop_flushingSplitsTheChangelog :: DbChangelogTestSetup -> Property
+prop_flushingSplitsTheChangelog setup =
+         (toKeepTip === toFlushTip)
+    .&&. (toFlushTip === dblogTip)
+    .&&. AS.null (changelogVolatileStates toFlush)
+    .&&. changelogVolatileStates toKeep === changelogVolatileStates dblog
+    .&&. changelogImmutableStates toFlush === changelogImmutableStates dblog
+    .&&. diffs === unsafeJoinSeqUtxoDiffs toFlushDiffs toKeepDiffs
   where
-    dblog             = resultingDbChangelog setup
-    (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
-    dblogTip          = youngestImmutableSlotDbChangelog dblog
-    toFlushTip        = youngestImmutableSlotDbChangelog toFlush
-    toKeepTip         = youngestImmutableSlotDbChangelog toKeep
+    dblog                                    = resultingDbChangelog setup
+    (toFlush, toKeep)                        = flushDbChangelog DbChangelogFlushAllImmutable dblog
+    dblogTip                                 = youngestImmutableSlotDbChangelog dblog
+    toFlushTip                               = youngestImmutableSlotDbChangelog toFlush
+    toKeepTip                                = youngestImmutableSlotDbChangelog toKeep
+    TestTables (ApplySeqDiffMK toKeepDiffs)  = changelogDiffs toKeep
+    TestTables (ApplySeqDiffMK toFlushDiffs) = changelogDiffs toFlush
+    TestTables (ApplySeqDiffMK diffs)        = changelogDiffs dblog
 
 prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup -> Property
 prop_extendingAdvancesTipOfVolatileStates setup =
-  property $ (tlTip state) == (tlTip new)
+  property $ tlTip state == tlTip new
   where
     dblog  = resultingDbChangelog setup
     state  = nextState dblog
@@ -289,7 +301,7 @@ prop_prefixBackToAnchorKeepsInvariants setup = property $ checkInvariants dblog
 
 prop_flushDbChangelogKeepsInvariants :: DbChangelogTestSetup -> Property
 prop_flushDbChangelogKeepsInvariants setup =
-  property $ checkInvariants toFlush && checkInvariants toKeep
+  checkInvariants toFlush .&&. checkInvariants toKeep
   where
     (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable $
       resultingDbChangelog setup
@@ -318,10 +330,13 @@ prop_rollBackToVolatileTipIsNoop (Positive n) setup = property $ Just dblog == d
     pt = getTip $ unDbChangelogState $ AS.headAnchor $ changelogVolatileStates dblog
     dblog' = prefixDbChangelog pt $ nExtensions n dblog
 
+nExtensions :: Int -> DbChangelog TestLedger -> DbChangelog TestLedger
+nExtensions n dblog = iterate extend dblog !! n
+  where extend dblog' = extendDbChangelog dblog' (nextState dblog')
+
 unsafeJoinSeqUtxoDiffs :: Ord k => SeqUtxoDiff k v -> SeqUtxoDiff k v -> SeqUtxoDiff k v
 unsafeJoinSeqUtxoDiffs (SeqUtxoDiff ft1) (SeqUtxoDiff ft2) =
   SeqUtxoDiff (ft1 FT.>< ft2)
-
 
 {-------------------------------------------------------------------------------
   Generators
@@ -357,28 +372,34 @@ genOperations slotNo nOps = gosOps <$> execStateT (replicateM_ nOps genOperation
       , gosOps = []
       }
 
+    genOperation :: StateT GenOperationsState Gen ()
     genOperation = do
       op <- frequency' [ (1, genPrune), (10, genExtend) ]
       modify' $ \st -> st { gosOps = op:gosOps st }
 
-    genPrune = Prune <$> SecurityParam <$> lift (chooseEnum (1, 10))
+    genPrune :: StateT GenOperationsState Gen (Operation TestLedger)
+    genPrune = Prune . SecurityParam <$> lift (chooseEnum (0, 10))
 
+    genExtend :: StateT GenOperationsState Gen (Operation TestLedger)
     genExtend = do
-      nextSlotNo <- advanceSlotNo =<< (lift $ chooseEnum (1, 5))
+      nextSlotNo <- advanceSlotNo =<< lift (chooseEnum (1, 5))
       diff <- genUtxoDiff
       pure $ Extend $ TestLedger (ApplyDiffMK diff) (castPoint $ pointAtSlot nextSlotNo)
 
+    advanceSlotNo :: SlotNo -> StateT GenOperationsState Gen (WithOrigin SlotNo)
     advanceSlotNo by = do
       nextSlotNo <- gets (At . Point.withOrigin by (+ by) . gosSlotNo)
       modify' $ \st -> st { gosSlotNo = nextSlotNo }
       pure nextSlotNo
 
+    genUtxoDiff :: StateT GenOperationsState Gen (UtxoDiff Key Int)
     genUtxoDiff = do
       nEntries <- lift $ chooseInt (1, 10)
       entries <- replicateM nEntries genUtxoDiffEntry
       modify' applyPending
       pure $ UtxoDiff $ Map.fromList entries
 
+    genUtxoDiffEntry :: StateT GenOperationsState Gen (Key, UtxoEntryDiff Int)
     genUtxoDiffEntry = do
       activeUtxos <- gets gosActiveUtxos
       consumedUtxos <- gets gosConsumedUtxos
@@ -386,6 +407,7 @@ genOperations slotNo nOps = gosOps <$> execStateT (replicateM_ nOps genOperation
         genDelEntry activeUtxos,
         genInsertEntry consumedUtxos]
 
+    genDelEntry :: Map Key Int -> Maybe (StateT GenOperationsState Gen (Key, UtxoEntryDiff Int))
     genDelEntry activeUtxos =
       if Map.null activeUtxos then Nothing
       else Just $ do
@@ -395,9 +417,10 @@ genOperations slotNo nOps = gosOps <$> execStateT (replicateM_ nOps genOperation
           }
         pure (k, UtxoEntryDiff v UedsDel)
 
+    genInsertEntry :: Set Key -> Maybe (StateT GenOperationsState Gen (Key, UtxoEntryDiff Int))
     genInsertEntry consumedUtxos = Just $ do
-      k <- lift $ genKey `suchThat` (\a -> Set.notMember a consumedUtxos)
-      v <- lift $ arbitrary
+      k <- lift $ genKey `suchThat` (`Set.notMember` consumedUtxos)
+      v <- lift arbitrary
       modify' $ \st -> st
         { gosPendingInsertions = Map.insert k v (gosPendingInsertions st)
         , gosConsumedUtxos = Set.insert k (gosConsumedUtxos st)
