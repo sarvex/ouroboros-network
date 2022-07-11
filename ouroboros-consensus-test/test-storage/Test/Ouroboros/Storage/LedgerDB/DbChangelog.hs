@@ -42,6 +42,8 @@ import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
                      StandardHash, castPoint, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
 
+import           Test.Util.QuickCheck (frequency', oneof')
+
 
 
 tests :: TestTree
@@ -429,23 +431,3 @@ genOperations slotNo nOps = gosOps <$> execStateT (replicateM_ nOps genOperation
 
 genKey :: Gen Key
 genKey = replicateM 2 $ elements ['A'..'Z']
-
-oneof' :: [StateT s Gen a] -> StateT s Gen a
-oneof' [] = error "QuickCheck.oneof used with empty list"
-oneof' gs = lift (chooseInt (0,length gs - 1)) >>= (gs !!)
-
-frequency' :: [(Int, StateT s Gen a)] -> StateT s Gen a
-frequency' [] = error "QuickCheck.frequency used with empty list"
-frequency' xs
-  | any (< 0) (map fst xs) =
-    error "QuickCheck.frequency: negative weight"
-  | all (== 0) (map fst xs) =
-    error "QuickCheck.frequency: all weights were zero"
-frequency' xs0 = lift (chooseInt (1, tot)) >>= (`pick` xs0)
-  where
-    tot = sum (map fst xs0)
-
-    pick n ((k,x):xs)
-        | n <= k    = x
-        | otherwise = pick (n-k) xs
-    pick _ _  = error "QuickCheck.pick used with empty list"
