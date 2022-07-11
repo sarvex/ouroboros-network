@@ -44,17 +44,18 @@ import qualified Ouroboros.Network.Point as Point
 
 import           Test.Util.QuickCheck (frequency', oneof')
 
-
+samples :: Int
+samples = 1000
 
 tests :: TestTree
 tests = testGroup "Ledger" [ testGroup "DbChangelog"
-      [ testProperty "generation" $ conjoin
+      [ testProperty "generation" $ withMaxSuccess samples $ conjoin
         [ counterexample "empty changelog satisfies invariants"
           prop_emptySatisfiesInvariants
         , counterexample "constructor generated changelog satisfies invariants"
           prop_generatedSatisfiesInvariants
         ]
-      , testProperty "flushing" $ conjoin
+      , testProperty "flushing" $ withMaxSuccess samples $ conjoin
         [ counterexample "flushing keeps invariants"
           prop_flushDbChangelogKeepsInvariants
         , counterexample "flushing keeps immutable tip"
@@ -62,7 +63,7 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
         , counterexample "flushing splits immutable and volatile"
           prop_flushingSplitsImmutableAndVolatile
         ]
-      , testProperty "rolling back" $ conjoin
+      , testProperty "rolling back" $ withMaxSuccess samples $ conjoin
         [ counterexample "rolling back keeps invariants"
           prop_rollbackDbChangelogKeepsInvariants
         , counterexample "prefixing back to anchor keeps invariants"
@@ -75,9 +76,9 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
           prop_rollBackToVolatileTipIsNoop
         ]
       , testProperty "extending adds head to volatile states"
-        prop_extendingAdvancesTipOfVolatileStates
+        $ withMaxSuccess samples prop_extendingAdvancesTipOfVolatileStates
       , testProperty "pruning leaves at most maxRollback volatile states"
-        prop_pruningLeavesAtMostMaxRollbacksVolatileStates
+        $ withMaxSuccess samples prop_pruningLeavesAtMostMaxRollbacksVolatileStates
       ]
   ]
 
