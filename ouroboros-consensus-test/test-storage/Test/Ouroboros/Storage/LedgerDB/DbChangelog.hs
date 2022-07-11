@@ -48,30 +48,36 @@ import           Test.Util.QuickCheck (frequency', oneof')
 
 tests :: TestTree
 tests = testGroup "Ledger" [ testGroup "DbChangelog"
-      [ testProperty "empty changelog satisfies invariants"
-        prop_emptySatisfiesInvariants
-      , testProperty "constructor generated changelog satisfies invariants"
-        prop_generatedSatisfiesInvariants
-      , testProperty "flushing keeps invariants"
-        prop_flushDbChangelogKeepsInvariants
-      , testProperty "rolling back keeps invariants"
-        prop_rollbackDbChangelogKeepsInvariants
-      , testProperty "prefixing back to anchor keeps invariants"
-        prop_prefixBackToAnchorKeepsInvariants
-      , testProperty "flushing keeps immutable tip"
-        prop_flushingSplitsTheChangelog
+      [ testProperty "generation" $ conjoin
+        [ counterexample "empty changelog satisfies invariants"
+          prop_emptySatisfiesInvariants
+        , counterexample "constructor generated changelog satisfies invariants"
+          prop_generatedSatisfiesInvariants
+        ]
+      , testProperty "flushing" $ conjoin
+        [ counterexample "flushing keeps invariants"
+          prop_flushDbChangelogKeepsInvariants
+        , counterexample "flushing keeps immutable tip"
+          prop_flushingSplitsTheChangelog
+        , counterexample "flushing splits immutable and volatile"
+          prop_flushingSplitsImmutableAndVolatile
+        ]
+      , testProperty "rolling back" $ conjoin
+        [ counterexample "rolling back keeps invariants"
+          prop_rollbackDbChangelogKeepsInvariants
+        , counterexample "prefixing back to anchor keeps invariants"
+          prop_prefixBackToAnchorKeepsInvariants
+        , counterexample "rollback after extension is noop"
+          prop_rollbackAfterExtendIsNoop
+        , counterexample "prefixing back to anchor is rolling back volatile states"
+          prop_prefixBackToAnchorIsRollingBackVolatileStates
+        , counterexample "prefix back to volatile tip is a noop"
+          prop_rollBackToVolatileTipIsNoop
+        ]
       , testProperty "extending adds head to volatile states"
         prop_extendingAdvancesTipOfVolatileStates
-      , testProperty "rollback after extension is noop"
-        prop_rollbackAfterExtendIsNoop
       , testProperty "pruning leaves at most maxRollback volatile states"
         prop_pruningLeavesAtMostMaxRollbacksVolatileStates
-      , testProperty "flushing splits immutable and volatile"
-        prop_flushingSplitsImmutableAndVolatile
-      , testProperty "prefixing back to anchor is rolling back volatile states"
-        prop_prefixBackToAnchorIsRollingBackVolatileStates
-      , testProperty "prefix back to volatile tip is a noop"
-        prop_rollBackToVolatileTipIsNoop
       ]
   ]
 
