@@ -171,10 +171,9 @@ instance Arbitrary DbChangelogTestSetup where
       , dbChangelogStartsAt = slotNo
       }
 
-  -- TODO: Shrinking might not be optimal. Shrinking finds the last operation whose application
-  -- results in a failed property. This might not be the smallest DbChangelog for which the property
-  -- fails.
-  shrink dblog = takeWhileJust $ tail (iterate reduce (Just dblog))
+  -- TODO: Shrinking might not be optimal. Shrinking finds the shortest prefix of the list of
+  -- operations that result in a failed property, by simply testing prefixes in increasing order.
+  shrink dblog = reverse $ takeWhileJust $ tail (iterate reduce (Just dblog))
     where
       reduce (Just (DbChangelogTestSetup (_:ops) dblog')) = Just $ DbChangelogTestSetup ops dblog'
       reduce _ = Nothing
