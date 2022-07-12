@@ -160,7 +160,6 @@ instance Show DbChangelogTestSetup where
   show = ppShow . operations
 
 instance Arbitrary DbChangelogTestSetup where
-
   arbitrary = sized $ \n -> do
     slotNo <- oneof [pure Origin, At . SlotNo <$> chooseEnum (1, 1000)]
     operations <- genOperations slotNo n
