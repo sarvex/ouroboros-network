@@ -573,15 +573,6 @@ forwardTableKeySets dblog = \(UnforwardedReadSets seqNo' values keys) ->
     forward (ApplyValuesMK values) (ApplyKeysMK keys) (ApplySeqDiffMK diffs) =
       ApplyValuesMK $ forwardValuesAndKeys values keys (cumulativeDiffSeqUtxoDiff diffs)
 
-dbChangelogPrefix ::
-     ( HeaderHash blk ~ HeaderHash (l EmptyMK)
-     , GetTip (l EmptyMK)
-     , TableStuff l
-     , StandardHash (l EmptyMK)
-     )
-  => Point blk -> DbChangelog l -> Maybe (DbChangelog l)
-dbChangelogPrefix = prefixDbChangelog . castPoint
-
 -- | Isolates the prefix of the changelog that should be flushed
 --
 -- TODO take some argument to bound the size of the resulting prefix?
@@ -762,7 +753,7 @@ ledgerDbPrefix pt db
                             (pointSlot pt)
                             ((== pt) . castPoint . getTip . unCheckpoint . either id id)
                             =<< ledgerDbCheckpoints db
-        dblog' <- dbChangelogPrefix pt $ ledgerDbChangelog db
+        dblog' <- prefixDbChangelog (castPoint pt) $ ledgerDbChangelog db
         return $ LedgerDB
                   { ledgerDbCheckpoints = checkpoints'
                   , ledgerDbChangelog   = dblog'
