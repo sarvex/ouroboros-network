@@ -60,8 +60,6 @@ tests = testGroup "Ledger" [ testGroup "DbChangelog"
           prop_flushDbChangelogKeepsInvariants
         , counterexample "flushing keeps immutable tip"
           prop_flushingSplitsTheChangelog
-        , counterexample "flushing splits immutable and volatile"
-          prop_flushingSplitsImmutableAndVolatile
         ]
       , testProperty "rolling back" $ withMaxSuccess samples $ conjoin
         [ counterexample "rolling back keeps invariants"
@@ -173,9 +171,9 @@ instance Arbitrary DbChangelogTestSetup where
 
   -- TODO: Shrinking might not be optimal. Shrinking finds the shortest prefix of the list of
   -- operations that result in a failed property, by simply testing prefixes in increasing order.
-  shrink dblog = reverse $ takeWhileJust $ tail (iterate reduce (Just dblog))
+  shrink setup = reverse $ takeWhileJust $ tail (iterate reduce (Just setup))
     where
-      reduce (Just (DbChangelogTestSetup (_:ops) dblog')) = Just $ DbChangelogTestSetup ops dblog'
+      reduce (Just (DbChangelogTestSetup (_:ops) dblog)) = Just $ DbChangelogTestSetup ops dblog
       reduce _ = Nothing
       takeWhileJust = catMaybes . takeWhile isJust
 
@@ -188,6 +186,17 @@ instance Arbitrary DbChangelogTestSetupWithRollbacks where
       { testSetup = setup
       , rollbacks = rollbacks
       }
+
+  shrink setupWithRollback = toWithRollbacks <$> setups
+    where
+      setups = shrink (testSetup setupWithRollback)
+      shrinkRollback :: DbChangelogTestSetup -> Int -> Int
+      shrinkRollback setup rollback =
+        AS.length (changelogVolatileStates $ resultingDbChangelog setup) `min` rollback
+      toWithRollbacks setup = DbChangelogTestSetupWithRollbacks {
+           testSetup = setup
+         , rollbacks = shrinkRollback setup (rollbacks setupWithRollback)
+         }
 
 emptyDbChangelogAtSlot :: WithOrigin SlotNo -> DbChangelog TestLedger
 emptyDbChangelogAtSlot slotNo = emptyDbChangeLog (TestLedger ApplyEmptyMK $ pointAtSlot slotNo)
@@ -248,6 +257,9 @@ prop_generatedSatisfiesInvariants :: DbChangelogTestSetup -> Property
 prop_generatedSatisfiesInvariants setup =
   property $ checkInvariants (resultingDbChangelog setup)
 
+-- | Changelog states and diffs appear in one either the changelog to flush or the changelog to
+-- keep, moreover, the to flush changelog has no volatile states, and the to keep changelog has no
+-- immutable states.
 prop_flushingSplitsTheChangelog :: DbChangelogTestSetup -> Property
 prop_flushingSplitsTheChangelog setup =
          (toKeepTip === toFlushTip)
@@ -266,6 +278,7 @@ prop_flushingSplitsTheChangelog setup =
     TestTables (ApplySeqDiffMK toFlushDiffs) = changelogDiffs toFlush
     TestTables (ApplySeqDiffMK diffs)        = changelogDiffs dblog
 
+-- | Extending the changelog adds the correct head to the volatile states.
 prop_extendingAdvancesTipOfVolatileStates :: DbChangelogTestSetup -> Property
 prop_extendingAdvancesTipOfVolatileStates setup =
   property $ tlTip state == tlTip new
@@ -275,12 +288,14 @@ prop_extendingAdvancesTipOfVolatileStates setup =
     dblog' = extendDbChangelog dblog state
     new    = unDbChangelogState $ either id id $ AS.head (changelogVolatileStates dblog')
 
+-- | Rolling back n extensions is the same as doing nothing.
 prop_rollbackAfterExtendIsNoop :: DbChangelogTestSetup -> Positive Int -> Property
 prop_rollbackAfterExtendIsNoop setup (Positive n) =
   property (dblog == rollbackDbChangelog n (nExtensions n dblog))
   where
     dblog = resultingDbChangelog setup
 
+-- | The number of volatile states left after pruning is at most the maximum number of rollbacks.
 prop_pruningLeavesAtMostMaxRollbacksVolatileStates ::
   DbChangelogTestSetup -> SecurityParam -> Property
 prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRollbacks) =
@@ -288,19 +303,6 @@ prop_pruningLeavesAtMostMaxRollbacksVolatileStates setup sp@(SecurityParam maxRo
   where
     dblog = resultingDbChangelog setup
     dblog' = pruneVolatilePartDbChangelog sp dblog
-
-prop_flushingSplitsImmutableAndVolatile :: DbChangelogTestSetup -> Property
-prop_flushingSplitsImmutableAndVolatile setup =
-  property $ AS.null (changelogVolatileStates toFlush) &&
-             AS.null (changelogImmutableStates toKeep) &&
-             diffSeqDblog == diffSeqJoined
-  where
-    dblog = resultingDbChangelog setup
-    (toFlush, toKeep) = flushDbChangelog DbChangelogFlushAllImmutable dblog
-    (ApplySeqDiffMK diffSeqToFlush) = unTestTables $ changelogDiffs toFlush
-    (ApplySeqDiffMK diffSeqToKeep) = unTestTables $ changelogDiffs toKeep
-    diffSeqJoined = unsafeJoinSeqUtxoDiffs diffSeqToFlush diffSeqToKeep
-    (ApplySeqDiffMK diffSeqDblog) = unTestTables $ changelogDiffs dblog
 
 prop_prefixBackToAnchorKeepsInvariants :: DbChangelogTestSetup -> Property
 prop_prefixBackToAnchorKeepsInvariants setup = property $ checkInvariants dblog
@@ -321,6 +323,7 @@ prop_rollbackDbChangelogKeepsInvariants setup = property $ checkInvariants dblog
     n = rollbacks setup
     dblog = rollbackDbChangelog n (resultingDbChangelog $ testSetup setup)
 
+-- | The prefixBackToAnchor function rolls back all volatile states.
 prop_prefixBackToAnchorIsRollingBackVolatileStates :: DbChangelogTestSetup -> Property
 prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
   property $ rolledBack == toAnchor
@@ -330,6 +333,7 @@ prop_prefixBackToAnchorIsRollingBackVolatileStates setup =
     rolledBack = rollbackDbChangelog n dblog
     toAnchor = prefixBackToAnchorDbChangelog dblog
 
+-- | Rolling back to the last state is the same as doing nothing.
 prop_rollBackToVolatileTipIsNoop ::
   Positive Int -> DbChangelogTestSetup -> Property
 prop_rollBackToVolatileTipIsNoop (Positive n) setup = property $ Just dblog == dblog'
