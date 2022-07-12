@@ -14,7 +14,6 @@
 
 module Test.Ouroboros.Storage.LedgerDB.DbChangelog (tests) where
 
-import           Cardano.Slotting.Slot (WithOrigin (..), withOrigin)
 import           Control.Monad hiding (ap)
 import           Control.Monad.Trans.Class (lift)
 import           Control.Monad.Trans.State.Strict hiding (state)
@@ -28,20 +27,23 @@ import qualified Data.Set as Set
 import           GHC.Generics (Generic)
 import           GHC.Show (showCommaSpace, showSpace)
 import           NoThunks.Class (NoThunks)
-import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.QuickCheck
 import           Test.Tasty (TestTree, testGroup)
 import           Test.Tasty.QuickCheck (testProperty)
 import           Text.Show.Pretty (ppShow)
 
-import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
-import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
-import           Ouroboros.Consensus.Storage.LedgerDB.HD
+import           Cardano.Slotting.Slot (WithOrigin (..), withOrigin)
+
 import qualified Ouroboros.Network.AnchoredSeq as AS
 import           Ouroboros.Network.Block (HeaderHash, Point (..), SlotNo (..),
                      StandardHash, castPoint, pattern GenesisPoint)
 import qualified Ouroboros.Network.Point as Point
 
+import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
+import           Ouroboros.Consensus.Ledger.Basics hiding (LedgerState)
+import           Ouroboros.Consensus.Storage.LedgerDB.HD
+
+import           Test.Ouroboros.Storage.LedgerDB.OrphanArbitrary ()
 import           Test.Util.QuickCheck (frequency', oneof')
 
 samples :: Int
