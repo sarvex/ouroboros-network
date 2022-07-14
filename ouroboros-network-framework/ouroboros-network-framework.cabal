@@ -198,6 +198,7 @@ test-suite test
                      , ouroboros-network-testing
                      , typed-protocols
                      , typed-protocols-cborg
+                     , typed-protocols-stateful
                      , typed-protocols-examples
 
   if os(windows)
