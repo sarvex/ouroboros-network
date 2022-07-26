@@ -410,7 +410,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="Network.Mux.Trace.html#MuxTraceSendEnd"><span class="hs-identifier hs-var">Mx.MuxTraceSendEnd</span></a></span><span class="hs-cpp">
 #if defined(linux_HOST_OS) &amp;&amp; defined(MUX_TRACE_TCPINFO)
 </span><span>                   </span><span class="hs-comment">-- If it was possible to detect if the MuxTraceTCPInfo was</span><span>
-</span><span id="line-142"></span><span>                   </span><span class="hs-comment">-- enable we woulnd't have to hide the getSockOpt</span><span>
+</span><span id="line-142"></span><span>                   </span><span class="hs-comment">-- enable we wouldn't have to hide the getSockOpt</span><span>
 </span><span id="line-143"></span><span>                   </span><span class="hs-comment">-- syscall in this ifdef. Instead we would only call it if</span><span>
 </span><span id="line-144"></span><span>                   </span><span class="hs-comment">-- we knew that the information would be traced.</span><span>
 </span><span id="line-145"></span><span>                   </span><span class="hs-identifier">tcpi</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">Socket.getSockOpt</span><span> </span><span class="hs-identifier">sd</span><span> </span><span class="hs-identifier">TCPInfoSocketOption</span><span>

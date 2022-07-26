@@ -564,7 +564,7 @@ e -&gt; STM m a
 </span><span id="line-286"></span><span>      </span><span class="hs-comment">-- this time waiting for the monitoring thread to set it to the</span><span>
 </span><span id="line-287"></span><span>      </span><span class="hs-comment">-- TimeoutTerminated state. But the monitoring thread only sets it to</span><span>
 </span><span id="line-288"></span><span>      </span><span class="hs-comment">-- that state /after/ raising the async exception in this thread. So</span><span>
-</span><span id="line-289"></span><span>      </span><span class="hs-comment">-- we will never actually rach that terminated state.</span><span>
+</span><span id="line-289"></span><span>      </span><span class="hs-comment">-- we will never actually reach that terminated state.</span><span>
 </span><span id="line-290"></span><span>      </span><span class="hs-comment">--</span><span>
 </span><span id="line-291"></span><span>      </span><span class="hs-comment">-- Note also that blocking STM txs are points where async exceptions that</span><span>
 </span><span id="line-292"></span><span>      </span><span class="hs-comment">-- are pending (due to our masked state) can be raised. Hence there is no</span><span>

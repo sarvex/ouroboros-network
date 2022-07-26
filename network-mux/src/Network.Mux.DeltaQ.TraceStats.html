@@ -16,7 +16,7 @@
 </span><span id="line-16"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Network.Mux.DeltaQ.TraceTypes.html"><span class="hs-identifier">Network.Mux.DeltaQ.TraceTypes</span></a></span><span>
 </span><span id="line-17"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Network.Mux.Types.html"><span class="hs-identifier">Network.Mux.Types</span></a></span><span>
 </span><span id="line-18"></span><span>
-</span><span id="line-19"></span><span class="hs-comment">-- the per observation procesing step</span><span>
+</span><span id="line-19"></span><span class="hs-comment">-- the per observation processing step</span><span>
 </span><span id="line-20"></span><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#step"><span class="hs-identifier hs-type">step</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Network.Mux.Types.html#RemoteClockModel"><span class="hs-identifier hs-type">RemoteClockModel</span></a></span><span>        </span><span class="hs-comment">-- ^ Remote clock timestamp</span><span>
 </span><span id="line-21"></span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Time</span></span><span>                    </span><span class="hs-comment">-- ^ Local clock timestamp</span><span>
 </span><span id="line-22"></span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">Int</span></a></span><span>                     </span><span class="hs-comment">-- ^ the number of octets in the</span><span>
@@ -258,7 +258,7 @@ forall a. (Maybe a -&gt; Maybe a) -&gt; Int -&gt; IntMap a -&gt; IntMap a
 </span><span id="line-84"></span><span class="hs-comment">-- population size, they could reconstruct the underlying measures and</span><span>
 </span><span id="line-85"></span><span class="hs-comment">-- take it from there.</span><span>
 </span><span id="line-86"></span><span class="hs-comment">--</span><span>
-</span><span id="line-87"></span><span class="hs-comment">-- We return `NaN` for the appropraiate satistics when the population</span><span>
+</span><span id="line-87"></span><span class="hs-comment">-- We return `NaN` for the appropriate statistics when the population</span><span>
 </span><span id="line-88"></span><span class="hs-comment">-- is empty.</span><span>
 </span><span id="line-89"></span><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#constructSample"><span class="hs-identifier hs-type">constructSample</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#StatsA"><span class="hs-identifier hs-type">StatsA</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#OneWayDeltaQSample"><span class="hs-identifier hs-type">OneWayDeltaQSample</span></a></span><span>
 </span><span id="line-90"></span><span id="constructSample"><span class="annot"><span class="annottext">constructSample :: StatsA -&gt; OneWayDeltaQSample
@@ -536,7 +536,7 @@ forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><a href="#local-6989586621679112434"><span class="hs-identifier hs-var">psr</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-134"></span><span>
 </span><span id="line-135"></span><span class="hs-comment">-- | One way measurement for interval. Note that the fields are lazy</span><span>
-</span><span id="line-136"></span><span class="hs-comment">--   here so that only calcuation necessary to satisfy strictness of</span><span>
+</span><span id="line-136"></span><span class="hs-comment">--   here so that only calculation necessary to satisfy strictness of</span><span>
 </span><span id="line-137"></span><span class="hs-comment">--   use occurs.</span><span>
 </span><span id="line-138"></span><span class="hs-keyword">data</span><span> </span><span id="OneWayDeltaQSample"><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#OneWayDeltaQSample"><span class="hs-identifier hs-var">OneWayDeltaQSample</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="OneWaySample"><span class="annot"><a href="Network.Mux.DeltaQ.TraceStats.html#OneWaySample"><span class="hs-identifier hs-var">OneWaySample</span></a></span></span><span>
 </span><span id="line-139"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="duration"><span class="annot"><span class="annottext">OneWayDeltaQSample -&gt; Double
@@ -575,9 +575,9 @@ forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span id="line-159"></span><span>  </span><span class="hs-special">}</span><span>
 </span><span id="line-160"></span><span>
 </span><span id="line-161"></span><span class="hs-comment">-- This _may_ not be the best representation, but it does appear to be</span><span>
-</span><span id="line-162"></span><span class="hs-comment">-- an adequate one. There are known issues with numerical stabilty for</span><span>
+</span><span id="line-162"></span><span class="hs-comment">-- an adequate one. There are known issues with numerical stability for</span><span>
 </span><span id="line-163"></span><span class="hs-comment">-- this representation approach in floating point arithmetic where the</span><span>
-</span><span id="line-164"></span><span class="hs-comment">-- values being measured are &quot;large&quot; and the variablity in the sampled</span><span>
+</span><span id="line-164"></span><span class="hs-comment">-- values being measured are &quot;large&quot; and the variability in the sampled</span><span>
 </span><span id="line-165"></span><span class="hs-comment">-- population is &quot;small&quot; (i.e the inherent rounding effect of floating</span><span>
 </span><span id="line-166"></span><span class="hs-comment">-- point arithmetic has an effect).</span><span>
 </span><span id="line-167"></span><span class="hs-comment">--</span><span>
@@ -588,7 +588,7 @@ forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span id="line-172"></span><span class="hs-comment">--   means that we are only ever recording differences - thus any</span><span>
 </span><span id="line-173"></span><span class="hs-comment">--   absolute clock differences get factored out.</span><span>
 </span><span id="line-174"></span><span class="hs-comment">--</span><span>
-</span><span id="line-175"></span><span class="hs-comment">--   b) the transit delay for a measurement will be small, (probablly</span><span>
+</span><span id="line-175"></span><span class="hs-comment">--   b) the transit delay for a measurement will be small, (probably</span><span>
 </span><span id="line-176"></span><span class="hs-comment">--   not even credible) worst case ~10^3 / 10^4 seconds, the finite</span><span>
 </span><span id="line-177"></span><span class="hs-comment">--   mantissa of IEEE754</span><span>
 </span><span id="line-178"></span><span class="hs-comment">--   (https://en.wikipedia.org/wiki/IEEE_754#Representation_and_encoding_in_memory)</span><span>
@@ -596,13 +596,13 @@ forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span id="line-180"></span><span class="hs-comment">--   represents an bound on the inherent measured population</span><span>
 </span><span id="line-181"></span><span class="hs-comment">--   variability.</span><span>
 </span><span id="line-182"></span><span class="hs-comment">--</span><span>
-</span><span id="line-183"></span><span class="hs-comment">--   c) longer term clock drift is covered here by the restablishing</span><span>
+</span><span id="line-183"></span><span class="hs-comment">--   c) longer term clock drift is covered here by the re-establishing</span><span>
 </span><span id="line-184"></span><span class="hs-comment">--   of the clock reference offsets every sampling period. Given a</span><span>
 </span><span id="line-185"></span><span class="hs-comment">--   reasonable sampling period (say 10 seconds) clock drift ( &lt;</span><span>
 </span><span id="line-186"></span><span class="hs-comment">--   100ppm) can't amount to a significant error over such a period.</span><span>
 </span><span id="line-187"></span><span class="hs-comment">--</span><span>
 </span><span id="line-188"></span><span class="hs-comment">-- To conclude, reasonable model of delay is &lt; 1second, the precision</span><span>
-</span><span id="line-189"></span><span class="hs-comment">-- of delay measurement is 10^-6 - this all fits nicely withing a</span><span>
+</span><span id="line-189"></span><span class="hs-comment">-- of delay measurement is 10^-6 - this all fits nicely within a</span><span>
 </span><span id="line-190"></span><span class="hs-comment">-- IEEE754 32bit representation with its 7.22 decimal digit</span><span>
 </span><span id="line-191"></span><span class="hs-comment">-- mantissa. Haskell `Float`s are adequate for this purpose.</span><span>
 </span><span id="line-192"></span><span>

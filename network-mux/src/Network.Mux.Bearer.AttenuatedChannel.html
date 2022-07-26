@@ -365,7 +365,7 @@ forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
 </span><span id="line-131"></span><span class="hs-comment">--</span><span>
 </span><span id="line-132"></span><span class="hs-comment">-- - attenuation applied after reading a message from 'QueueChannel';</span><span>
 </span><span id="line-133"></span><span class="hs-comment">-- - two-way close handshake with 120s timeout.  Read side is closed as soon as</span><span>
-</span><span id="line-134"></span><span class="hs-comment">--   an internal 'MsgClose' is received, write side has to be closed explicietly.</span><span>
+</span><span id="line-134"></span><span class="hs-comment">--   an internal 'MsgClose' is received, write side has to be closed explicitly.</span><span>
 </span><span id="line-135"></span><span class="hs-comment">--</span><span>
 </span><span id="line-136"></span><span class="hs-keyword">data</span><span> </span><span id="AttenuatedChannel"><span class="annot"><a href="Network.Mux.Bearer.AttenuatedChannel.html#AttenuatedChannel"><span class="hs-identifier hs-var">AttenuatedChannel</span></a></span></span><span> </span><span id="local-6989586621679112952"><span class="annot"><a href="#local-6989586621679112952"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AttenuatedChannel"><span class="annot"><a href="Network.Mux.Bearer.AttenuatedChannel.html#AttenuatedChannel"><span class="hs-identifier hs-var">AttenuatedChannel</span></a></span></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-137"></span><span>    </span><span id="acRead"><span class="annot"><span class="annottext">AttenuatedChannel m -&gt; m ByteString
@@ -457,7 +457,7 @@ forall (m :: * -&gt; *). MonadMonotonicTime m =&gt; m Time
 </span><span class="hs-identifier hs-var">getMonotonicTime</span></span><span>
 </span><span id="line-182"></span><span>      </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Message
 </span><a href="#local-6989586621679112852"><span class="hs-identifier hs-var">msg</span></a></span><span> </span><span class="hs-keyword">of</span><span>
-</span><span id="line-183"></span><span>        </span><span class="hs-comment">-- match the 'Bearer.Snocket' behavour and throw 'MuxError'</span><span>
+</span><span id="line-183"></span><span>        </span><span class="hs-comment">-- match the 'Bearer.Snocket' behaviour and throw 'MuxError'</span><span>
 </span><span id="line-184"></span><span>        </span><span class="hs-comment">-- when null byte is received from the network.</span><span>
 </span><span id="line-185"></span><span>        </span><span class="annot"><span class="annottext">Message
 </span><a href="Network.Mux.Bearer.AttenuatedChannel.html#MsgClose"><span class="hs-identifier hs-var">MsgClose</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
