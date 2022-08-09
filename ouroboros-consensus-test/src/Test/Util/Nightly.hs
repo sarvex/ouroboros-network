@@ -35,7 +35,8 @@ instance IsOption IohkNightlyEnabled where
   defaultValue = IohkNightlyEnabled False
   parseValue = fmap IohkNightlyEnabled . safeReadBool
   optionName = pure "iohk-enable-nightly-tests"
-  optionHelp = pure "Enable more expensive tests (specific to IOHK)"
+  optionHelp = pure "DEPRECATED Enable more expensive tests (specific to IOHK)\n\
+                    \ This option will be removed in future. Use iohk-test-mode instead."
 
   -- Use typical Un*x syntax for Boolean flags
   optionCLParser = flagCLParser Nothing (IohkNightlyEnabled True)

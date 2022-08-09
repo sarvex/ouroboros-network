@@ -5,12 +5,13 @@ import           System.IO.Temp
 import           Test.Tasty
 
 import qualified Test.Ouroboros.Storage
+import           Test.Util.TestMode (defaultMainWithIohkTestMode)
 
 main :: IO ()
 main = do
   sysTmpDir <- Dir.getTemporaryDirectory
   withTempDirectory sysTmpDir "cardano-s-m" $ \tmpDir ->
-    defaultMain (tests tmpDir)
+    defaultMainWithIohkTestMode (tests tmpDir)
 
 tests :: FilePath -> TestTree
 tests tmpDir =

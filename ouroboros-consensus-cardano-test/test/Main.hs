@@ -6,7 +6,7 @@ import           System.IO (BufferMode (LineBuffering), hSetBuffering,
 import           Cardano.Crypto.Libsodium (sodiumInit)
 
 import           Test.Tasty
-import           Test.Util.Nightly
+import           Test.Util.TestMode
 
 import qualified Test.Consensus.Cardano.ByronCompatibility (tests)
 import qualified Test.Consensus.Cardano.Golden (tests)
@@ -21,7 +21,7 @@ main = do
   hSetBuffering stdout LineBuffering
   hSetEncoding stdout utf8
   sodiumInit
-  defaultMainWithIohkNightly tests
+  defaultMainWithIohkTestMode tests
 
 tests :: TestTree
 tests =

@@ -6,9 +6,10 @@ import qualified Test.ThreadNet.Util.Tests (tests)
 import qualified Test.Util.ChainUpdates.Tests (tests)
 import qualified Test.Util.Schedule.Tests (tests)
 import qualified Test.Util.Split.Tests (tests)
+import           Test.Util.TestMode (defaultMainWithIohkTestMode)
 
 main :: IO ()
-main = defaultMain tests
+main = defaultMainWithIohkTestMode tests
 
 tests :: TestTree
 tests =

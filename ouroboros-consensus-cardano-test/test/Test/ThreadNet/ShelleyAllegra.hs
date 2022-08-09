@@ -66,9 +66,10 @@ import           Test.ThreadNet.Util.NodeToNodeVersion (genVersionFiltered)
 import           Test.ThreadNet.Util.Seed (runGen)
 import qualified Test.Util.BoolProps as BoolProps
 import           Test.Util.HardFork.Future (EraSize (..), Future (..))
-import           Test.Util.Nightly (askIohkNightlyEnabled)
 import           Test.Util.Orphans.Arbitrary ()
 import           Test.Util.Slots (NumSlots (..))
+import           Test.Util.TestMode (IohkTestMode (..), askIohkTestMode,
+                     resetQuickCheckTests)
 
 import           Test.Consensus.Shelley.MockCrypto (MockCrypto)
 import qualified Test.ThreadNet.Infra.Shelley as Shelley
@@ -164,11 +165,16 @@ oneTenthTestCount (QuickCheckTests n) = QuickCheckTests $
 tests :: TestTree
 tests = testGroup "ShelleyAllegra ThreadNet" $
     [ let name = "simple convergence" in
-      askIohkNightlyEnabled $ \enabled ->
-      (if enabled then id else adjustOption oneTenthTestCount) $
-      testProperty name $ \setup ->
+      askIohkTestMode $ flip adjustTestMode $ testProperty name $ \setup ->
         prop_simple_shelleyAllegra_convergence setup
     ]
+
+    where
+      adjustTestMode :: IohkTestMode -> TestTree -> TestTree
+      adjustTestMode = \case
+        Nightly -> resetQuickCheckTests id
+        CI      -> resetQuickCheckTests oneTenthTestCount
+        Dev     -> resetQuickCheckTests oneTenthTestCount
 
 prop_simple_shelleyAllegra_convergence :: TestSetup -> Property
 prop_simple_shelleyAllegra_convergence TestSetup

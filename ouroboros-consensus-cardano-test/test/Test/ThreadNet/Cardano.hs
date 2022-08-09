@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE GADTs               #-}
+{-# LANGUAGE LambdaCase          #-}
 {-# LANGUAGE NamedFieldPuns      #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications    #-}
@@ -70,7 +71,6 @@ import           Test.ThreadNet.Util.NodeToNodeVersion (genVersionFiltered)
 import           Test.ThreadNet.Util.Seed (runGen)
 import qualified Test.Util.BoolProps as BoolProps
 import           Test.Util.HardFork.Future
-import           Test.Util.Nightly
 import           Test.Util.Orphans.Arbitrary ()
 import           Test.Util.Slots (NumSlots (..))
 
@@ -78,6 +78,7 @@ import           Ouroboros.Consensus.Protocol.Praos.Translate ()
 import           Ouroboros.Consensus.Shelley.Node.Praos
                      (ProtocolParamsBabbage (..))
 import           Test.ThreadNet.Infra.TwoEras
+import           Test.Util.TestMode
 
 -- | Use 'MockCryptoCompatByron' so that bootstrap addresses and
 -- bootstrap witnesses are supported.
@@ -163,14 +164,19 @@ twoFifthsTestCount (QuickCheckTests n) = QuickCheckTests $
 tests :: TestTree
 tests = testGroup "Cardano ThreadNet" $
     [ let name = "simple convergence" in
-      askIohkNightlyEnabled $ \enabled ->
-      if enabled
-      then testProperty name $ \setup ->
-             prop_simple_cardano_convergence setup
-      else adjustOption twoFifthsTestCount $
-           testProperty name $ \setup ->
-             prop_simple_cardano_convergence setup
+      askIohkTestMode $ flip adjustTestMode $
+      testProperty name $ \setup ->
+                      prop_simple_cardano_convergence setup
+
     ]
+
+    where
+      adjustTestMode :: IohkTestMode -> TestTree -> TestTree
+      adjustTestMode = \case
+        Nightly -> resetQuickCheckTests id
+        CI      -> resetQuickCheckTests twoFifthsTestCount
+        Dev     -> resetQuickCheckTests twoFifthsTestCount
+
 
 prop_simple_cardano_convergence :: TestSetup -> Property
 prop_simple_cardano_convergence TestSetup

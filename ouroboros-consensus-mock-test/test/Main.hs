@@ -7,9 +7,10 @@ import qualified Test.ThreadNet.BFT (tests)
 import qualified Test.ThreadNet.LeaderSchedule (tests)
 import qualified Test.ThreadNet.PBFT (tests)
 import qualified Test.ThreadNet.Praos (tests)
+import           Test.Util.TestMode (defaultMainWithIohkTestMode)
 
 main :: IO ()
-main = defaultMain tests
+main = defaultMainWithIohkTestMode tests
 
 tests :: TestTree
 tests =

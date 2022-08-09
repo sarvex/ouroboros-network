@@ -6,9 +6,10 @@ import qualified Test.Consensus.Byron.Golden (tests)
 import qualified Test.Consensus.Byron.Serialisation (tests)
 import qualified Test.ThreadNet.Byron (tests)
 import qualified Test.ThreadNet.DualByron (tests)
+import           Test.Util.TestMode (defaultMainWithIohkTestMode)
 
 main :: IO ()
-main = defaultMain tests
+main = defaultMainWithIohkTestMode tests
 
 tests :: TestTree
 tests =

@@ -72,6 +72,7 @@ library
                        Test.Util.Split
                        Test.Util.Stream
                        Test.Util.TestBlock
+                       Test.Util.TestMode
                        Test.Util.Time
                        Test.Util.Tracer
                        Test.Util.WithEq
@@ -95,6 +96,7 @@ library
                      , graphviz
                      , mtl               >=2.2   && <2.3
                      , nothunks
+                     , optparse-applicative
                      , QuickCheck
                      , quickcheck-state-machine
                      , quiet             >=0.2   && <0.3
