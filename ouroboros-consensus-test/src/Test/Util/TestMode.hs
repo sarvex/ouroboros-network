@@ -2,6 +2,8 @@
 -- | A @tasty@ command-line option for enabling nightly tests
 module Test.Util.TestMode (
     IohkTestMode (..)
+  , QuickCheckTestsPerEnv (QuickCheckTestsPerEnv, ci, dev, nightly)
+  , adjustQuickCheckTestsAccordingToEnv
   , askIohkTestMode
   , defaultMainWithIohkTestMode
   , iohkTestModeIngredient
@@ -46,6 +48,20 @@ defaultTestEnv testTree = \case
   Nightly -> adjustOption (const (QuickCheckTests 1000000)) testTree
   CI      -> adjustOption (const (QuickCheckTests 10000)) testTree
   Dev     -> testTree
+
+-- | QuickCheck tests to run per-environment.
+data QuickCheckTestsPerEnv = QuickCheckTestsPerEnv
+  { nightly :: Int
+  , ci      :: Int
+  , dev     :: Int
+  }
+
+adjustQuickCheckTestsAccordingToEnv :: QuickCheckTestsPerEnv -> TestTree -> TestTree
+adjustQuickCheckTestsAccordingToEnv nrTests testTree = askOption $
+    \case
+      Nightly -> const (QuickCheckTests (nightly nrTests)) `adjustOption` testTree
+      CI      -> const (QuickCheckTests (ci nrTests))      `adjustOption` testTree
+      Dev     -> const (QuickCheckTests (dev nrTests))     `adjustOption` testTree
 
 -- | Reset quickcheck tests
 resetQuickCheckTests :: (QuickCheckTests -> QuickCheckTests) -> TestTree -> TestTree

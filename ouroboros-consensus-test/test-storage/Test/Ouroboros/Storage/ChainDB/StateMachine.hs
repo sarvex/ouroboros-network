@@ -115,6 +115,9 @@ import           Test.Util.Orphans.ToExpr ()
 import           Test.Util.RefEnv (RefEnv)
 import qualified Test.Util.RefEnv as RE
 import           Test.Util.SOP
+import           Test.Util.TestMode
+                     (QuickCheckTestsPerEnv (QuickCheckTestsPerEnv, ci, dev, nightly),
+                     adjustQuickCheckTestsAccordingToEnv)
 import           Test.Util.Tracer (recordingTracerIORef)
 import           Test.Util.WithEq
 
@@ -1460,7 +1463,7 @@ smUnused maxClockSkew chunkInfo =
       maxClockSkew
 
 prop_sequential :: MaxClockSkew -> SmallChunkInfo -> Property
-prop_sequential maxClockSkew (SmallChunkInfo chunkInfo) = withMaxSuccess 100000 $
+prop_sequential maxClockSkew (SmallChunkInfo chunkInfo) =
     forAllCommands (smUnused maxClockSkew chunkInfo) Nothing $ \cmds ->
       QC.monadicIO $ do
         let
@@ -1663,6 +1666,11 @@ mkArgs cfg (MaxClockSkew maxClockSkew) chunkInfo initLedger tracer registry varC
     }
 
 tests :: TestTree
-tests = testGroup "ChainDB q-s-m"
-    [ testProperty "sequential" prop_sequential
-    ]
+tests = adjustQuickCheckTestsAccordingToEnv nrTests
+      $ testGroup "ChainDB q-s-m" [ testProperty "sequential" $ prop_sequential ]
+  where
+    nrTests = QuickCheckTestsPerEnv
+                { nightly = 100000
+                , ci      = 10000
+                , dev     = 100
+                }
