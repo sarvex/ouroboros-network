@@ -940,8 +940,8 @@ runThreadNetwork systemTime ThreadNetworkArgs
                 , forgeTracer           = Tracer $ \(TraceLabelCreds _ ev) -> do
                     traceWith (nodeEventsForges nodeInfoEvents) ev
                     case ev of
-                      TraceNodeIsLeader s -> atomically $ blockOnCrucial s
-                      _                   -> pure ()
+                      TraceBlockContext s _ _ -> atomically $ blockOnCrucial s
+                      _                       -> pure ()
                 }
 
           -- traces the node's local events other than those from the -- ChainDB
