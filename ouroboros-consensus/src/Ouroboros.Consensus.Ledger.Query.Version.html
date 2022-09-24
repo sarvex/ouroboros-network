@@ -16,7 +16,7 @@
 </span><span id="line-16"></span><span>
 </span><span id="line-17"></span><span>  </span><span class="hs-comment">-- Adds support for 'GetChainBlockNo' and 'GetChainPoint'.</span><span>
 </span><span id="line-18"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="QueryVersion2"><span class="annot"><a href="Ouroboros.Consensus.Ledger.Query.Version.html#QueryVersion2"><span class="hs-identifier hs-var">QueryVersion2</span></a></span></span><span>
-</span><span id="line-19"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679994104"><span id="local-6989586621679994106"><span class="annot"><span class="annottext">QueryVersion -&gt; QueryVersion -&gt; Bool
+</span><span id="line-19"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679994170"><span id="local-6989586621679994172"><span class="annot"><span class="annottext">QueryVersion -&gt; QueryVersion -&gt; Bool
 (QueryVersion -&gt; QueryVersion -&gt; Bool)
 -&gt; (QueryVersion -&gt; QueryVersion -&gt; Bool) -&gt; Eq QueryVersion
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -24,7 +24,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: QueryVersion -&gt; QueryVersion -&gt; Bool
 == :: QueryVersion -&gt; QueryVersion -&gt; Bool
 $c== :: QueryVersion -&gt; QueryVersion -&gt; Bool
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994088"><span id="local-6989586621679994090"><span id="local-6989586621679994092"><span id="local-6989586621679994094"><span id="local-6989586621679994096"><span id="local-6989586621679994098"><span id="local-6989586621679994100"><span class="annot"><span class="annottext">Eq QueryVersion
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994154"><span id="local-6989586621679994156"><span id="local-6989586621679994158"><span id="local-6989586621679994160"><span id="local-6989586621679994162"><span id="local-6989586621679994164"><span id="local-6989586621679994166"><span class="annot"><span class="annottext">Eq QueryVersion
 Eq QueryVersion
 -&gt; (QueryVersion -&gt; QueryVersion -&gt; Ordering)
 -&gt; (QueryVersion -&gt; QueryVersion -&gt; Bool)
@@ -62,7 +62,7 @@ $c&lt; :: QueryVersion -&gt; QueryVersion -&gt; Bool
 compare :: QueryVersion -&gt; QueryVersion -&gt; Ordering
 $ccompare :: QueryVersion -&gt; QueryVersion -&gt; Ordering
 $cp1Ord :: Eq QueryVersion
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994071"><span id="local-6989586621679994073"><span id="local-6989586621679994075"><span id="local-6989586621679994077"><span id="local-6989586621679994079"><span id="local-6989586621679994081"><span id="local-6989586621679994083"><span id="local-6989586621679994085"><span class="annot"><span class="annottext">Int -&gt; QueryVersion
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994137"><span id="local-6989586621679994139"><span id="local-6989586621679994141"><span id="local-6989586621679994143"><span id="local-6989586621679994145"><span id="local-6989586621679994147"><span id="local-6989586621679994149"><span id="local-6989586621679994151"><span class="annot"><span class="annottext">Int -&gt; QueryVersion
 QueryVersion -&gt; Int
 QueryVersion -&gt; [QueryVersion]
 QueryVersion -&gt; QueryVersion
@@ -103,14 +103,14 @@ pred :: QueryVersion -&gt; QueryVersion
 $cpred :: QueryVersion -&gt; QueryVersion
 succ :: QueryVersion -&gt; QueryVersion
 $csucc :: QueryVersion -&gt; QueryVersion
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></a></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994066"><span id="local-6989586621679994068"><span class="annot"><span class="annottext">QueryVersion
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></a></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994132"><span id="local-6989586621679994134"><span class="annot"><span class="annottext">QueryVersion
 QueryVersion -&gt; QueryVersion -&gt; Bounded QueryVersion
 forall a. a -&gt; a -&gt; Bounded a
 maxBound :: QueryVersion
 $cmaxBound :: QueryVersion
 minBound :: QueryVersion
 $cminBound :: QueryVersion
-</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994059"><span id="local-6989586621679994061"><span id="local-6989586621679994063"><span class="annot"><span class="annottext">Int -&gt; QueryVersion -&gt; ShowS
+</span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679994125"><span id="local-6989586621679994127"><span id="local-6989586621679994129"><span class="annot"><span class="annottext">Int -&gt; QueryVersion -&gt; ShowS
 [QueryVersion] -&gt; ShowS
 QueryVersion -&gt; String
 (Int -&gt; QueryVersion -&gt; ShowS)
@@ -130,9 +130,9 @@ $cshowsPrec :: Int -&gt; QueryVersion -&gt; ShowS
 </span><span id="line-21"></span><span class="hs-comment">-- | Get the @QueryVersion@ supported by this @NodeToClientVersion@.</span><span>
 </span><span id="line-22"></span><span class="annot"><a href="Ouroboros.Consensus.Ledger.Query.Version.html#nodeToClientVersionToQueryVersion"><span class="hs-identifier hs-type">nodeToClientVersionToQueryVersion</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-0.1.0.0/noopt/doc/html/ouroboros-network/src"><span class="hs-identifier hs-type">NodeToClientVersion</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Ledger.Query.Version.html#QueryVersion"><span class="hs-identifier hs-type">QueryVersion</span></a></span><span>
 </span><span id="line-23"></span><span id="nodeToClientVersionToQueryVersion"><span class="annot"><span class="annottext">nodeToClientVersionToQueryVersion :: NodeToClientVersion -&gt; QueryVersion
-</span><a href="Ouroboros.Consensus.Ledger.Query.Version.html#nodeToClientVersionToQueryVersion"><span class="hs-identifier hs-var hs-var">nodeToClientVersionToQueryVersion</span></a></span></span><span> </span><span id="local-6989586621679994057"><span class="annot"><span class="annottext">NodeToClientVersion
-</span><a href="#local-6989586621679994057"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
-</span><a href="#local-6989586621679994057"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="Ouroboros.Consensus.Ledger.Query.Version.html#nodeToClientVersionToQueryVersion"><span class="hs-identifier hs-var hs-var">nodeToClientVersionToQueryVersion</span></a></span></span><span> </span><span id="local-6989586621679994123"><span class="annot"><span class="annottext">NodeToClientVersion
+</span><a href="#local-6989586621679994123"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><a href="#local-6989586621679994123"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-24"></span><span>  </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-0.1.0.0/noopt/doc/html/ouroboros-network/src"><span class="hs-identifier hs-var">NodeToClientV_9</span></a></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">QueryVersion
 </span><a href="Ouroboros.Consensus.Ledger.Query.Version.html#QueryVersion1"><span class="hs-identifier hs-var">QueryVersion1</span></a></span><span>
