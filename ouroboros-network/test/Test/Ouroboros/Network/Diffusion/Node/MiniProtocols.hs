@@ -200,9 +200,9 @@ applications :: forall block header m.
              -> Codecs block m
              -> LimitsAndTimeouts block
              -> AppArgs m
-             -> m (Diff.Applications NtNAddr NtNVersion NtNVersionData
-                                     NtCAddr NtCVersion NtCVersionData
-                                     m ())
+             -> Diff.Applications NtNAddr NtNVersion NtNVersionData
+                                  NtCAddr NtCVersion NtCVersionData
+                                  m ()
 applications debugTracer nodeKernel
              Codecs { chainSyncCodec, blockFetchCodec
                     , keepAliveCodec, pingPongCodec }
@@ -213,16 +213,16 @@ applications debugTracer nodeKernel
                , aaKeepAliveStdGen
                , aaKeepAliveInterval
                , aaPingPongInterval
-               }
-             = do
-    return $ Diff.Applications
+               , aaOwnPeerSharing
+               } =
+    Diff.Applications
       { Diff.daApplicationInitiatorMode =
           simpleSingletonVersions UnversionedProtocol
-                                  (NtNVersionData InitiatorOnlyDiffusionMode)
+                                  (NtNVersionData InitiatorOnlyDiffusionMode aaOwnPeerSharing)
                                   initiatorApp
       , Diff.daApplicationInitiatorResponderMode =
           simpleSingletonVersions UnversionedProtocol
-                                  (NtNVersionData aaDiffusionMode)
+                                  (NtNVersionData aaDiffusionMode aaOwnPeerSharing)
                                   initiatorAndResponderApp
       , Diff.daLocalResponderApplication =
           simpleSingletonVersions UnversionedProtocol
