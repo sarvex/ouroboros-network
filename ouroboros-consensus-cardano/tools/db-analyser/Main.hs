@@ -132,10 +132,18 @@ parseSelectDB = asum [
       ])
 
     analyseFrom :: Parser (Maybe DiskSnapshot)
-    analyseFrom = optional $ ((flip DiskSnapshot $ Just "db-analyser") . read) <$> strOption
-      (  long "analyse-from"
-      <> metavar "SLOT_NUMBER"
-      <> help "Start analysis from ledger state stored at specific slot number" )
+    analyseFrom = optional $ ((flip DiskSnapshot $ Just "db-analyser") . read) <$>
+      strOption
+        (  long "analyse-from"
+        <> metavar "SLOT_NUMBER"
+        <> help "Start analysis from ledger state stored at specific slot number"
+        )
+      <*>
+      strOption
+        (   long "snapshot-type"
+        <> metavar "STRING"
+        <> help "Type of the snapshot, used as prefix (before \'_\') to the snapshot directory name."
+        )
 
 
 parseValidationPolicy :: Parser (Maybe ValidateBlocks)

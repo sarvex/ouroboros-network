@@ -847,10 +847,18 @@ data DiskSnapshot = DiskSnapshot {
       dsNumber :: Word64
 
       -- | Snapshots can optionally have a suffix, separated by the snapshot
-      -- number with an underscore, e.g., @4492799_last_Byron@. This suffix acts
+      -- number with an underscore, e.g., @inmem_4492799_last_Byron@. This suffix acts
       -- as metadata for the operator of the node. Snapshots with a suffix will
       -- /not be trimmed/.
     , dsSuffix :: Maybe String
+
+      -- | Snapshots should have a prefix, separated from the snapshot number
+      -- with an underscore, e.g., @inmem_4492799@ or
+      -- @inmem_4492799_last_Byron@. This prefix identifies the backing store
+      -- that this snapshot was made with. If we were to read a snapshot from a
+      -- different backing store than the one that we are running, the snapshot
+      -- would fail to be read.
+    , dsPrefix :: String
     }
   deriving (Show, Eq, Ord, Generic)
 
@@ -864,9 +872,11 @@ diskSnapshotIsTemporary :: DiskSnapshot -> Bool
 diskSnapshotIsTemporary = not . diskSnapshotIsPermanent
 
 snapshotToDirName :: DiskSnapshot -> String
-snapshotToDirName DiskSnapshot { dsNumber, dsSuffix } =
-    show dsNumber <> suffix
+snapshotToDirName DiskSnapshot { dsNumber, dsSuffix, dsPrefix } =
+    prefix <> show dsNumber <> suffix
   where
+    prefix = dsPrefix <> "_"
+
     suffix = case dsSuffix of
       Nothing -> ""
       Just s  -> "_" <> s
@@ -892,15 +902,18 @@ _tablesPath = mkFsPath ["tables"]
 
 snapshotFromPath :: String -> Maybe DiskSnapshot
 snapshotFromPath fileName = do
-    number <- readMaybe prefix
-    return $ DiskSnapshot number suffix'
+    (prefix, rest) <- breakPrefix fileName
+    let (middle, suffix) = breakSuffix rest
+    number <- readMaybe middle
+    return $ DiskSnapshot number suffix prefix
   where
-    (prefix, suffix) = break (== '_') fileName
+    breakPrefix s = case break (== '_') s of
+      (prefix, '_':rest) -> Just (prefix, rest)
+      _                  -> Nothing
 
-    suffix' :: Maybe String
-    suffix' = case suffix of
-      ""      -> Nothing
-      _ : str -> Just str
+    breakSuffix s = case break (== '_') s of
+      (rest, "")        -> (rest, Nothing)
+      (rest, _:suffix ) -> (rest, Just suffix)
 
 {-------------------------------------------------------------------------------
   Snapshots: Writing to disk
@@ -944,7 +957,7 @@ takeSnapshot tracer hasFS backingStore encLedger db =
         return Nothing
       NotOrigin tip -> do
         let number   = unSlotNo (realPointSlot tip)
-            snapshot = DiskSnapshot number Nothing
+            snapshot = DiskSnapshot number Nothing (BackingStore.bsName store)
         snapshots <- listSnapshots hasFS
         if List.any ((== number) . dsNumber) snapshots then
           return Nothing
@@ -953,6 +966,8 @@ takeSnapshot tracer hasFS backingStore encLedger db =
           traceWith tracer $ TookSnapshot snapshot tip
           return $ Just (snapshot, tip)
   where
+    LedgerBackingStore store = backingStore
+
     lastFlushed :: ExtLedgerState blk EmptyMK
     lastFlushed = ledgerDbLastFlushedState db
 
@@ -989,13 +1004,18 @@ trimSnapshots ::
   -> m [DiskSnapshot]
 trimSnapshots tracer hasFS DiskPolicy{..} = do
     -- We only trim temporary snapshots
-    snapshots <- filter diskSnapshotIsTemporary <$> listSnapshots hasFS
-    -- The snapshot are most recent first, so we can simply drop from the
-    -- front to get the snapshots that are "too" old.
-    forM (drop (fromIntegral onDiskNumSnapshots) snapshots) $ \snapshot -> do
-      deleteSnapshot hasFS snapshot
-      traceWith tracer $ DeletedSnapshot snapshot
-      return snapshot
+    snapshotsPerBS <-
+      categoriseBS . filter diskSnapshotIsTemporary <$> listSnapshots hasFS
+    concat <$> mapM deletes snapshotsPerBS
+  where
+    categoriseBS = List.group . List.sort
+    deletes ss   =
+      -- The snapshot are most recent first, so we can simply drop from the
+      -- front to get the snapshots that are "too" old.
+      forM (drop (fromIntegral onDiskNumSnapshots) ss) $ \snapshot -> do
+        deleteSnapshot hasFS snapshot
+        traceWith tracer $ DeletedSnapshot snapshot
+        return snapshot
 
 -- | Delete snapshot from disk
 deleteSnapshot :: HasCallStack => SomeHasFS m -> DiskSnapshot -> m ()

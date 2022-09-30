@@ -707,6 +707,9 @@ newLMDBBackingStore dbTracer limits sfs initDb = do
         pure (dbsSeq, s {dbsSeq = At slot})
       Trace.traceWith dbTracer $ TDBWrite oldSlot slot
 
+    bsName :: String
+    bsName = "lmdb"
+
   -- now initialise those tables if appropriate
   initAction db
 

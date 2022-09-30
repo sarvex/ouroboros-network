@@ -62,6 +62,8 @@ data BackingStore m keys values diff = BackingStore {
   , bsValueHandle :: !(m (WithOrigin SlotNo, BackingStoreValueHandle m keys values))
     -- | Apply a valid diff to the contents of the backing store
   , bsWrite       :: !(SlotNo -> diff -> m ())
+    -- | Name of the specific backing store
+  , bsName        :: !String
   }
 
 -- | TODO Is there a good way to not assume that any function that creates a
@@ -250,6 +252,7 @@ newTVarBackingStore lookup_ rangeRead_ forwardValues_ enc dec initialization = d
                     (At slot2)
                     (forwardValues_ values diff)
                 pure $ pure ()
+      , bsName = "inmem"
       }
   where
     extendPath path =

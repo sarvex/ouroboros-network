@@ -48,6 +48,7 @@ import           Ouroboros.Consensus.Storage.FS.API
 
 import           Ouroboros.Consensus.Storage.ChainDB.Impl.LgrDB hiding
                      (TraceEvent)
+import           Ouroboros.Consensus.Storage.LedgerDB.HD.BackingStore (bsName)
 import           Ouroboros.Consensus.Storage.LedgerDB.InMemory
 import           Ouroboros.Consensus.Storage.LedgerDB.OnDisk hiding (TraceEvent)
 import qualified Ouroboros.Consensus.Storage.LedgerDB.OnDisk as OnDisk
@@ -382,7 +383,7 @@ storeLedgerStateAt slotNo AnalysisEnv { db, backing, initLedger, cfg, ledgerDbFS
           ledgerDbFS
           backingStore
           encLedger
-          (snapshot (pointSlot $ Ouroboros.Consensus.Ledger.Abstract.getTip $ ledgerDbCurrent ldb))
+          (snapshot (pointSlot $ Ouroboros.Consensus.Ledger.Abstract.getTip $ ledgerDbCurrent ldb) backingStore)
           (ledgerDbCurrent ldb)
 
     traceWith tracer $ SnapshotStoredEvent slotNo
@@ -405,9 +406,10 @@ storeLedgerStateAt slotNo AnalysisEnv { db, backing, initLedger, cfg, ledgerDbFS
                  (encodeDisk ccfg)
                  (encodeDisk ccfg)
 
-    snapshot woSlotNo = DiskSnapshot
-                        (withOrigin 0 unSlotNo woSlotNo)
-                        (Just "db-analyser")
+    snapshot woSlotNo (LedgerBackingStore store) = DiskSnapshot
+                                                    (withOrigin 0 unSlotNo woSlotNo)
+                                                    (Just "db-analyser")
+                                                    (bsName store)
 
     configLedgerDb = LedgerDbCfg {
         ledgerDbCfgSecParam = configSecurityParam cfg
