@@ -892,22 +892,6 @@ translateLedgerStateShelleyToAllegraWrapper =
               -- the differences in this translation.
               let avvms           = SL.unUTxO (shelleyToAllegraAVVMsToDelete $ shelleyLedgerState ls)
 
-                  -- While techically we can diff the LedgerTables, it becomes
-                  -- complex doing so, as we cannot perform operations with
-                  -- 'LedgerTables l1 mk' and 'LedgerTables l2 mk'. Because of
-                  -- this, for now we choose to generate the differences out of
-                  -- thin air and when the time comes in which ticking produces
-                  -- differences, we will have to revisit this.
-                  avvmsAsDeletions = ShelleyLedgerTables
-                                   . ApplyDiffMK
-                                   . HD.UtxoDiff
-                                   . Map.map (  (`HD.UtxoEntryDiff` HD.UedsDel)
-                                              . unTxOutWrapper
-                                              . SL.translateEra' ()
-                                              . TxOutWrapper
-                                             )
-                                   $ avvms
-
                   -- This 'stowLedgerTables' + 'withLedgerTables' injects the
                   -- values provided by the Ledger so that the translation
                   -- operation finds those entries in the UTxO and destroys
@@ -924,7 +908,7 @@ translateLedgerStateShelleyToAllegraWrapper =
                                  . Comp   . Flip
                                  $ stowedState
 
-              in resultingState `withLedgerTables` avvmsAsDeletions
+              in resultingState
 
         , translateLedgerTablesWith =
             \ShelleyLedgerTables { shelleyUTxOTable = ApplyDiffMK (HD.UtxoDiff vals) } ->
