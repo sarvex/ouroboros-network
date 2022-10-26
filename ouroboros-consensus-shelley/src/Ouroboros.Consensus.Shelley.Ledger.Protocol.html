@@ -20,7 +20,7 @@
 </span><span id="line-20"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Ledger.Config.html"><span class="hs-identifier">Ouroboros.Consensus.Shelley.Ledger.Config</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-21"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html"><span class="hs-identifier">Ouroboros.Consensus.Shelley.Protocol.Abstract</span></a></span><span>
 </span><span id="line-22"></span><span>                     </span><span class="hs-special">(</span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#ShelleyProtocolHeader"><span class="hs-identifier">ShelleyProtocolHeader</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pHeaderIssueNo"><span class="hs-identifier">pHeaderIssueNo</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pHeaderIssuer"><span class="hs-identifier">pHeaderIssuer</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-23"></span><span>                     </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pHeaderVRFValue"><span class="hs-identifier">pHeaderVRFValue</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#protocolHeaderView"><span class="hs-identifier">protocolHeaderView</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-23"></span><span>                     </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pTieBreakVRFValue"><span class="hs-identifier">pTieBreakVRFValue</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#protocolHeaderView"><span class="hs-identifier">protocolHeaderView</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-24"></span><span>
 </span><span id="line-25"></span><span class="hs-comment">{-------------------------------------------------------------------------------
   Support for Transitional Praos consensus algorithm
@@ -82,12 +82,12 @@ ProtocolHeaderSupportsProtocol proto =&gt;
 ShelleyProtocolHeader proto -&gt; Word64
 </span><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pHeaderIssueNo"><span class="hs-identifier hs-var">pHeaderIssueNo</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolHeader proto
 </span><a href="#local-6989586621679720882"><span class="hs-identifier hs-var">shdr</span></a></span><span>
-</span><span id="line-39"></span><span>      </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">csvLeaderVRF :: OutputVRF (VRF (ProtoCrypto proto))
-</span><a href="#local-6989586621679720873"><span class="hs-identifier hs-var">csvLeaderVRF</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolHeader proto -&gt; OutputVRF (VRF (ProtoCrypto proto))
+</span><span id="line-39"></span><span>      </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">csvTieBreakVRF :: OutputVRF (VRF (ProtoCrypto proto))
+</span><a href="#local-6989586621679720873"><span class="hs-identifier hs-var">csvTieBreakVRF</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolHeader proto -&gt; OutputVRF (VRF (ProtoCrypto proto))
 forall proto.
 ProtocolHeaderSupportsProtocol proto =&gt;
 ShelleyProtocolHeader proto -&gt; OutputVRF (VRF (ProtoCrypto proto))
-</span><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pHeaderVRFValue"><span class="hs-identifier hs-var">pHeaderVRFValue</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolHeader proto
+</span><a href="Ouroboros.Consensus.Shelley.Protocol.Abstract.html#pTieBreakVRFValue"><span class="hs-identifier hs-var">pTieBreakVRFValue</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolHeader proto
 </span><a href="#local-6989586621679720882"><span class="hs-identifier hs-var">shdr</span></a></span><span>
 </span><span id="line-40"></span><span>      </span><span class="hs-special">}</span><span>
 </span><span id="line-41"></span><span>    </span><span class="hs-keyword">where</span><span>
