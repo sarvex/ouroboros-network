@@ -23,8 +23,8 @@
 </span><span id="line-23"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier">Ouroboros.Consensus.Cardano</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Consensus</span></span><span>
 </span><span id="line-24"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier">Ouroboros.Consensus.Cardano.CanHardFork</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Consensus</span></span><span>
 </span><span id="line-25"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier">Ouroboros.Consensus.Cardano.Condense</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
-</span><span id="line-26"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.HardFork.Combinator.Condense</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
-</span><span id="line-27"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Mempool.TxLimits</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">TxLimits</span></span><span>
+</span><span id="line-26"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.HardFork.Combinator.Condense</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-27"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Mempool.TxLimits</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">TxLimits</span></span><span>
 </span><span id="line-28"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier">Ouroboros.Consensus.Shelley.Node.Praos</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Praos</span></span><span>
 </span><span id="line-29"></span><span>
 </span><span id="line-30"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Cardano.Api.Any.html"><span class="hs-identifier">Cardano.Api.Any</span></a></span><span>
@@ -68,65 +68,65 @@
 -&gt; ExceptT
      CardanoProtocolInstantiationError IO SomeConsensusProtocol
 </span><a href="Cardano.Node.Protocol.Cardano.html#mkSomeConsensusProtocolCardano"><span class="hs-identifier hs-var hs-var">mkSomeConsensusProtocolCardano</span></a></span></span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#NodeByronProtocolConfiguration"><span class="hs-identifier hs-type">NodeByronProtocolConfiguration</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-64"></span><span>                             </span><span id="local-6989586621679349478"><span class="annot"><span class="annottext">GenesisFile
+</span><span id="line-64"></span><span>                             </span><span id="local-6989586621679349693"><span class="annot"><span class="annottext">GenesisFile
 npcByronGenesisFile :: NodeByronProtocolConfiguration -&gt; GenesisFile
 npcByronGenesisFile :: GenesisFile
 </span><a href="Cardano.Node.Types.html#npcByronGenesisFile"><span class="hs-identifier hs-var hs-var">npcByronGenesisFile</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-65"></span><span>                             </span><span id="local-6989586621679349476"><span class="annot"><span class="annottext">Maybe GenesisHash
+</span><span id="line-65"></span><span>                             </span><span id="local-6989586621679349691"><span class="annot"><span class="annottext">Maybe GenesisHash
 npcByronGenesisFileHash :: NodeByronProtocolConfiguration -&gt; Maybe GenesisHash
 npcByronGenesisFileHash :: Maybe GenesisHash
 </span><a href="Cardano.Node.Types.html#npcByronGenesisFileHash"><span class="hs-identifier hs-var hs-var">npcByronGenesisFileHash</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-66"></span><span>                             </span><span id="local-6989586621679349474"><span class="annot"><span class="annottext">RequiresNetworkMagic
+</span><span id="line-66"></span><span>                             </span><span id="local-6989586621679349689"><span class="annot"><span class="annottext">RequiresNetworkMagic
 npcByronReqNetworkMagic :: NodeByronProtocolConfiguration -&gt; RequiresNetworkMagic
 npcByronReqNetworkMagic :: RequiresNetworkMagic
 </span><a href="Cardano.Node.Types.html#npcByronReqNetworkMagic"><span class="hs-identifier hs-var hs-var">npcByronReqNetworkMagic</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-67"></span><span>                             </span><span id="local-6989586621679349472"><span class="annot"><span class="annottext">Maybe Double
+</span><span id="line-67"></span><span>                             </span><span id="local-6989586621679349687"><span class="annot"><span class="annottext">Maybe Double
 npcByronPbftSignatureThresh :: NodeByronProtocolConfiguration -&gt; Maybe Double
 npcByronPbftSignatureThresh :: Maybe Double
 </span><a href="Cardano.Node.Types.html#npcByronPbftSignatureThresh"><span class="hs-identifier hs-var hs-var">npcByronPbftSignatureThresh</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-68"></span><span>                             </span><span id="local-6989586621679349470"><span class="annot"><span class="annottext">ApplicationName
+</span><span id="line-68"></span><span>                             </span><span id="local-6989586621679349685"><span class="annot"><span class="annottext">ApplicationName
 npcByronApplicationName :: NodeByronProtocolConfiguration -&gt; ApplicationName
 npcByronApplicationName :: ApplicationName
 </span><a href="Cardano.Node.Types.html#npcByronApplicationName"><span class="hs-identifier hs-var hs-var">npcByronApplicationName</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-69"></span><span>                             </span><span id="local-6989586621679349468"><span class="annot"><span class="annottext">NumSoftwareVersion
+</span><span id="line-69"></span><span>                             </span><span id="local-6989586621679349683"><span class="annot"><span class="annottext">NumSoftwareVersion
 npcByronApplicationVersion :: NodeByronProtocolConfiguration -&gt; NumSoftwareVersion
 npcByronApplicationVersion :: NumSoftwareVersion
 </span><a href="Cardano.Node.Types.html#npcByronApplicationVersion"><span class="hs-identifier hs-var hs-var">npcByronApplicationVersion</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-70"></span><span>                             </span><span id="local-6989586621679349466"><span class="annot"><span class="annottext">Word16
+</span><span id="line-70"></span><span>                             </span><span id="local-6989586621679349681"><span class="annot"><span class="annottext">Word16
 npcByronSupportedProtocolVersionMajor :: NodeByronProtocolConfiguration -&gt; Word16
 npcByronSupportedProtocolVersionMajor :: Word16
 </span><a href="Cardano.Node.Types.html#npcByronSupportedProtocolVersionMajor"><span class="hs-identifier hs-var hs-var">npcByronSupportedProtocolVersionMajor</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-71"></span><span>                             </span><span id="local-6989586621679349464"><span class="annot"><span class="annottext">Word16
+</span><span id="line-71"></span><span>                             </span><span id="local-6989586621679349679"><span class="annot"><span class="annottext">Word16
 npcByronSupportedProtocolVersionMinor :: NodeByronProtocolConfiguration -&gt; Word16
 npcByronSupportedProtocolVersionMinor :: Word16
 </span><a href="Cardano.Node.Types.html#npcByronSupportedProtocolVersionMinor"><span class="hs-identifier hs-var hs-var">npcByronSupportedProtocolVersionMinor</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-72"></span><span>                             </span><span id="local-6989586621679349462"><span class="annot"><span class="annottext">Word8
+</span><span id="line-72"></span><span>                             </span><span id="local-6989586621679349677"><span class="annot"><span class="annottext">Word8
 npcByronSupportedProtocolVersionAlt :: NodeByronProtocolConfiguration -&gt; Word8
 npcByronSupportedProtocolVersionAlt :: Word8
 </span><a href="Cardano.Node.Types.html#npcByronSupportedProtocolVersionAlt"><span class="hs-identifier hs-var hs-var">npcByronSupportedProtocolVersionAlt</span></a></span></span><span>
 </span><span id="line-73"></span><span>                           </span><span class="hs-special">}</span><span>
 </span><span id="line-74"></span><span>                           </span><span class="annot"><a href="Cardano.Node.Types.html#NodeShelleyProtocolConfiguration"><span class="hs-identifier hs-type">NodeShelleyProtocolConfiguration</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-75"></span><span>                             </span><span id="local-6989586621679349459"><span class="annot"><span class="annottext">GenesisFile
+</span><span id="line-75"></span><span>                             </span><span id="local-6989586621679349674"><span class="annot"><span class="annottext">GenesisFile
 npcShelleyGenesisFile :: NodeShelleyProtocolConfiguration -&gt; GenesisFile
 npcShelleyGenesisFile :: GenesisFile
 </span><a href="Cardano.Node.Types.html#npcShelleyGenesisFile"><span class="hs-identifier hs-var hs-var">npcShelleyGenesisFile</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-76"></span><span>                             </span><span id="local-6989586621679349457"><span class="annot"><span class="annottext">Maybe GenesisHash
+</span><span id="line-76"></span><span>                             </span><span id="local-6989586621679349672"><span class="annot"><span class="annottext">Maybe GenesisHash
 npcShelleyGenesisFileHash :: NodeShelleyProtocolConfiguration -&gt; Maybe GenesisHash
 npcShelleyGenesisFileHash :: Maybe GenesisHash
 </span><a href="Cardano.Node.Types.html#npcShelleyGenesisFileHash"><span class="hs-identifier hs-var hs-var">npcShelleyGenesisFileHash</span></a></span></span><span>
 </span><span id="line-77"></span><span>                           </span><span class="hs-special">}</span><span>
 </span><span id="line-78"></span><span>                           </span><span class="annot"><a href="Cardano.Node.Types.html#NodeAlonzoProtocolConfiguration"><span class="hs-identifier hs-type">NodeAlonzoProtocolConfiguration</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-79"></span><span>                             </span><span id="local-6989586621679349454"><span class="annot"><span class="annottext">GenesisFile
+</span><span id="line-79"></span><span>                             </span><span id="local-6989586621679349669"><span class="annot"><span class="annottext">GenesisFile
 npcAlonzoGenesisFile :: NodeAlonzoProtocolConfiguration -&gt; GenesisFile
 npcAlonzoGenesisFile :: GenesisFile
 </span><a href="Cardano.Node.Types.html#npcAlonzoGenesisFile"><span class="hs-identifier hs-var hs-var">npcAlonzoGenesisFile</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-80"></span><span>                             </span><span id="local-6989586621679349452"><span class="annot"><span class="annottext">Maybe GenesisHash
+</span><span id="line-80"></span><span>                             </span><span id="local-6989586621679349667"><span class="annot"><span class="annottext">Maybe GenesisHash
 npcAlonzoGenesisFileHash :: NodeAlonzoProtocolConfiguration -&gt; Maybe GenesisHash
 npcAlonzoGenesisFileHash :: Maybe GenesisHash
 </span><a href="Cardano.Node.Types.html#npcAlonzoGenesisFileHash"><span class="hs-identifier hs-var hs-var">npcAlonzoGenesisFileHash</span></a></span></span><span>
 </span><span id="line-81"></span><span>                           </span><span class="hs-special">}</span><span>
 </span><span id="line-82"></span><span>                           </span><span class="annot"><a href="Cardano.Node.Types.html#NodeHardForkProtocolConfiguration"><span class="hs-identifier hs-type">NodeHardForkProtocolConfiguration</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-83"></span><span>                            </span><span id="local-6989586621679349449"><span class="annot"><span class="annottext">Bool
+</span><span id="line-83"></span><span>                            </span><span id="local-6989586621679349664"><span class="annot"><span class="annottext">Bool
 npcTestEnableDevelopmentHardForkEras :: NodeHardForkProtocolConfiguration -&gt; Bool
 npcTestEnableDevelopmentHardForkEras :: Bool
 </span><a href="Cardano.Node.Types.html#npcTestEnableDevelopmentHardForkEras"><span class="hs-identifier hs-var hs-var">npcTestEnableDevelopmentHardForkEras</span></a></span></span><span class="hs-special">,</span><span>
@@ -135,51 +135,51 @@ npcTestEnableDevelopmentHardForkEras :: Bool
 </span><span id="line-86"></span><span>                            </span><span class="hs-comment">-- testing development/unstable eras is used. This lets us include</span><span>
 </span><span id="line-87"></span><span>                            </span><span class="hs-comment">-- not-yet-ready eras in released node versions without mainnet nodes</span><span>
 </span><span id="line-88"></span><span>                            </span><span class="hs-comment">-- prematurely advertising that they could hard fork into the new era.</span><span>
-</span><span id="line-89"></span><span>                             </span><span id="local-6989586621679349447"><span class="annot"><span class="annottext">Maybe EpochNo
+</span><span id="line-89"></span><span>                             </span><span id="local-6989586621679349662"><span class="annot"><span class="annottext">Maybe EpochNo
 npcTestShelleyHardForkAtEpoch :: NodeHardForkProtocolConfiguration -&gt; Maybe EpochNo
 npcTestShelleyHardForkAtEpoch :: Maybe EpochNo
 </span><a href="Cardano.Node.Types.html#npcTestShelleyHardForkAtEpoch"><span class="hs-identifier hs-var hs-var">npcTestShelleyHardForkAtEpoch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-90"></span><span>                             </span><span id="local-6989586621679349445"><span class="annot"><span class="annottext">Maybe Word
+</span><span id="line-90"></span><span>                             </span><span id="local-6989586621679349660"><span class="annot"><span class="annottext">Maybe Word
 npcTestShelleyHardForkAtVersion :: NodeHardForkProtocolConfiguration -&gt; Maybe Word
 npcTestShelleyHardForkAtVersion :: Maybe Word
 </span><a href="Cardano.Node.Types.html#npcTestShelleyHardForkAtVersion"><span class="hs-identifier hs-var hs-var">npcTestShelleyHardForkAtVersion</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-91"></span><span>                             </span><span id="local-6989586621679349443"><span class="annot"><span class="annottext">Maybe EpochNo
+</span><span id="line-91"></span><span>                             </span><span id="local-6989586621679349658"><span class="annot"><span class="annottext">Maybe EpochNo
 npcTestAllegraHardForkAtEpoch :: NodeHardForkProtocolConfiguration -&gt; Maybe EpochNo
 npcTestAllegraHardForkAtEpoch :: Maybe EpochNo
 </span><a href="Cardano.Node.Types.html#npcTestAllegraHardForkAtEpoch"><span class="hs-identifier hs-var hs-var">npcTestAllegraHardForkAtEpoch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-92"></span><span>                             </span><span id="local-6989586621679349441"><span class="annot"><span class="annottext">Maybe Word
+</span><span id="line-92"></span><span>                             </span><span id="local-6989586621679349656"><span class="annot"><span class="annottext">Maybe Word
 npcTestAllegraHardForkAtVersion :: NodeHardForkProtocolConfiguration -&gt; Maybe Word
 npcTestAllegraHardForkAtVersion :: Maybe Word
 </span><a href="Cardano.Node.Types.html#npcTestAllegraHardForkAtVersion"><span class="hs-identifier hs-var hs-var">npcTestAllegraHardForkAtVersion</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-93"></span><span>                             </span><span id="local-6989586621679349439"><span class="annot"><span class="annottext">Maybe EpochNo
+</span><span id="line-93"></span><span>                             </span><span id="local-6989586621679349654"><span class="annot"><span class="annottext">Maybe EpochNo
 npcTestMaryHardForkAtEpoch :: NodeHardForkProtocolConfiguration -&gt; Maybe EpochNo
 npcTestMaryHardForkAtEpoch :: Maybe EpochNo
 </span><a href="Cardano.Node.Types.html#npcTestMaryHardForkAtEpoch"><span class="hs-identifier hs-var hs-var">npcTestMaryHardForkAtEpoch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-94"></span><span>                             </span><span id="local-6989586621679349437"><span class="annot"><span class="annottext">Maybe Word
+</span><span id="line-94"></span><span>                             </span><span id="local-6989586621679349652"><span class="annot"><span class="annottext">Maybe Word
 npcTestMaryHardForkAtVersion :: NodeHardForkProtocolConfiguration -&gt; Maybe Word
 npcTestMaryHardForkAtVersion :: Maybe Word
 </span><a href="Cardano.Node.Types.html#npcTestMaryHardForkAtVersion"><span class="hs-identifier hs-var hs-var">npcTestMaryHardForkAtVersion</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-95"></span><span>                             </span><span id="local-6989586621679349435"><span class="annot"><span class="annottext">Maybe EpochNo
+</span><span id="line-95"></span><span>                             </span><span id="local-6989586621679349650"><span class="annot"><span class="annottext">Maybe EpochNo
 npcTestAlonzoHardForkAtEpoch :: NodeHardForkProtocolConfiguration -&gt; Maybe EpochNo
 npcTestAlonzoHardForkAtEpoch :: Maybe EpochNo
 </span><a href="Cardano.Node.Types.html#npcTestAlonzoHardForkAtEpoch"><span class="hs-identifier hs-var hs-var">npcTestAlonzoHardForkAtEpoch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-96"></span><span>                             </span><span id="local-6989586621679349433"><span class="annot"><span class="annottext">Maybe Word
+</span><span id="line-96"></span><span>                             </span><span id="local-6989586621679349648"><span class="annot"><span class="annottext">Maybe Word
 npcTestAlonzoHardForkAtVersion :: NodeHardForkProtocolConfiguration -&gt; Maybe Word
 npcTestAlonzoHardForkAtVersion :: Maybe Word
 </span><a href="Cardano.Node.Types.html#npcTestAlonzoHardForkAtVersion"><span class="hs-identifier hs-var hs-var">npcTestAlonzoHardForkAtVersion</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-97"></span><span>                             </span><span id="local-6989586621679349431"><span class="annot"><span class="annottext">Maybe EpochNo
+</span><span id="line-97"></span><span>                             </span><span id="local-6989586621679349646"><span class="annot"><span class="annottext">Maybe EpochNo
 npcTestBabbageHardForkAtEpoch :: NodeHardForkProtocolConfiguration -&gt; Maybe EpochNo
 npcTestBabbageHardForkAtEpoch :: Maybe EpochNo
 </span><a href="Cardano.Node.Types.html#npcTestBabbageHardForkAtEpoch"><span class="hs-identifier hs-var hs-var">npcTestBabbageHardForkAtEpoch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-98"></span><span>                             </span><span id="local-6989586621679349429"><span class="annot"><span class="annottext">Maybe Word
+</span><span id="line-98"></span><span>                             </span><span id="local-6989586621679349644"><span class="annot"><span class="annottext">Maybe Word
 npcTestBabbageHardForkAtVersion :: NodeHardForkProtocolConfiguration -&gt; Maybe Word
 npcTestBabbageHardForkAtVersion :: Maybe Word
 </span><a href="Cardano.Node.Types.html#npcTestBabbageHardForkAtVersion"><span class="hs-identifier hs-var hs-var">npcTestBabbageHardForkAtVersion</span></a></span></span><span>
 </span><span id="line-99"></span><span>                           </span><span class="hs-special">}</span><span>
-</span><span id="line-100"></span><span>                           </span><span id="local-6989586621679349427"><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679349427"><span class="hs-identifier hs-var">files</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-101"></span><span>    </span><span id="local-6989586621679349426"><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679349426"><span class="hs-identifier hs-var">byronGenesis</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><span id="line-100"></span><span>                           </span><span id="local-6989586621679349642"><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
+</span><a href="#local-6989586621679349642"><span class="hs-identifier hs-var">files</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-101"></span><span>    </span><span id="local-6989586621679349641"><span class="annot"><span class="annottext">Config
+</span><a href="#local-6989586621679349641"><span class="hs-identifier hs-var">byronGenesis</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
 </span><span id="line-102"></span><span>      </span><span class="annot"><span class="annottext">(ByronProtocolInstantiationError
  -&gt; CardanoProtocolInstantiationError)
 -&gt; ExceptT ByronProtocolInstantiationError IO Config
@@ -200,14 +200,14 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; RequiresNetworkMagic
 -&gt; ExceptT ByronProtocolInstantiationError IO Config
 </span><a href="Cardano.Node.Protocol.Byron.html#readGenesis"><span class="hs-identifier hs-var">Byron.readGenesis</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisFile
-</span><a href="#local-6989586621679349478"><span class="hs-identifier hs-var">npcByronGenesisFile</span></a></span><span>
+</span><a href="#local-6989586621679349693"><span class="hs-identifier hs-var">npcByronGenesisFile</span></a></span><span>
 </span><span id="line-104"></span><span>                          </span><span class="annot"><span class="annottext">Maybe GenesisHash
-</span><a href="#local-6989586621679349476"><span class="hs-identifier hs-var">npcByronGenesisFileHash</span></a></span><span>
+</span><a href="#local-6989586621679349691"><span class="hs-identifier hs-var">npcByronGenesisFileHash</span></a></span><span>
 </span><span id="line-105"></span><span>                          </span><span class="annot"><span class="annottext">RequiresNetworkMagic
-</span><a href="#local-6989586621679349474"><span class="hs-identifier hs-var">npcByronReqNetworkMagic</span></a></span><span>
+</span><a href="#local-6989586621679349689"><span class="hs-identifier hs-var">npcByronReqNetworkMagic</span></a></span><span>
 </span><span id="line-106"></span><span>
-</span><span id="line-107"></span><span>    </span><span id="local-6989586621679349423"><span class="annot"><span class="annottext">Maybe ByronLeaderCredentials
-</span><a href="#local-6989586621679349423"><span class="hs-identifier hs-var">byronLeaderCredentials</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><span id="line-107"></span><span>    </span><span id="local-6989586621679349638"><span class="annot"><span class="annottext">Maybe ByronLeaderCredentials
+</span><a href="#local-6989586621679349638"><span class="hs-identifier hs-var">byronLeaderCredentials</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
 </span><span id="line-108"></span><span>      </span><span class="annot"><span class="annottext">(ByronProtocolInstantiationError
  -&gt; CardanoProtocolInstantiationError)
 -&gt; ExceptT
@@ -236,12 +236,12 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; ExceptT
      ByronProtocolInstantiationError IO (Maybe ByronLeaderCredentials)
 </span><a href="Cardano.Node.Protocol.Byron.html#readLeaderCredentials"><span class="hs-identifier hs-var">Byron.readLeaderCredentials</span></a></span><span> </span><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679349426"><span class="hs-identifier hs-var">byronGenesis</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679349427"><span class="hs-identifier hs-var">files</span></a></span><span>
+</span><a href="#local-6989586621679349641"><span class="hs-identifier hs-var">byronGenesis</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
+</span><a href="#local-6989586621679349642"><span class="hs-identifier hs-var">files</span></a></span><span>
 </span><span id="line-110"></span><span>
-</span><span id="line-111"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679349421"><span class="annot"><span class="annottext">ShelleyGenesis StandardShelley
-</span><a href="#local-6989586621679349421"><span class="hs-identifier hs-var">shelleyGenesis</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679349420"><span class="annot"><span class="annottext">GenesisHash
-</span><a href="#local-6989586621679349420"><span class="hs-identifier hs-var">shelleyGenesisHash</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><span id="line-111"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679349636"><span class="annot"><span class="annottext">ShelleyGenesis StandardShelley
+</span><a href="#local-6989586621679349636"><span class="hs-identifier hs-var">shelleyGenesis</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679349635"><span class="annot"><span class="annottext">GenesisHash
+</span><a href="#local-6989586621679349635"><span class="hs-identifier hs-var">shelleyGenesisHash</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span>
 </span><span id="line-112"></span><span>      </span><span class="annot"><span class="annottext">(GenesisReadError -&gt; CardanoProtocolInstantiationError)
 -&gt; ExceptT
      GenesisReadError IO (ShelleyGenesis StandardShelley, GenesisHash)
@@ -272,13 +272,13 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; ExceptT
      GenesisReadError IO (ShelleyGenesis StandardShelley, GenesisHash)
 </span><a href="Cardano.Node.Protocol.Shelley.html#readGenesis"><span class="hs-identifier hs-var">Shelley.readGenesis</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisFile
-</span><a href="#local-6989586621679349459"><span class="hs-identifier hs-var">npcShelleyGenesisFile</span></a></span><span>
+</span><a href="#local-6989586621679349674"><span class="hs-identifier hs-var">npcShelleyGenesisFile</span></a></span><span>
 </span><span id="line-114"></span><span>                            </span><span class="annot"><span class="annottext">Maybe GenesisHash
-</span><a href="#local-6989586621679349457"><span class="hs-identifier hs-var">npcShelleyGenesisFileHash</span></a></span><span>
+</span><a href="#local-6989586621679349672"><span class="hs-identifier hs-var">npcShelleyGenesisFileHash</span></a></span><span>
 </span><span id="line-115"></span><span>
-</span><span id="line-116"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679349417"><span class="annot"><span class="annottext">AlonzoGenesis
-</span><a href="#local-6989586621679349417"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679349416"><span class="annot"><span class="annottext">GenesisHash
-</span><a href="#local-6989586621679349416"><span class="hs-identifier hs-var">_alonzoGenesisHash</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><span id="line-116"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679349632"><span class="annot"><span class="annottext">AlonzoGenesis
+</span><a href="#local-6989586621679349632"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679349631"><span class="annot"><span class="annottext">GenesisHash
+</span><a href="#local-6989586621679349631"><span class="hs-identifier hs-var">_alonzoGenesisHash</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span>
 </span><span id="line-117"></span><span>      </span><span class="annot"><span class="annottext">(GenesisReadError -&gt; CardanoProtocolInstantiationError)
 -&gt; ExceptT GenesisReadError IO (AlonzoGenesis, GenesisHash)
 -&gt; ExceptT
@@ -299,12 +299,12 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; Maybe GenesisHash
 -&gt; ExceptT GenesisReadError IO (AlonzoGenesis, GenesisHash)
 </span><a href="Cardano.Node.Protocol.Alonzo.html#readGenesis"><span class="hs-identifier hs-var">Alonzo.readGenesis</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisFile
-</span><a href="#local-6989586621679349454"><span class="hs-identifier hs-var">npcAlonzoGenesisFile</span></a></span><span>
+</span><a href="#local-6989586621679349669"><span class="hs-identifier hs-var">npcAlonzoGenesisFile</span></a></span><span>
 </span><span id="line-119"></span><span>                           </span><span class="annot"><span class="annottext">Maybe GenesisHash
-</span><a href="#local-6989586621679349452"><span class="hs-identifier hs-var">npcAlonzoGenesisFileHash</span></a></span><span>
+</span><a href="#local-6989586621679349667"><span class="hs-identifier hs-var">npcAlonzoGenesisFileHash</span></a></span><span>
 </span><span id="line-120"></span><span>
-</span><span id="line-121"></span><span>    </span><span id="local-6989586621679349413"><span class="annot"><span class="annottext">[ShelleyLeaderCredentials StandardCrypto]
-</span><a href="#local-6989586621679349413"><span class="hs-identifier hs-var">shelleyLeaderCredentials</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><span id="line-121"></span><span>    </span><span id="local-6989586621679349628"><span class="annot"><span class="annottext">[ShelleyLeaderCredentials StandardCrypto]
+</span><a href="#local-6989586621679349628"><span class="hs-identifier hs-var">shelleyLeaderCredentials</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span>
 </span><span id="line-122"></span><span>      </span><span class="annot"><span class="annottext">(PraosLeaderCredentialsError -&gt; CardanoProtocolInstantiationError)
 -&gt; ExceptT
      PraosLeaderCredentialsError
@@ -342,7 +342,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
      IO
      [ShelleyLeaderCredentials StandardCrypto]
 </span><a href="Cardano.Node.Protocol.Shelley.html#readLeaderCredentials"><span class="hs-identifier hs-var">Shelley.readLeaderCredentials</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679349427"><span class="hs-identifier hs-var">files</span></a></span><span>
+</span><a href="#local-6989586621679349642"><span class="hs-identifier hs-var">files</span></a></span><span>
 </span><span id="line-124"></span><span>
 </span><span id="line-125"></span><span>    </span><span class="hs-comment">--TODO: all these protocol versions below are confusing and unnecessary.</span><span>
 </span><span id="line-126"></span><span>    </span><span class="hs-comment">-- It could and should all be automated and these config entries eliminated.</span><span>
@@ -408,15 +408,15 @@ ProtocolParamsByron
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">Consensus.ProtocolParamsByron</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-130"></span><span>          </span><span class="annot"><span class="annottext">$sel:byronGenesis:ProtocolParamsByron :: Config
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-var">byronGenesis</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679349426"><span class="hs-identifier hs-var">byronGenesis</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349641"><span class="hs-identifier hs-var">byronGenesis</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-131"></span><span>          </span><span class="annot"><span class="annottext">$sel:byronPbftSignatureThreshold:ProtocolParamsByron :: Maybe PBftSignatureThreshold
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-var">byronPbftSignatureThreshold</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-132"></span><span>            </span><span class="annot"><span class="annottext">Double -&gt; PBftSignatureThreshold
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">PBftSignatureThreshold</span></a></span><span> </span><span class="annot"><span class="annottext">(Double -&gt; PBftSignatureThreshold)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">PBftSignatureThreshold</span></a></span><span> </span><span class="annot"><span class="annottext">(Double -&gt; PBftSignatureThreshold)
 -&gt; Maybe Double -&gt; Maybe PBftSignatureThreshold
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Double
-</span><a href="#local-6989586621679349472"><span class="hs-identifier hs-var">npcByronPbftSignatureThresh</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349687"><span class="hs-identifier hs-var">npcByronPbftSignatureThresh</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-133"></span><span>
 </span><span id="line-134"></span><span>          </span><span class="hs-comment">-- This is /not/ the Byron protocol version. It is the protocol</span><span>
 </span><span id="line-135"></span><span>          </span><span class="hs-comment">-- version that this node will use in blocks it creates. It is used</span><span>
@@ -431,30 +431,30 @@ forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span id="line-143"></span><span>            </span><span class="annot"><span class="annottext">Word16 -&gt; Word16 -&gt; Word8 -&gt; ProtocolVersion
 </span><span class="hs-identifier hs-var">Byron.ProtocolVersion</span></span><span>
 </span><span id="line-144"></span><span>              </span><span class="annot"><span class="annottext">Word16
-</span><a href="#local-6989586621679349466"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionMajor</span></a></span><span>
+</span><a href="#local-6989586621679349681"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionMajor</span></a></span><span>
 </span><span id="line-145"></span><span>              </span><span class="annot"><span class="annottext">Word16
-</span><a href="#local-6989586621679349464"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionMinor</span></a></span><span>
+</span><a href="#local-6989586621679349679"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionMinor</span></a></span><span>
 </span><span id="line-146"></span><span>              </span><span class="annot"><span class="annottext">Word8
-</span><a href="#local-6989586621679349462"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionAlt</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349677"><span class="hs-identifier hs-var">npcByronSupportedProtocolVersionAlt</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-147"></span><span>          </span><span class="annot"><span class="annottext">$sel:byronSoftwareVersion:ProtocolParamsByron :: SoftwareVersion
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-var">byronSoftwareVersion</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-148"></span><span>            </span><span class="annot"><span class="annottext">ApplicationName -&gt; NumSoftwareVersion -&gt; SoftwareVersion
 </span><span class="hs-identifier hs-var">Byron.SoftwareVersion</span></span><span>
 </span><span id="line-149"></span><span>              </span><span class="annot"><span class="annottext">ApplicationName
-</span><a href="#local-6989586621679349470"><span class="hs-identifier hs-var">npcByronApplicationName</span></a></span><span>
+</span><a href="#local-6989586621679349685"><span class="hs-identifier hs-var">npcByronApplicationName</span></a></span><span>
 </span><span id="line-150"></span><span>              </span><span class="annot"><span class="annottext">NumSoftwareVersion
-</span><a href="#local-6989586621679349468"><span class="hs-identifier hs-var">npcByronApplicationVersion</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349683"><span class="hs-identifier hs-var">npcByronApplicationVersion</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-151"></span><span>          </span><span class="annot"><span class="annottext">$sel:byronLeaderCredentials:ProtocolParamsByron :: Maybe ByronLeaderCredentials
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-var">byronLeaderCredentials</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-152"></span><span>            </span><span class="annot"><span class="annottext">Maybe ByronLeaderCredentials
-</span><a href="#local-6989586621679349423"><span class="hs-identifier hs-var">byronLeaderCredentials</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349638"><span class="hs-identifier hs-var">byronLeaderCredentials</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-153"></span><span>          </span><span class="annot"><span class="annottext">$sel:byronMaxTxCapacityOverrides:ProtocolParamsByron :: Overrides ByronBlock
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.1.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-var">byronMaxTxCapacityOverrides</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-154"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure ByronBlock -&gt; Overrides ByronBlock
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure ByronBlock
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure ByronBlock
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-155"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-156"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsShelleyBased :: forall era.
 ShelleyGenesis era
@@ -464,16 +464,16 @@ ShelleyGenesis era
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">Consensus.ProtocolParamsShelleyBased</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-157"></span><span>          </span><span class="annot"><span class="annottext">shelleyBasedGenesis :: ShelleyGenesis StandardShelley
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">shelleyBasedGenesis</span></a></span><span>           </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShelleyGenesis StandardShelley
-</span><a href="#local-6989586621679349421"><span class="hs-identifier hs-var">shelleyGenesis</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349636"><span class="hs-identifier hs-var">shelleyGenesis</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-158"></span><span>          </span><span class="annot"><span class="annottext">shelleyBasedInitialNonce :: Nonce
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">shelleyBasedInitialNonce</span></a></span><span>      </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">GenesisHash -&gt; Nonce
 </span><a href="Cardano.Node.Protocol.Shelley.html#genesisHashToPraosNonce"><span class="hs-identifier hs-var">Shelley.genesisHashToPraosNonce</span></a></span><span>
 </span><span id="line-159"></span><span>                                            </span><span class="annot"><span class="annottext">GenesisHash
-</span><a href="#local-6989586621679349420"><span class="hs-identifier hs-var">shelleyGenesisHash</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349635"><span class="hs-identifier hs-var">shelleyGenesisHash</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-160"></span><span>          </span><span class="annot"><span class="annottext">shelleyBasedLeaderCredentials :: [ShelleyLeaderCredentials (EraCrypto StandardShelley)]
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">shelleyBasedLeaderCredentials</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[ShelleyLeaderCredentials StandardCrypto]
 [ShelleyLeaderCredentials (EraCrypto StandardShelley)]
-</span><a href="#local-6989586621679349413"><span class="hs-identifier hs-var">shelleyLeaderCredentials</span></a></span><span>
+</span><a href="#local-6989586621679349628"><span class="hs-identifier hs-var">shelleyLeaderCredentials</span></a></span><span>
 </span><span id="line-161"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-162"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsShelley :: forall c.
 ProtVer
@@ -495,9 +495,9 @@ ProtVer
 </span><span id="line-170"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 -&gt; Overrides (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-171"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-172"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsAllegra :: forall c.
 ProtVer
@@ -519,9 +519,9 @@ ProtVer
 </span><span id="line-180"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAllegra)
 -&gt; Overrides (ShelleyBlock (TPraos StandardCrypto) StandardAllegra)
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAllegra)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAllegra)
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-181"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-182"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsMary :: forall c.
 ProtVer
@@ -542,9 +542,9 @@ ProtVer
 </span><span id="line-189"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardMary)
 -&gt; Overrides (ShelleyBlock (TPraos StandardCrypto) StandardMary)
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardMary)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardMary)
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-190"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-191"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsAlonzo :: forall c.
 ProtVer
@@ -565,9 +565,9 @@ ProtVer
 </span><span id="line-198"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAlonzo)
 -&gt; Overrides (ShelleyBlock (TPraos StandardCrypto) StandardAlonzo)
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAlonzo)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardAlonzo)
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-199"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-200"></span><span>        </span><span class="annot"><span class="annottext">ProtocolParamsBabbage :: forall c.
 ProtVer
@@ -581,7 +581,7 @@ ProtVer
 </span><span id="line-205"></span><span>          </span><span class="annot"><span class="annottext">babbageProtVer :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.1.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">Praos.babbageProtVer</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-206"></span><span>            </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Bool
-</span><a href="#local-6989586621679349449"><span class="hs-identifier hs-var">npcTestEnableDevelopmentHardForkEras</span></a></span><span>
+</span><a href="#local-6989586621679349664"><span class="hs-identifier hs-var">npcTestEnableDevelopmentHardForkEras</span></a></span><span>
 </span><span id="line-207"></span><span>            </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">7</span></span><span> </span><span class="annot"><span class="annottext">Natural
@@ -595,9 +595,9 @@ ProtVer
 </span><span id="line-210"></span><span>            </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (Praos StandardCrypto) StandardBabbage)
 -&gt; Overrides (ShelleyBlock (Praos StandardCrypto) StandardBabbage)
 forall blk. TxMeasure blk -&gt; Overrides blk
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (Praos StandardCrypto) StandardBabbage)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (Praos StandardCrypto) StandardBabbage)
 forall a. BoundedMeasure a =&gt; a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">TxLimits.noOverridesMeasure</span></a></span><span>
 </span><span id="line-211"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-212"></span><span>        </span><span class="hs-comment">-- ProtocolParamsTransition specifies the parameters needed to transition between two eras</span><span>
 </span><span id="line-213"></span><span>        </span><span class="hs-comment">-- The comments below also apply for the Shelley -&gt; Allegra and Allegra -&gt; Mary hard forks.</span><span>
@@ -612,7 +612,7 @@ TranslationContext era
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTrigger</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-218"></span><span>            </span><span class="hs-comment">-- What will trigger the Byron -&gt; Shelley hard fork?</span><span>
 </span><span id="line-219"></span><span>            </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe EpochNo
-</span><a href="#local-6989586621679349447"><span class="hs-identifier hs-var">npcTestShelleyHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679349662"><span class="hs-identifier hs-var">npcTestShelleyHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-220"></span><span>
 </span><span id="line-221"></span><span>               </span><span class="hs-comment">-- This specifies the major protocol version number update that will</span><span>
 </span><span id="line-222"></span><span>               </span><span class="hs-comment">-- trigger us moving to the Shelley protocol.</span><span>
@@ -631,21 +631,21 @@ TranslationContext era
 </span><span id="line-235"></span><span>               </span><span class="hs-comment">--</span><span>
 </span><span id="line-236"></span><span>               </span><span class="annot"><span class="annottext">Maybe EpochNo
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Word16 -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
 </span><span id="line-237"></span><span>                            </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word16 -&gt; (Word -&gt; Word16) -&gt; Maybe Word -&gt; Word16
 forall b a. b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maybe</span></a></span><span> </span><span class="annot"><span class="annottext">Word16
 </span><span class="hs-number">2</span></span><span> </span><span class="annot"><span class="annottext">Word -&gt; Word16
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Word
-</span><a href="#local-6989586621679349445"><span class="hs-identifier hs-var">npcTestShelleyHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679349660"><span class="hs-identifier hs-var">npcTestShelleyHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-238"></span><span>
 </span><span id="line-239"></span><span>               </span><span class="hs-comment">-- Alternatively, for testing we can transition at a specific epoch.</span><span>
 </span><span id="line-240"></span><span>               </span><span class="hs-comment">--</span><span>
-</span><span id="line-241"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349367"><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349367"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349367"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
+</span><span id="line-241"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349582"><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349582"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349582"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
 </span><span id="line-242"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-243"></span><span>        </span><span class="hs-comment">-- Shelley to Allegra hard fork parameters</span><span>
 </span><span id="line-244"></span><span>        </span><span class="annot"><span class="annottext">ProtocolTransitionParamsShelleyBased :: forall era.
@@ -657,21 +657,21 @@ TranslationContext era
 </span><span id="line-246"></span><span>          </span><span class="annot"><span class="annottext">transitionTrigger :: TriggerHardFork
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTrigger</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-247"></span><span>            </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe EpochNo
-</span><a href="#local-6989586621679349443"><span class="hs-identifier hs-var">npcTestAllegraHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679349658"><span class="hs-identifier hs-var">npcTestAllegraHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-248"></span><span>               </span><span class="annot"><span class="annottext">Maybe EpochNo
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Word16 -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
 </span><span id="line-249"></span><span>                            </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word16 -&gt; (Word -&gt; Word16) -&gt; Maybe Word -&gt; Word16
 forall b a. b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maybe</span></a></span><span> </span><span class="annot"><span class="annottext">Word16
 </span><span class="hs-number">3</span></span><span> </span><span class="annot"><span class="annottext">Word -&gt; Word16
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Word
-</span><a href="#local-6989586621679349441"><span class="hs-identifier hs-var">npcTestAllegraHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-250"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349365"><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349365"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349365"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
+</span><a href="#local-6989586621679349656"><span class="hs-identifier hs-var">npcTestAllegraHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-250"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349580"><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349580"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349580"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
 </span><span id="line-251"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-252"></span><span>        </span><span class="hs-comment">-- Allegra to Mary hard fork parameters</span><span>
 </span><span id="line-253"></span><span>        </span><span class="annot"><span class="annottext">ProtocolTransitionParamsShelleyBased :: forall era.
@@ -683,21 +683,21 @@ TranslationContext era
 </span><span id="line-255"></span><span>          </span><span class="annot"><span class="annottext">transitionTrigger :: TriggerHardFork
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTrigger</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-256"></span><span>            </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe EpochNo
-</span><a href="#local-6989586621679349439"><span class="hs-identifier hs-var">npcTestMaryHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679349654"><span class="hs-identifier hs-var">npcTestMaryHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-257"></span><span>               </span><span class="annot"><span class="annottext">Maybe EpochNo
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Word16 -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
 </span><span id="line-258"></span><span>                            </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word16 -&gt; (Word -&gt; Word16) -&gt; Maybe Word -&gt; Word16
 forall b a. b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maybe</span></a></span><span> </span><span class="annot"><span class="annottext">Word16
 </span><span class="hs-number">4</span></span><span> </span><span class="annot"><span class="annottext">Word -&gt; Word16
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Word
-</span><a href="#local-6989586621679349437"><span class="hs-identifier hs-var">npcTestMaryHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-259"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349364"><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349364"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349364"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
+</span><a href="#local-6989586621679349652"><span class="hs-identifier hs-var">npcTestMaryHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-259"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349579"><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349579"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349579"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
 </span><span id="line-260"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-261"></span><span>        </span><span class="hs-comment">-- Mary to Alonzo hard fork parameters</span><span>
 </span><span id="line-262"></span><span>        </span><span class="annot"><span class="annottext">ProtocolTransitionParamsShelleyBased :: forall era.
@@ -707,25 +707,25 @@ TranslationContext era
 </span><span id="line-263"></span><span>          </span><span class="annot"><span class="annottext">transitionTranslationContext :: TranslationContext StandardAlonzo
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTranslationContext</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TranslationContext StandardAlonzo
 AlonzoGenesis
-</span><a href="#local-6989586621679349417"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349632"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-264"></span><span>          </span><span class="annot"><span class="annottext">transitionTrigger :: TriggerHardFork
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTrigger</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-265"></span><span>            </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe EpochNo
-</span><a href="#local-6989586621679349435"><span class="hs-identifier hs-var">npcTestAlonzoHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679349650"><span class="hs-identifier hs-var">npcTestAlonzoHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-266"></span><span>               </span><span class="annot"><span class="annottext">Maybe EpochNo
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Word16 -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
 </span><span id="line-267"></span><span>                            </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word16 -&gt; (Word -&gt; Word16) -&gt; Maybe Word -&gt; Word16
 forall b a. b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maybe</span></a></span><span> </span><span class="annot"><span class="annottext">Word16
 </span><span class="hs-number">5</span></span><span> </span><span class="annot"><span class="annottext">Word -&gt; Word16
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Word
-</span><a href="#local-6989586621679349433"><span class="hs-identifier hs-var">npcTestAlonzoHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-268"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349363"><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349363"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349363"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
+</span><a href="#local-6989586621679349648"><span class="hs-identifier hs-var">npcTestAlonzoHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-268"></span><span>               </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349578"><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349578"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349578"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
 </span><span id="line-269"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-270"></span><span>        </span><span class="hs-comment">-- Alonzo to Babbage hard fork parameters</span><span>
 </span><span id="line-271"></span><span>        </span><span class="annot"><span class="annottext">ProtocolTransitionParamsShelleyBased :: forall era.
@@ -735,25 +735,25 @@ TranslationContext era
 </span><span id="line-272"></span><span>          </span><span class="annot"><span class="annottext">transitionTranslationContext :: TranslationContext StandardBabbage
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTranslationContext</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TranslationContext StandardBabbage
 AlonzoGenesis
-</span><a href="#local-6989586621679349417"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span><span class="hs-special">,</span><span>
+</span><a href="#local-6989586621679349632"><span class="hs-identifier hs-var">alonzoGenesis</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-273"></span><span>          </span><span class="annot"><span class="annottext">transitionTrigger :: TriggerHardFork
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.1.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-var">transitionTrigger</span></a></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-274"></span><span>             </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe EpochNo
-</span><a href="#local-6989586621679349431"><span class="hs-identifier hs-var">npcTestBabbageHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679349646"><span class="hs-identifier hs-var">npcTestBabbageHardForkAtEpoch</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-275"></span><span>                </span><span class="annot"><span class="annottext">Maybe EpochNo
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Word16 -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtVersion</span></a></span><span>
 </span><span id="line-276"></span><span>                             </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word16 -&gt; (Word -&gt; Word16) -&gt; Maybe Word -&gt; Word16
 forall b a. b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maybe</span></a></span><span> </span><span class="annot"><span class="annottext">Word16
 </span><span class="hs-number">7</span></span><span> </span><span class="annot"><span class="annottext">Word -&gt; Word16
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Word
-</span><a href="#local-6989586621679349429"><span class="hs-identifier hs-var">npcTestBabbageHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-277"></span><span>                </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349362"><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349362"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
-</span><a href="#local-6989586621679349362"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
+</span><a href="#local-6989586621679349644"><span class="hs-identifier hs-var">npcTestBabbageHardForkAtVersion</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-277"></span><span>                </span><span class="annot"><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Just</span></a></span><span> </span><span id="local-6989586621679349577"><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349577"><span class="hs-identifier hs-var">epochNo</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">EpochNo -&gt; TriggerHardFork
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.1.0.2/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Consensus.TriggerHardForkAtEpoch</span></a></span><span> </span><span class="annot"><span class="annottext">EpochNo
+</span><a href="#local-6989586621679349577"><span class="hs-identifier hs-var">epochNo</span></a></span><span>
 </span><span id="line-278"></span><span>
 </span><span id="line-279"></span><span>        </span><span class="hs-special">}</span><span>
 </span><span id="line-280"></span><span>
@@ -776,7 +776,7 @@ forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><span id="line-297"></span><span>
 </span><span id="line-298"></span><span>     </span><span class="hs-glyph">|</span><span> </span><span id="CardanoProtocolInstantiationErrorAlonzo"><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationErrorAlonzo"><span class="hs-identifier hs-var">CardanoProtocolInstantiationErrorAlonzo</span></a></span></span><span>
 </span><span id="line-299"></span><span>         </span><span class="annot"><a href="Cardano.Node.Protocol.Alonzo.html#AlonzoProtocolInstantiationError"><span class="hs-identifier hs-type">Alonzo.AlonzoProtocolInstantiationError</span></a></span><span>
-</span><span id="line-300"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679349355"><span id="local-6989586621679349357"><span id="local-6989586621679349359"><span class="annot"><span class="annottext">Int -&gt; CardanoProtocolInstantiationError -&gt; ShowS
+</span><span id="line-300"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679349570"><span id="local-6989586621679349572"><span id="local-6989586621679349574"><span class="annot"><span class="annottext">Int -&gt; CardanoProtocolInstantiationError -&gt; ShowS
 [CardanoProtocolInstantiationError] -&gt; ShowS
 CardanoProtocolInstantiationError -&gt; String
 (Int -&gt; CardanoProtocolInstantiationError -&gt; ShowS)
@@ -794,41 +794,41 @@ $cshowsPrec :: Int -&gt; CardanoProtocolInstantiationError -&gt; ShowS
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span>
 </span><span id="line-301"></span><span>
 </span><span id="line-302"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="Cardano.Api.Any.html#Error"><span class="hs-identifier hs-type">Error</span></a></span><span> </span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationError</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-303"></span><span>  </span><span id="local-6989586621679349350"><span class="annot"><span class="annottext">displayError :: CardanoProtocolInstantiationError -&gt; String
-</span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var hs-var hs-var hs-var">displayError</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationErrorByron"><span class="hs-identifier hs-type">CardanoProtocolInstantiationErrorByron</span></a></span><span> </span><span id="local-6989586621679349348"><span class="annot"><span class="annottext">ByronProtocolInstantiationError
-</span><a href="#local-6989586621679349348"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-303"></span><span>  </span><span id="local-6989586621679349565"><span class="annot"><span class="annottext">displayError :: CardanoProtocolInstantiationError -&gt; String
+</span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var hs-var hs-var hs-var">displayError</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationErrorByron"><span class="hs-identifier hs-type">CardanoProtocolInstantiationErrorByron</span></a></span><span> </span><span id="local-6989586621679349563"><span class="annot"><span class="annottext">ByronProtocolInstantiationError
+</span><a href="#local-6989586621679349563"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-304"></span><span>    </span><span class="annot"><span class="annottext">ByronProtocolInstantiationError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">ByronProtocolInstantiationError
-</span><a href="#local-6989586621679349348"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-305"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationShelleyGenesisReadError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationShelleyGenesisReadError</span></a></span><span> </span><span id="local-6989586621679349347"><span class="annot"><span class="annottext">GenesisReadError
-</span><a href="#local-6989586621679349347"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679349563"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-305"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationShelleyGenesisReadError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationShelleyGenesisReadError</span></a></span><span> </span><span id="local-6989586621679349562"><span class="annot"><span class="annottext">GenesisReadError
+</span><a href="#local-6989586621679349562"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-306"></span><span>    </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Shelley related: &quot;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
 forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisReadError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisReadError
-</span><a href="#local-6989586621679349347"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-307"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationAlonzoGenesisReadError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationAlonzoGenesisReadError</span></a></span><span> </span><span id="local-6989586621679349346"><span class="annot"><span class="annottext">GenesisReadError
-</span><a href="#local-6989586621679349346"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679349562"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-307"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationAlonzoGenesisReadError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationAlonzoGenesisReadError</span></a></span><span> </span><span id="local-6989586621679349561"><span class="annot"><span class="annottext">GenesisReadError
+</span><a href="#local-6989586621679349561"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-308"></span><span>    </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Alonzo related: &quot;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
 forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///home/runner/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisReadError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">GenesisReadError
-</span><a href="#local-6989586621679349346"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-309"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationPraosLeaderCredentialsError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationPraosLeaderCredentialsError</span></a></span><span> </span><span id="local-6989586621679349345"><span class="annot"><span class="annottext">PraosLeaderCredentialsError
-</span><a href="#local-6989586621679349345"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679349561"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-309"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationPraosLeaderCredentialsError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationPraosLeaderCredentialsError</span></a></span><span> </span><span id="local-6989586621679349560"><span class="annot"><span class="annottext">PraosLeaderCredentialsError
+</span><a href="#local-6989586621679349560"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-310"></span><span>    </span><span class="annot"><span class="annottext">PraosLeaderCredentialsError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">PraosLeaderCredentialsError
-</span><a href="#local-6989586621679349345"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-311"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationErrorAlonzo"><span class="hs-identifier hs-type">CardanoProtocolInstantiationErrorAlonzo</span></a></span><span> </span><span id="local-6989586621679349344"><span class="annot"><span class="annottext">AlonzoProtocolInstantiationError
-</span><a href="#local-6989586621679349344"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679349560"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-311"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationErrorAlonzo"><span class="hs-identifier hs-type">CardanoProtocolInstantiationErrorAlonzo</span></a></span><span> </span><span id="local-6989586621679349559"><span class="annot"><span class="annottext">AlonzoProtocolInstantiationError
+</span><a href="#local-6989586621679349559"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-312"></span><span>    </span><span class="annot"><span class="annottext">AlonzoProtocolInstantiationError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">AlonzoProtocolInstantiationError
-</span><a href="#local-6989586621679349344"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><a href="#local-6989586621679349559"><span class="hs-identifier hs-var">err</span></a></span><span>
 </span><span id="line-313"></span></pre></body></html>
