@@ -451,7 +451,7 @@ projectLedgerTablesHelper prjLT (HardForkState st) =
         inj ::
              mk (SL.TxIn c) (Core.TxOut (Snd a))
           -> mk (SL.TxIn c) (CardanoTxOut c)
-        inj = mapValuesAppliedMK (ShelleyTxOut . injectNS (castSndIdx idx) . TxOutWrapper)
+        inj = mapMK (ShelleyTxOut . injectNS (castSndIdx idx) . TxOutWrapper)
 
 class (SL.Crypto (Snd a) ~ c, ShelleyBasedEra (Snd a)) => SndShelleyBasedEra c a
 instance (SL.Crypto (Snd a) ~ c, ShelleyBasedEra (Snd a)) => SndShelleyBasedEra c a
@@ -504,7 +504,7 @@ withLedgerTablesHelper withLT (HardForkState st) (CardanoLedgerTables appliedMK)
                 newInnerSt =
                   withLT innerSt
                   $ ShelleyLedgerTables
-                  $ mapValuesAppliedMK
+                  $ mapMK
                       (unTxOutWrapper . apFn translate . K)
                       appliedMK
             in UncurryComp $ current{currentState = newInnerSt})
@@ -575,7 +575,7 @@ deriving newtype instance (Praos.PraosCrypto c, TPraos.PraosCrypto c, DSignable 
 instance (TPraos.PraosCrypto c, Praos.PraosCrypto c, DSignable c (Hash c EraIndependentTxBody)) => ShowLedgerState (LedgerTables (LedgerState (CardanoBlock c))) where
   showsLedgerState _mk (CardanoLedgerTables utxo) =
         showParen True
-      $ showString "CardanoLedgerTables " . showsApplyMapKind utxo
+      $ showString "CardanoLedgerTables " . const ""
 
 -- | Auxiliary for convenience
 --
@@ -674,7 +674,7 @@ instance CardanoHardForkConstraints c => LedgerTablesCanHardFork (CardanoEras c)
         -> InjectLedgerTables (CardanoEras c) (ShelleyBlock proto era)
       shelley idx =
           InjectLedgerTables
-        $ \(ShelleyLedgerTables lt) -> CardanoLedgerTables $ mapValuesAppliedMK f lt
+        $ \(ShelleyLedgerTables lt) -> CardanoLedgerTables $ mapMK f lt
         where
           f :: Core.TxOut era -> CardanoTxOut c
           f = ShelleyTxOut . injectNS idx . TxOutWrapper

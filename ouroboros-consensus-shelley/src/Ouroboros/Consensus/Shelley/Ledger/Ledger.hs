@@ -217,7 +217,7 @@ data instance LedgerState (ShelleyBlock proto era) mk = ShelleyLedgerState {
 deriving instance (ShelleyBasedEra era, Eq       (mk (SL.TxIn (EraCrypto era)) (Core.TxOut era))) => Eq       (LedgerState (ShelleyBlock proto era) mk)
 deriving instance (ShelleyBasedEra era, NoThunks (mk (SL.TxIn (EraCrypto era)) (Core.TxOut era))) => NoThunks (LedgerState (ShelleyBlock proto era) mk)
 
-instance (ShelleyBasedEra era, SingI mk) => Show (LedgerState (ShelleyBlock proto era) (ApplyMapKind' mk)) where
+instance (ShelleyBasedEra era, IsApplyMapKind mk) => Show (LedgerState (ShelleyBlock proto era) mk) where
   showsPrec _prec = showsLedgerState sMapKind
 
 instance ShelleyBasedEra era => ShowLedgerState (LedgerState (ShelleyBlock proto era)) where
@@ -345,7 +345,7 @@ instance ShelleyBasedEra era => SufficientSerializationForAnyBackingStore (Ledge
 instance ShelleyBasedEra era => ShowLedgerState (LedgerTables (LedgerState (ShelleyBlock proto era))) where
   showsLedgerState _mk (ShelleyLedgerTables utxo) =
         showParen True
-      $ showString "ShelleyLedgerTables " . showsApplyMapKind utxo
+      $ showString "ShelleyLedgerTables " . const ""
 
 instance
      ShelleyBasedEra era

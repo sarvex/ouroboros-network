@@ -338,7 +338,9 @@ class ( Typeable ptype
       , Eq        (PayloadDependentState ptype DiffMK)
       , Eq        (PayloadDependentState ptype ValuesMK)
 
-      , forall mk'. Show (PayloadDependentState ptype (ApplyMapKind' mk'))
+      , Show      (PayloadDependentState ptype EmptyMK)
+      , Show      (PayloadDependentState ptype DiffMK)
+      , Show      (PayloadDependentState ptype ValuesMK)
 
       , forall mk. Generic   (PayloadDependentState ptype mk)
       ,            Serialise (PayloadDependentState ptype EmptyMK)
@@ -464,7 +466,7 @@ instance ( Typeable ptype
 type instance LedgerCfg (LedgerState TestBlock) = HardFork.EraParams
 
 instance PayloadSemantics ptype => ShowLedgerState (LedgerState (TestBlockWith ptype)) where
-  showsLedgerState _sing = shows
+  showsLedgerState _sing _ = const ""
 
 instance TableStuff (LedgerState TestBlock) where
   data LedgerTables (LedgerState TestBlock) mk = NoTestLedgerTables
@@ -540,7 +542,11 @@ data instance LedgerState (TestBlockWith ptype) mk =
       }
 
 deriving stock instance PayloadSemantics ptype
-  => Show (LedgerState (TestBlockWith ptype) (ApplyMapKind' mk))
+  => Show (LedgerState (TestBlockWith ptype) EmptyMK)
+deriving stock instance PayloadSemantics ptype
+  => Show (LedgerState (TestBlockWith ptype) ValuesMK)
+deriving stock instance PayloadSemantics ptype
+  => Show (LedgerState (TestBlockWith ptype) DiffMK)
 
 deriving stock instance Eq (PayloadDependentState ptype EmptyMK)
   => Eq (LedgerState (TestBlockWith ptype) EmptyMK)
