@@ -414,8 +414,7 @@ instance InMemory (Ticked1 (LedgerState (HardForkBlock '[BlockA, BlockB]))) wher
           (FlipTickedLedgerState . convertMapKind . getFlipTickedLedgerState)
           hfstate
 
-instance ShowLedgerState (LedgerTables (LedgerState (HardForkBlock '[BlockA, BlockB]))) where
-  showsLedgerState _mk = shows
+instance ShowLedgerState (LedgerTables (LedgerState (HardForkBlock '[BlockA, BlockB])))
 
 {-------------------------------------------------------------------------------
   Hard fork

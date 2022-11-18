@@ -1,5 +1,6 @@
 {-# LANGUAGE ConstraintKinds       #-}
 {-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE DefaultSignatures     #-}
 {-# LANGUAGE DeriveAnyClass        #-}
 {-# LANGUAGE DeriveFoldable        #-}
 {-# LANGUAGE DeriveFunctor         #-}
@@ -203,7 +204,9 @@ pureLedgerResult a = LedgerResult {
 -------------------------------------------------------------------------------}
 
 class ShowLedgerState (l :: LedgerStateKind) where
-  showsLedgerState :: SMapKind mk -> l (ApplyMapKind' mk) -> ShowS
+  showsLedgerState :: IsMapKind mk => l mk -> ShowS
+  default showsLedgerState :: Show (l mk) => l mk -> ShowS
+  showsLedgerState = shows
 
 {-------------------------------------------------------------------------------
   Definition of a ledger independent of a choice of block
@@ -339,7 +342,7 @@ class ( ShowLedgerState (LedgerTables l)
   -- the 'SingI' constraint. Unfortunately, that is not always the case. The
   -- example we have found in our prototype UTxO HD implementat is that a Byron
   -- ledger state does not determine @mk@, but the Cardano ledger tables do.
-  projectLedgerTables :: IsApplyMapKind mk => l mk -> LedgerTables l mk
+  projectLedgerTables :: IsMapKind mk => l mk -> LedgerTables l mk
 
   -- | Overwrite the tables in some ledger state.
   --
@@ -353,7 +356,7 @@ class ( ShowLedgerState (LedgerTables l)
   --
   -- TODO: This 'IsApplyMapKind' constraint is necessary because the
   -- 'CardanoBlock' instance uses 'projectLedgerTables'.
-  withLedgerTables :: IsApplyMapKind mk => l any -> LedgerTables l mk -> l mk
+  withLedgerTables :: IsMapKind mk => l any -> LedgerTables l mk -> l mk
 
   pureLedgerTables ::
        (forall k v.
@@ -456,14 +459,14 @@ class ( ShowLedgerState (LedgerTables l)
   namesLedgerTables :: LedgerTables l NameMK
 
 overLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
+     (TableStuff l, IsMapKind mk1, IsMapKind mk2)
   => (LedgerTables l mk1 -> LedgerTables l mk2)
   -> l mk1
   -> l mk2
 overLedgerTables f l = withLedgerTables l $ f $ projectLedgerTables l
 
 mapOverLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
+     (TableStuff l, IsMapKind mk1, IsMapKind mk2)
   => (forall k v.
           (Ord k, Eq v)
        => mk1 k v
@@ -474,7 +477,7 @@ mapOverLedgerTables ::
 mapOverLedgerTables f = overLedgerTables $ mapLedgerTables f
 
 zipOverLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk3)
+     (TableStuff l, IsMapKind mk1, IsMapKind mk3)
   => (forall k v.
           (Ord k, Eq v)
        => mk1 k v
@@ -494,13 +497,13 @@ zipOverLedgerTables f l tables2 =
 class TableStuff l => TickedTableStuff (l :: LedgerStateKind) where
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'projectLedgerTables'
-  projectLedgerTablesTicked :: IsApplyMapKind mk => Ticked1 l mk  -> LedgerTables l mk
+  projectLedgerTablesTicked :: IsMapKind mk => Ticked1 l mk  -> LedgerTables l mk
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'withLedgerTables'
-  withLedgerTablesTicked    :: IsApplyMapKind mk => Ticked1 l any -> LedgerTables l mk -> Ticked1 l mk
+  withLedgerTablesTicked    :: IsMapKind mk => Ticked1 l any -> LedgerTables l mk -> Ticked1 l mk
 
 overLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
+     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk2)
   => (LedgerTables l mk1 -> LedgerTables l mk2)
   -> Ticked1 l mk1
   -> Ticked1 l mk2
@@ -508,7 +511,7 @@ overLedgerTablesTicked f l =
     withLedgerTablesTicked l $ f $ projectLedgerTablesTicked l
 
 mapOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
+     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk2)
   => (forall k v.
          (Ord k, Eq v)
       => mk1 k v
@@ -519,7 +522,7 @@ mapOverLedgerTablesTicked ::
 mapOverLedgerTablesTicked f = overLedgerTablesTicked $ mapLedgerTables f
 
 zipOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk3)
+     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk3)
   => (forall k v.
          (Ord k, Eq v)
       => mk1 k v
@@ -596,7 +599,7 @@ emptyLedgerTables :: TableStuff l => LedgerTables l EmptyMK
 emptyLedgerTables = polyEmptyLedgerTables
 
 -- | Empty values for every table
-polyEmptyLedgerTables :: forall mk l. (TableStuff l, IsApplyMapKind mk) => LedgerTables l mk
+polyEmptyLedgerTables :: forall mk l. (TableStuff l, IsMapKind mk) => LedgerTables l mk
 polyEmptyLedgerTables = pureLedgerTables emptyMK
 
 -- Forget all
@@ -820,7 +823,7 @@ instance (ShowLedgerState l, ShowLedgerState (LedgerTables l)) => Show (DbChange
         showParen (p >= 11)
       $   showString "DbChangelog {"
         . showSpace      . showString "changelogDiffAnchor = "      . shows changelogDiffAnchor
-        . showCommaSpace . showString "changelogDiffs = "           . showsLedgerState sMapKind changelogDiffs
+        . showCommaSpace . showString "changelogDiffs = "           . showsLedgerState changelogDiffs
         . showCommaSpace . showString "changelogImmutableStates = " . shows changelogImmutableStates
         . showCommaSpace . showString "changelogVolatileStates = "  . shows changelogVolatileStates
         . showString " }"
@@ -842,7 +845,7 @@ deriving instance NoThunks (l EmptyMK) => NoThunks (DbChangelogState l)
 instance ShowLedgerState l => Show (DbChangelogState l) where
   showsPrec p (DbChangelogState x) =
         showParen (p >= 11)
-      $ showString "DbChangelogState " . showsLedgerState sMapKind x
+      $ showString "DbChangelogState " . showsLedgerState x
 
 instance GetTip (l EmptyMK) => AS.Anchorable (WithOrigin SlotNo) (DbChangelogState l) (DbChangelogState l) where
   asAnchor = id

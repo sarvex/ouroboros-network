@@ -164,17 +164,21 @@ deriving instance (Eq (mk Int Bool), Eq (mk Text Word)) => (Eq (LedgerTables T m
 deriving instance (Show (mk Int Bool), Show (mk Text Word)) => Show (LedgerTables T mk)
 
 instance ShowLedgerState T where
-  showsLedgerState _ T{seqNo, tbl1, tbl2} = showParen True
+  showsLedgerState T{seqNo, tbl1, tbl2} = showParen True
     $ showString "T { seqNo = "
     . shows seqNo
     . showString ", tbl1 = "
+    . showsMK tbl1
     . showString ", tbl2 = "
+    . showsMK tbl2
     . showString " }"
 
 instance ShowLedgerState (LedgerTables T) where
-  showsLedgerState _ TLedgerTables{lgrTbl1, lgrTbl2} = showParen True
+  showsLedgerState TLedgerTables{lgrTbl1, lgrTbl2} = showParen True
     $ showString "TLedgerTables { lgrTbl1 = "
+    . showsMK lgrTbl1
     . showString ", lgrTbl2 = "
+    . showsMK lgrTbl2
     . showString " }"
 
 instance TableStuff T where

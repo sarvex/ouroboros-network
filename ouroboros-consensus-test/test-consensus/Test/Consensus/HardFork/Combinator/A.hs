@@ -187,8 +187,7 @@ data instance LedgerState BlockA mk = LgrA {
   deriving (Show, Eq, Generic, Serialise)
   deriving NoThunks via OnlyCheckWhnfNamed "LgrA" (LedgerState BlockA mk)
 
-instance ShowLedgerState (LedgerState BlockA) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerState BlockA)
 
 instance InMemory (LedgerState BlockA) where
   convertMapKind LgrA {..} = LgrA {..}
@@ -228,8 +227,7 @@ instance TableStuff (LedgerState BlockA) where
 instance SufficientSerializationForAnyBackingStore (LedgerState BlockA) where
     codecLedgerTables = NoATables
 
-instance (ShowLedgerState (LedgerTables (LedgerState BlockA))) where
-  showsLedgerState _sing = shows
+instance (ShowLedgerState (LedgerTables (LedgerState BlockA)))
 
 instance TickedTableStuff (LedgerState BlockA) where
   projectLedgerTablesTicked _ = NoATables

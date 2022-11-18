@@ -14,7 +14,6 @@
 {-# LANGUAGE TypeApplications           #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE TypeOperators              #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 module Ouroboros.Consensus.HardFork.Combinator.Basics (
     -- * Hard fork protocol, block, and ledger state
@@ -99,25 +98,24 @@ deriving newtype instance CanHardFork xs => NoThunks (LedgerState (HardForkBlock
 
 deriving newtype instance CanHardFork xs => NoThunks (LedgerState (HardForkBlock xs) SeqDiffMK)
 
-instance (IsApplyMapKind mk, CanHardFork xs) => Show (LedgerState (HardForkBlock xs) mk) where
-  showsPrec p = showParen (p >= 11) . showsLedgerState sMapKind
+instance (IsMapKind mk, CanHardFork xs) => Show (LedgerState (HardForkBlock xs) mk) where
+  showsPrec p = showParen (p >= 11) . showsLedgerState
 
 instance CanHardFork xs => ShowLedgerState (LedgerState (HardForkBlock xs)) where
-  showsLedgerState = \mk (HardForkLedgerState hfstate) ->
+  showsLedgerState = \(HardForkLedgerState hfstate) ->
         showParen True
       $ (showString "HardForkLedgerState " .)
       $ shows
-      $ hcmap proxySingle (showInner mk) hfstate
+      $ hcmap proxySingle showInner hfstate
     where
        showInner ::
-            SingleEraBlock x
-         => SMapKind mk
-         -> Flip LedgerState (ApplyMapKind' mk) x
+            (SingleEraBlock x, IsMapKind mk)
+         => Flip LedgerState mk x
          -> AlreadyShown        x
-       showInner mk (Flip st) =
+       showInner (Flip st) =
            AlreadyShown
          $ showParen True
-         $ showString "Flip " . showsLedgerState mk st
+         $ showString "Flip " . showsLedgerState st
 
 newtype AlreadyShown x = AlreadyShown {unAlreadyShown :: ShowS}
 instance Show (AlreadyShown x) where showsPrec _p = unAlreadyShown
@@ -131,7 +129,7 @@ class LedgerTablesCanHardFork xs where
   hardForkInjectLedgerTablesKeysMK :: NP (InjectLedgerTables xs) xs
 
 newtype InjectLedgerTables xs x = InjectLedgerTables {
-      applyInjectLedgerTables :: forall mk. IsApplyMapKind mk =>
+      applyInjectLedgerTables :: forall mk. IsMapKind mk =>
            LedgerTables (LedgerState                  x) mk
         -> LedgerTables (LedgerState (HardForkBlock xs)) mk
     }

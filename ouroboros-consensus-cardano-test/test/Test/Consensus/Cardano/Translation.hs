@@ -54,8 +54,8 @@ import           Ouroboros.Consensus.HardFork.Combinator.State.Types
                      (TranslateLedgerState (translateLedgerStateWith))
 import           Ouroboros.Consensus.HardFork.Combinator.Util.InPairs
                      (RequiringBoth, provideBoth)
-import           Ouroboros.Consensus.Ledger.Basics (ApplyMapKind' (..), DiffMK,
-                     EmptyMK, LedgerCfg, LedgerConfig, LedgerState)
+import           Ouroboros.Consensus.Ledger.Basics (DiffMK (..), EmptyMK,
+                     LedgerCfg, LedgerConfig, LedgerState)
 import           Ouroboros.Consensus.Protocol.Praos
 import           Ouroboros.Consensus.Protocol.Praos.Common
                      (MaxMajorProtVer (..))

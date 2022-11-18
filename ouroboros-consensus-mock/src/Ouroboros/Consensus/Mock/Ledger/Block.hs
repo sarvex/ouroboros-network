@@ -407,18 +407,7 @@ deriving instance (SimpleCrypto c, Typeable ext, IsApplyMapKind mk)
 deriving instance (SimpleCrypto c, Typeable ext, IsApplyMapKind mk)
             => NoThunks (LedgerState (SimpleBlock c ext) mk)
 
-instance (SimpleCrypto c, Typeable ext) => ShowLedgerState (LedgerState (SimpleBlock c ext)) where
-  showsLedgerState mk st =
-        showParen True
-      $   showString "SimpleLedgerState {"
-        . showSpace . showString "simpleLedgerState = " . shows simpleLedgerState
-        . showCommaSpace . showString "simpleLedgerTables = " . showsLedgerState mk simpleLedgerTables
-        . showString " }"
-    where
-      SimpleLedgerState {
-          simpleLedgerState
-        , simpleLedgerTables
-        } = st
+instance (SimpleCrypto c, Typeable ext) => ShowLedgerState (LedgerState (SimpleBlock c ext))
 
 -- Ticking has no effect on the simple ledger state
 newtype instance Ticked1 (LedgerState (SimpleBlock c ext)) mk = TickedSimpleLedgerState {
@@ -489,10 +478,7 @@ instance (SimpleCrypto c, Typeable ext)
 instance SufficientSerializationForAnyBackingStore (LedgerState (SimpleBlock c ext)) where
     codecLedgerTables = SimpleLedgerTables (CodecMK toCBOR toCBOR fromCBOR fromCBOR)
 
-instance ShowLedgerState (LedgerTables (LedgerState (SimpleBlock c ext))) where
-  showsLedgerState _sing (SimpleLedgerTables tbs) =
-      showParen True
-    $ showString "SimpleLedgerTables " . showsApplyMapKind tbs
+instance ShowLedgerState (LedgerTables (LedgerState (SimpleBlock c ext)))
 
 instance (SimpleCrypto c, Typeable ext) => StowableLedgerTables (LedgerState (SimpleBlock c ext)) where
   stowLedgerTables st =

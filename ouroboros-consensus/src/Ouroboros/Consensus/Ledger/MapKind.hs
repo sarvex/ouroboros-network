@@ -21,9 +21,6 @@ import           Data.Kind
 import           GHC.Generics
 import           NoThunks.Class (NoThunks (..))
 
-
-import           Ouroboros.Consensus.Util.Singletons
-
 import           Ouroboros.Consensus.Storage.LedgerDB.HD.DiffSeq
 
 
@@ -89,21 +86,13 @@ class IsMapKind mk where
   default mapMK :: forall k v v'. (Functor (mk k)) => (v -> v') -> mk k v -> mk k v'
   mapMK = fmap
 
-data instance Sing EmptyMK where SEmptyMK    :: Sing EmptyMK
-data instance Sing KeysMK where SKeysMK :: Sing KeysMK
-data instance Sing ValuesMK where SValuesMK   :: Sing ValuesMK
-data instance Sing TrackingMK where STrackingMK :: Sing TrackingMK
-data instance Sing DiffMK where SDiffMK     :: Sing DiffMK
-data instance Sing SeqDiffMK where SSeqDiffMK  :: Sing SeqDiffMK
-data instance Sing QueryMK where SQueryMK    :: Sing QueryMK
+  showMK :: forall k v. (Show k, Show v) => mk k v -> String
+  default showMK :: forall k v. Show (mk k v) => mk k v -> String
+  showMK = show
 
-instance SingI EmptyMK where sing = SEmptyMK
-instance SingI KeysMK where sing = SKeysMK
-instance SingI ValuesMK where sing = SValuesMK
-instance SingI TrackingMK where sing = STrackingMK
-instance SingI DiffMK where sing = SDiffMK
-instance SingI SeqDiffMK where sing = SSeqDiffMK
-instance SingI QueryMK where sing = SQueryMK
+  showsMK :: forall k v. (Show k, Show v) => mk k v -> ShowS
+  default showsMK :: forall k v. Show (mk k v) => mk k v -> ShowS
+  showsMK = shows
 
 -- | A codec 'MapKind' that will be used to refer to @'LedgerTables' l CodecMK@
 -- as the codecs that can encode every key and value in the @'LedgerTables' l
@@ -116,25 +105,4 @@ data CodecMK k v = CodecMK
 
 newtype NameMK k v = NameMK String
 
-type ApplyMapKind' :: MapKind -> MapKind
-type family ApplyMapKind' (mk :: MapKind) where
-  ApplyMapKind' DiffMK     = DiffMK
-  ApplyMapKind' EmptyMK    = EmptyMK
-  ApplyMapKind' KeysMK     = KeysMK
-  ApplyMapKind' SeqDiffMK  = SeqDiffMK
-  ApplyMapKind' TrackingMK = TrackingMK
-  ApplyMapKind' ValuesMK   = ValuesMK
-  ApplyMapKind' QueryAllMK = QueryAllMK
-  ApplyMapKind' QueryMK    = QueryMK
-
-type SMapKind = Sing :: MapKind -> Type
-
-sMapKind :: IsApplyMapKind mk => SMapKind (UnApplyMapKind mk)
-sMapKind = sing
-
 type ApplyMapKind (mk :: MapKind) = mk
-
-type family UnApplyMapKind (mk :: MapKind) :: MapKind where
-  UnApplyMapKind (ApplyMapKind mk) = mk
-
-type IsApplyMapKind mk = (mk ~ ApplyMapKind' (UnApplyMapKind mk), SingI (UnApplyMapKind mk), IsMapKind mk)

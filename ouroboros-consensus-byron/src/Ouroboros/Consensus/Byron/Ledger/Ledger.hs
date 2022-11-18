@@ -184,8 +184,7 @@ instance IsLedger (LedgerState ByronBlock) where
             byronLedgerTransition
         }
 
-instance ShowLedgerState (LedgerState ByronBlock) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerState ByronBlock)
 
 instance TableStuff (LedgerState ByronBlock) where
   data LedgerTables (LedgerState ByronBlock) mk = NoByronLedgerTables
@@ -219,8 +218,7 @@ instance TickedTableStuff (LedgerState ByronBlock) where
   projectLedgerTablesTicked _st                 = NoByronLedgerTables
   withLedgerTablesTicked st NoByronLedgerTables = convertMapKind st
 
-instance ShowLedgerState (LedgerTables (LedgerState ByronBlock)) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerTables (LedgerState ByronBlock))
 
 instance StowableLedgerTables (LedgerState ByronBlock) where
   stowLedgerTables     = convertMapKind

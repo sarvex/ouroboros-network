@@ -338,9 +338,7 @@ class ( Typeable ptype
       , Eq        (PayloadDependentState ptype DiffMK)
       , Eq        (PayloadDependentState ptype ValuesMK)
 
-      , Show      (PayloadDependentState ptype EmptyMK)
-      , Show      (PayloadDependentState ptype DiffMK)
-      , Show      (PayloadDependentState ptype ValuesMK)
+      , forall mk. IsMapKind mk => Show (PayloadDependentState ptype mk)
 
       , forall mk. Generic   (PayloadDependentState ptype mk)
       ,            Serialise (PayloadDependentState ptype EmptyMK)
@@ -384,6 +382,8 @@ class ( Typeable ptype
   -- information needed to determine which keys should be retrieved from the
   -- backing store to apply a 'TestBlockWith'.
   getPayloadKeySets :: ptype -> LedgerTables (LedgerState (TestBlockWith ptype)) KeysMK
+
+instance ShowLedgerState (PayloadDependentState ())
 
 instance PayloadSemantics () where
   data PayloadDependentState () mk = EmptyPLDS
@@ -465,8 +465,7 @@ instance ( Typeable ptype
 
 type instance LedgerCfg (LedgerState TestBlock) = HardFork.EraParams
 
-instance PayloadSemantics ptype => ShowLedgerState (LedgerState (TestBlockWith ptype)) where
-  showsLedgerState _sing _ = const ""
+instance PayloadSemantics ptype => ShowLedgerState (LedgerState (TestBlockWith ptype))
 
 instance TableStuff (LedgerState TestBlock) where
   data LedgerTables (LedgerState TestBlock) mk = NoTestLedgerTables
@@ -495,8 +494,7 @@ instance TickedTableStuff (LedgerState TestBlock) where
   withLedgerTablesTicked (TickedTestLedger st) tables =
       TickedTestLedger $ withLedgerTables st tables
 
-instance ShowLedgerState (LedgerTables (LedgerState TestBlock)) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerTables (LedgerState TestBlock))
 
 instance StowableLedgerTables (LedgerState TestBlock) where
   stowLedgerTables   (TestLedger p EmptyPLDS) = TestLedger p EmptyPLDS
@@ -541,12 +539,8 @@ data instance LedgerState (TestBlockWith ptype) mk =
       , payloadDependentState :: PayloadDependentState ptype mk
       }
 
-deriving stock instance PayloadSemantics ptype
-  => Show (LedgerState (TestBlockWith ptype) EmptyMK)
-deriving stock instance PayloadSemantics ptype
-  => Show (LedgerState (TestBlockWith ptype) ValuesMK)
-deriving stock instance PayloadSemantics ptype
-  => Show (LedgerState (TestBlockWith ptype) DiffMK)
+deriving stock instance (IsMapKind mk, PayloadSemantics ptype)
+  => Show (LedgerState (TestBlockWith ptype) mk)
 
 deriving stock instance Eq (PayloadDependentState ptype EmptyMK)
   => Eq (LedgerState (TestBlockWith ptype) EmptyMK)

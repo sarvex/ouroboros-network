@@ -37,8 +37,7 @@ import qualified Cardano.Protocol.TPraos.BHeader as SL
 import           Data.Coerce (coerce)
 import           Ouroboros.Consensus.Block
 import           Ouroboros.Consensus.HeaderValidation
-import           Ouroboros.Consensus.Ledger.Basics
-                     (ApplyMapKind' (ApplyEmptyMK))
+import           Ouroboros.Consensus.Ledger.Basics (EmptyMK (ApplyEmptyMK))
 import           Ouroboros.Consensus.Ledger.Extended
 import           Ouroboros.Consensus.Ledger.Query
 import           Ouroboros.Consensus.Ledger.SupportsMempool

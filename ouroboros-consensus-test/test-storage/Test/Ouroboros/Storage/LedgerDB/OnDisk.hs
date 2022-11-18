@@ -14,6 +14,7 @@
 {-# LANGUAGE LambdaCase                 #-}
 {-# LANGUAGE NamedFieldPuns             #-}
 {-# LANGUAGE NumericUnderscores         #-}
+{-# LANGUAGE QuantifiedConstraints      #-}
 {-# LANGUAGE RankNTypes                 #-}
 {-# LANGUAGE RecordWildCards            #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
@@ -270,9 +271,7 @@ instance PayloadSemantics Tx where
 deriving stock    instance (Eq        (PayloadDependentState Tx EmptyMK))
 deriving stock    instance (Eq        (PayloadDependentState Tx DiffMK))
 deriving stock    instance (Eq        (PayloadDependentState Tx ValuesMK))
-deriving stock    instance (Show      (PayloadDependentState Tx EmptyMK))
-deriving stock    instance (Show      (PayloadDependentState Tx DiffMK))
-deriving stock    instance (Show      (PayloadDependentState Tx ValuesMK))
+deriving stock    instance IsMapKind mk => Show (PayloadDependentState Tx mk)
 deriving anyclass instance (Serialise (PayloadDependentState Tx EmptyMK))
 deriving anyclass instance (ToExpr    (PayloadDependentState Tx ValuesMK))
 deriving anyclass instance (NoThunks  (PayloadDependentState Tx EmptyMK))
@@ -358,8 +357,7 @@ instance TickedTableStuff (LedgerState TestBlock) where
   withLedgerTablesTicked    (TickedTestLedger st) tables =
     TickedTestLedger $ withLedgerTables st tables
 
-instance ShowLedgerState (LedgerTables (LedgerState TestBlock)) where
-  showsLedgerState _sing _ = const ""
+instance ShowLedgerState (LedgerTables (LedgerState TestBlock))
 
 instance StowableLedgerTables (LedgerState TestBlock) where
   stowLedgerTables     = stowErr "stowLedgerTables"

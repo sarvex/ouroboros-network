@@ -413,7 +413,7 @@ instance IsShelleyTele xs => IsShelleyTele ('(x, y) ': xs) where
 -- TickedTableStuff for every x, so hardcoding the stronger constraint is
 -- easier than parameterizing this helper over the constraint.
 projectLedgerTablesHelper :: forall c mk fmk.
-     (CardanoHardForkConstraints c, IsApplyMapKind mk)
+     (CardanoHardForkConstraints c, IsMapKind mk)
   => (forall blk.
          TickedTableStuff (LedgerState blk)
       => fmk blk -> LedgerTables (LedgerState blk) mk
@@ -460,7 +460,7 @@ instance (SL.Crypto (Snd a) ~ c, ShelleyBasedEra (Snd a)) => SndShelleyBasedEra 
 -- 'projectLedgerTablesHelper'
 withLedgerTablesHelper ::
   forall c mk fany fmk.
-     (CardanoHardForkConstraints c, IsApplyMapKind mk)
+     (CardanoHardForkConstraints c, IsMapKind mk)
   => (forall x.
          TickedTableStuff (LedgerState x)
       => fany x -> LedgerTables (LedgerState x) mk -> fmk x
@@ -573,9 +573,9 @@ deriving newtype instance (Praos.PraosCrypto c, TPraos.PraosCrypto c, DSignable 
 deriving newtype instance (Praos.PraosCrypto c, TPraos.PraosCrypto c, DSignable c (Hash c EraIndependentTxBody)) => NoThunks (LedgerTables (LedgerState (CardanoBlock c)) SeqDiffMK)
 
 instance (TPraos.PraosCrypto c, Praos.PraosCrypto c, DSignable c (Hash c EraIndependentTxBody)) => ShowLedgerState (LedgerTables (LedgerState (CardanoBlock c))) where
-  showsLedgerState _mk (CardanoLedgerTables utxo) =
+  showsLedgerState (CardanoLedgerTables utxo) =
         showParen True
-      $ showString "CardanoLedgerTables " . const ""
+      $ showString "CardanoLedgerTables " . showsMK utxo
 
 -- | Auxiliary for convenience
 --

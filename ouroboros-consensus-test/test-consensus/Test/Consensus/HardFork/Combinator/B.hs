@@ -194,11 +194,9 @@ instance TickedTableStuff (LedgerState BlockB) where
   projectLedgerTablesTicked _ = NoBTables
   withLedgerTablesTicked    st NoBTables = convertMapKind st
 
-instance ShowLedgerState (LedgerState BlockB) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerState BlockB)
 
-instance (ShowLedgerState (LedgerTables (LedgerState BlockB))) where
-  showsLedgerState _sing = shows
+instance ShowLedgerState (LedgerTables (LedgerState BlockB))
 
 type instance LedgerCfg (LedgerState BlockB) = ()
 

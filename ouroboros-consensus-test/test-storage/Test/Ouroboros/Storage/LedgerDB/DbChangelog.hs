@@ -101,7 +101,7 @@ nextState dblog = TestLedger {
     nextSlot = At . withOrigin 1 (+1)
 
 
-instance IsApplyMapKind mk => Show (TestLedger mk) where show = const ""
+instance IsMapKind mk => Show (TestLedger mk) where show tl = showsLedgerState tl ""
 
 instance GetTip (TestLedger mk) where
   getTip = castPoint . tlTip
@@ -120,8 +120,8 @@ instance ShowLedgerState (LedgerTables TestLedger) where
   showsLedgerState _ (TestTables t) = showString "TestTables " . shows t
 
 instance ShowLedgerState TestLedger where
-  showsLedgerState _ TestLedger {tlUtxos, tlTip} =
-    showString "TestLedger" . showSpace . showString "{" . shows "" .
+  showsLedgerState TestLedger {tlUtxos, tlTip} =
+    showString "TestLedger" . showSpace . showString "{" . showsMK tlUtxos .
     showCommaSpace . shows tlTip . showString "}"
 
 instance TableStuff TestLedger where
