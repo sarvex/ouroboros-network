@@ -14,6 +14,7 @@
 {-# LANGUAGE TypeApplications           #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE TypeOperators              #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Ouroboros.Consensus.HardFork.Combinator.Basics (
     -- * Hard fork protocol, block, and ledger state
@@ -57,7 +58,6 @@ import           Ouroboros.Consensus.Ledger.Abstract
 import           Ouroboros.Consensus.Protocol.Abstract
 import           Ouroboros.Consensus.TypeFamilyWrappers
 import           Ouroboros.Consensus.Util (ShowProxy)
-import           Ouroboros.Consensus.Util.Singletons (SingI)
 import           Ouroboros.Consensus.Util.SOP (fn_5)
 
 import           Ouroboros.Consensus.HardFork.Combinator.Abstract
@@ -99,7 +99,7 @@ deriving newtype instance CanHardFork xs => NoThunks (LedgerState (HardForkBlock
 
 deriving newtype instance CanHardFork xs => NoThunks (LedgerState (HardForkBlock xs) SeqDiffMK)
 
-instance (SingI mk, CanHardFork xs) => Show (LedgerState (HardForkBlock xs) (ApplyMapKind' mk)) where
+instance (IsApplyMapKind mk, CanHardFork xs) => Show (LedgerState (HardForkBlock xs) mk) where
   showsPrec p = showParen (p >= 11) . showsLedgerState sMapKind
 
 instance CanHardFork xs => ShowLedgerState (LedgerState (HardForkBlock xs)) where

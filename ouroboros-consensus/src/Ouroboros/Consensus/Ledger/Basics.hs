@@ -58,29 +58,8 @@ module Ouroboros.Consensus.Ledger.Basics (
   , zipOverLedgerTables
   , zipOverLedgerTablesTicked
     -- ** Tables values
-  , ApplyMapKind
-  , ApplyMapKind' (..)
-  , MapKind
-  , SMapKind
+  , module Ouroboros.Consensus.Ledger.MapKind
   , Sing (..)
-  , emptyAppliedMK
-  , mapValuesAppliedMK
-  , sMapKind
-  , sMapKind'
-  , showsApplyMapKind
-  , toSMapKind
-    -- *** Mediators
-  , CodecMK (..)
-  , DiffMK
-  , EmptyMK
-  , IsApplyMapKind
-  , KeysMK
-  , NameMK (..)
-  , QueryMK
-  , SeqDiffMK
-  , TrackingMK
-  , UnApplyMapKind
-  , ValuesMK
     -- ** Queries
   , DiskLedgerView (..)
   , FootprintL (..)
@@ -142,10 +121,8 @@ import qualified Data.Map as Map
 import           Data.Monoid (Sum (..))
 import           GHC.Generics (Generic)
 import           GHC.Show (showCommaSpace, showSpace)
-import           NoThunks.Class (NoThunks (..), OnlyCheckWhnfNamed (..))
-import qualified NoThunks.Class as NoThunks
+import           NoThunks.Class (NoThunks (..))
 
-import           Cardano.Binary (FromCBOR (..), ToCBOR (..))
 import           Cardano.Slotting.Slot (WithOrigin (..))
 
 import           Ouroboros.Network.AnchoredSeq (AnchoredSeq)
@@ -155,6 +132,7 @@ import           Ouroboros.Network.Protocol.LocalStateQuery.Type
 
 import           Ouroboros.Consensus.Block.Abstract
 import           Ouroboros.Consensus.Config.SecurityParam (SecurityParam (..))
+import           Ouroboros.Consensus.Ledger.MapKind
 import           Ouroboros.Consensus.Ticked
 import           Ouroboros.Consensus.Util ((..:))
 import           Ouroboros.Consensus.Util.Singletons
@@ -619,7 +597,7 @@ emptyLedgerTables = polyEmptyLedgerTables
 
 -- | Empty values for every table
 polyEmptyLedgerTables :: forall mk l. (TableStuff l, IsApplyMapKind mk) => LedgerTables l mk
-polyEmptyLedgerTables = pureLedgerTables $ emptyAppliedMK sMapKind
+polyEmptyLedgerTables = pureLedgerTables emptyMK
 
 -- Forget all
 
@@ -755,193 +733,7 @@ reapplyTrackingTicked after before =
   Concrete ledger tables
 -------------------------------------------------------------------------------}
 
-type MapKind         = {- key -} Type -> {- value -} Type -> Type
 type LedgerStateKind = MapKind -> Type
-
-data MapKind' = DiffMK'
-              | EmptyMK'
-              | KeysMK'
-              | QueryMK'
-              | SeqDiffMK'
-              | TrackingMK'
-              | ValuesMK'
-
-type DiffMK     = ApplyMapKind' DiffMK'
-type EmptyMK    = ApplyMapKind' EmptyMK'
-type KeysMK     = ApplyMapKind' KeysMK'
-type QueryMK    = ApplyMapKind' QueryMK'
-type SeqDiffMK  = ApplyMapKind' SeqDiffMK'
-type TrackingMK = ApplyMapKind' TrackingMK'
-type ValuesMK   = ApplyMapKind' ValuesMK'
-
--- | A codec 'MapKind' that will be used to refer to @'LedgerTables' l CodecMK@
--- as the codecs that can encode every key and value in the @'LedgerTables' l
--- mk@.
-data CodecMK k v = CodecMK
-                     (k -> CBOR.Encoding)
-                     (v -> CBOR.Encoding)
-                     (forall s . CBOR.Decoder s k)
-                     (forall s . CBOR.Decoder s v)
-
-newtype NameMK k v = NameMK String
-
-type ApplyMapKind mk = mk
-
-data ApplyMapKind' :: MapKind' -> Type -> Type -> Type where
-  ApplyDiffMK     :: !(Diff    k v)                -> ApplyMapKind' DiffMK'       k v
-  ApplyEmptyMK    ::                                  ApplyMapKind' EmptyMK'      k v
-  ApplyKeysMK     :: !(Keys    k v)                -> ApplyMapKind' KeysMK'       k v
-  ApplySeqDiffMK  :: !(DiffSeq k v)                -> ApplyMapKind' SeqDiffMK'    k v
-  ApplyTrackingMK :: !(Values  k v) -> !(Diff k v) -> ApplyMapKind' TrackingMK'   k v
-  ApplyValuesMK   :: !(Values  k v)                -> ApplyMapKind' ValuesMK'     k v
-
-  ApplyQueryAllMK  ::                ApplyMapKind' QueryMK' k v
-  ApplyQuerySomeMK :: !(Keys k v) -> ApplyMapKind' QueryMK' k v
-
-emptyAppliedMK :: (Ord k, Eq v) => SMapKind mk -> ApplyMapKind' mk k v
-emptyAppliedMK = \case
-    SEmptyMK    -> ApplyEmptyMK
-    SKeysMK     -> ApplyKeysMK      mempty
-    SValuesMK   -> ApplyValuesMK    mempty
-    STrackingMK -> ApplyTrackingMK  mempty mempty
-    SDiffMK     -> ApplyDiffMK      mempty
-    SSeqDiffMK  -> ApplySeqDiffMK   empty
-    SQueryMK    -> ApplyQuerySomeMK mempty
-
-instance Ord k => Semigroup (ApplyMapKind' KeysMK' k v) where
-  ApplyKeysMK l <> ApplyKeysMK r = ApplyKeysMK (l <> r)
-
-instance Ord k => Monoid (ApplyMapKind' KeysMK' k v) where
-  mempty = ApplyKeysMK mempty
-
-instance Functor (DiffMK k) where
-  fmap f (ApplyDiffMK d) = ApplyDiffMK $ fmap f d
-
-mapValuesAppliedMK :: (Ord k, Eq v, Eq v') => (v -> v') -> ApplyMapKind' mk k v ->  ApplyMapKind' mk k v'
-mapValuesAppliedMK f = \case
-  ApplyEmptyMK         -> ApplyEmptyMK
-  ApplyKeysMK ks       -> ApplyKeysMK     (castKeys ks)
-  ApplyValuesMK vs     -> ApplyValuesMK   (fmap f vs)
-  ApplyTrackingMK vs d -> ApplyTrackingMK (fmap f vs)   (fmap f d)
-  ApplyDiffMK d        -> ApplyDiffMK     (fmap f d)
-  ApplySeqDiffMK ds    -> ApplySeqDiffMK  (mapDiffSeq f ds)
-
-  ApplyQueryAllMK      -> ApplyQueryAllMK
-  ApplyQuerySomeMK vs  -> ApplyQuerySomeMK (fmap f vs)
-
-instance (Ord k, Eq v) => Eq (ApplyMapKind' mk k v) where
-  ApplyEmptyMK          == _                     = True
-  ApplyKeysMK   l       == ApplyKeysMK   r       = l == r
-  ApplyValuesMK l       == ApplyValuesMK r       = l == r
-  ApplyTrackingMK l1 l2 == ApplyTrackingMK r1 r2 = l1 == r1 && l2 == r2
-  ApplyDiffMK l         == ApplyDiffMK r         = l == r
-  ApplySeqDiffMK l      == ApplySeqDiffMK r      = l == r
-  ApplyQueryAllMK       == ApplyQueryAllMK       = True
-  ApplyQuerySomeMK l    == ApplyQuerySomeMK r    = l == r
-  _                     == _                     = False
-
-instance (Ord k, NoThunks k, NoThunks v) => NoThunks (ApplyMapKind' mk k v) where
-  wNoThunks ctxt   = NoThunks.allNoThunks . \case
-    ApplyEmptyMK         -> []
-    ApplyKeysMK ks       -> [noThunks ctxt ks]
-    ApplyValuesMK vs     -> [noThunks ctxt vs]
-    ApplyTrackingMK vs d -> [noThunks ctxt vs, noThunks ctxt d]
-    ApplyDiffMK d        -> [noThunks ctxt d]
-    ApplySeqDiffMK ds    -> [noThunks ctxt ds]
-    ApplyQueryAllMK      -> []
-    ApplyQuerySomeMK ks  -> [noThunks ctxt ks]
-
-  showTypeOf _ = "ApplyMapKind"
-
-showsApplyMapKind :: (Show k, Show v) => ApplyMapKind' mk k v -> ShowS
-showsApplyMapKind = \case
-    ApplyEmptyMK             -> showString "ApplyEmptyMK"
-    ApplyKeysMK keys         -> showParen True $ showString "ApplyKeysMK " . shows keys
-    ApplyValuesMK values     -> showParen True $ showString "ApplyValuesMK " . shows values
-    ApplyTrackingMK values d -> showParen True $ showString "ApplyTrackingMK " . shows values . showString " " . shows d
-    ApplyDiffMK d            -> showParen True $ showString "ApplyDiffMK " . shows d
-    ApplySeqDiffMK sq        -> showParen True $ showString "ApplySeqDiffMK " . shows sq
-
-    ApplyQueryAllMK       -> showParen True $ showString "ApplyQueryAllMK"
-    ApplyQuerySomeMK keys -> showParen True $ showString "ApplyQuerySomeMK " . shows keys
-
-instance (Show k, Show v) => Show (ApplyMapKind' mk k v) where
-  show = flip showsApplyMapKind ""
-
-data instance Sing (mk :: MapKind') :: Type where
-  SEmptyMK    :: Sing EmptyMK'
-  SKeysMK     :: Sing KeysMK'
-  SValuesMK   :: Sing ValuesMK'
-  STrackingMK :: Sing TrackingMK'
-  SDiffMK     :: Sing DiffMK'
-  SSeqDiffMK  :: Sing SeqDiffMK'
-  SQueryMK    :: Sing QueryMK'
-
-type SMapKind = Sing :: MapKind' -> Type
-
-type family UnApplyMapKind (mk :: MapKind) :: MapKind' where
-  UnApplyMapKind (ApplyMapKind' mk') = mk'
-
-type IsApplyMapKind mk = (mk ~ ApplyMapKind' (UnApplyMapKind mk), SingI (UnApplyMapKind mk))
-
-instance SingI EmptyMK'    where sing = SEmptyMK
-instance SingI KeysMK'     where sing = SKeysMK
-instance SingI ValuesMK'   where sing = SValuesMK
-instance SingI TrackingMK' where sing = STrackingMK
-instance SingI DiffMK'     where sing = SDiffMK
-instance SingI SeqDiffMK'  where sing = SSeqDiffMK
-instance SingI QueryMK'    where sing = SQueryMK
-
-sMapKind :: IsApplyMapKind mk => SMapKind (UnApplyMapKind mk)
-sMapKind = sing
-
-sMapKind' :: IsApplyMapKind mk => proxy mk -> SMapKind (UnApplyMapKind mk)
-sMapKind' _ = sMapKind
-
-toSMapKind :: ApplyMapKind' mk k v -> SMapKind mk
-toSMapKind = \case
-    ApplyEmptyMK{}     -> SEmptyMK
-    ApplyKeysMK{}      -> SKeysMK
-    ApplyValuesMK{}    -> SValuesMK
-    ApplyTrackingMK{}  -> STrackingMK
-    ApplyDiffMK{}      -> SDiffMK
-    ApplySeqDiffMK{}   -> SSeqDiffMK
-
-    ApplyQueryAllMK{}  -> SQueryMK
-    ApplyQuerySomeMK{} -> SQueryMK
-
-instance Eq (Sing (mk :: MapKind')) where
-  _ == _ = True
-
-instance Show (Sing (mk :: MapKind')) where
-  show = \case
-    SEmptyMK    -> "SEmptyMK"
-    SKeysMK     -> "SKeysMK"
-    SValuesMK   -> "SValuesMK"
-    STrackingMK -> "STrackingMK"
-    SDiffMK     -> "SDiffMK"
-    SSeqDiffMK  -> "SSeqDiffMK"
-    SQueryMK    -> "SQueryMK"
-
-deriving via OnlyCheckWhnfNamed "Sing @MapKind'" (Sing (mk :: MapKind')) instance NoThunks (Sing mk)
-
--- TODO include a tag, for some self-description
-instance ToCBOR (Sing EmptyMK')    where toCBOR SEmptyMK    = CBOR.encodeNull
-instance ToCBOR (Sing KeysMK')     where toCBOR SKeysMK     = CBOR.encodeNull
-instance ToCBOR (Sing ValuesMK')   where toCBOR SValuesMK   = CBOR.encodeNull
-instance ToCBOR (Sing TrackingMK') where toCBOR STrackingMK = CBOR.encodeNull
-instance ToCBOR (Sing DiffMK')     where toCBOR SDiffMK     = CBOR.encodeNull
-instance ToCBOR (Sing SeqDiffMK')  where toCBOR SSeqDiffMK  = CBOR.encodeNull
-instance ToCBOR (Sing QueryMK')    where toCBOR SQueryMK    = CBOR.encodeNull
-
--- TODO include a tag, for some self-description
-instance FromCBOR (Sing EmptyMK')    where fromCBOR = SEmptyMK    <$ CBOR.decodeNull
-instance FromCBOR (Sing KeysMK')     where fromCBOR = SKeysMK     <$ CBOR.decodeNull
-instance FromCBOR (Sing ValuesMK')   where fromCBOR = SValuesMK   <$ CBOR.decodeNull
-instance FromCBOR (Sing TrackingMK') where fromCBOR = STrackingMK <$ CBOR.decodeNull
-instance FromCBOR (Sing DiffMK')     where fromCBOR = SDiffMK     <$ CBOR.decodeNull
-instance FromCBOR (Sing SeqDiffMK')  where fromCBOR = SSeqDiffMK  <$ CBOR.decodeNull
-instance FromCBOR (Sing QueryMK')    where fromCBOR = SQueryMK    <$ CBOR.decodeNull
 
 {-------------------------------------------------------------------------------
   Link block to its ledger
