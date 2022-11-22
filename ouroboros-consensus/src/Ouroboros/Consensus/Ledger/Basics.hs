@@ -342,7 +342,7 @@ class ( ShowLedgerState (LedgerTables l)
   -- the 'SingI' constraint. Unfortunately, that is not always the case. The
   -- example we have found in our prototype UTxO HD implementat is that a Byron
   -- ledger state does not determine @mk@, but the Cardano ledger tables do.
-  projectLedgerTables :: IsMapKind mk => l mk -> LedgerTables l mk
+  projectLedgerTables :: l mk -> LedgerTables l mk
 
   -- | Overwrite the tables in some ledger state.
   --
@@ -356,7 +356,7 @@ class ( ShowLedgerState (LedgerTables l)
   --
   -- TODO: This 'IsApplyMapKind' constraint is necessary because the
   -- 'CardanoBlock' instance uses 'projectLedgerTables'.
-  withLedgerTables :: IsMapKind mk => l any -> LedgerTables l mk -> l mk
+  withLedgerTables :: l any -> LedgerTables l mk -> l mk
 
   pureLedgerTables ::
        (forall k v.
@@ -459,14 +459,14 @@ class ( ShowLedgerState (LedgerTables l)
   namesLedgerTables :: LedgerTables l NameMK
 
 overLedgerTables ::
-     (TableStuff l, IsMapKind mk1, IsMapKind mk2)
+     TableStuff l
   => (LedgerTables l mk1 -> LedgerTables l mk2)
   -> l mk1
   -> l mk2
 overLedgerTables f l = withLedgerTables l $ f $ projectLedgerTables l
 
 mapOverLedgerTables ::
-     (TableStuff l, IsMapKind mk1, IsMapKind mk2)
+     TableStuff l
   => (forall k v.
           (Ord k, Eq v)
        => mk1 k v
@@ -477,7 +477,7 @@ mapOverLedgerTables ::
 mapOverLedgerTables f = overLedgerTables $ mapLedgerTables f
 
 zipOverLedgerTables ::
-     (TableStuff l, IsMapKind mk1, IsMapKind mk3)
+     TableStuff l
   => (forall k v.
           (Ord k, Eq v)
        => mk1 k v
@@ -497,13 +497,13 @@ zipOverLedgerTables f l tables2 =
 class TableStuff l => TickedTableStuff (l :: LedgerStateKind) where
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'projectLedgerTables'
-  projectLedgerTablesTicked :: IsMapKind mk => Ticked1 l mk  -> LedgerTables l mk
+  projectLedgerTablesTicked :: Ticked1 l mk  -> LedgerTables l mk
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'withLedgerTables'
-  withLedgerTablesTicked    :: IsMapKind mk => Ticked1 l any -> LedgerTables l mk -> Ticked1 l mk
+  withLedgerTablesTicked    :: Ticked1 l any -> LedgerTables l mk -> Ticked1 l mk
 
 overLedgerTablesTicked ::
-     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk2)
+     TickedTableStuff l
   => (LedgerTables l mk1 -> LedgerTables l mk2)
   -> Ticked1 l mk1
   -> Ticked1 l mk2
@@ -511,7 +511,7 @@ overLedgerTablesTicked f l =
     withLedgerTablesTicked l $ f $ projectLedgerTablesTicked l
 
 mapOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk2)
+     TickedTableStuff l
   => (forall k v.
          (Ord k, Eq v)
       => mk1 k v
@@ -522,7 +522,7 @@ mapOverLedgerTablesTicked ::
 mapOverLedgerTablesTicked f = overLedgerTablesTicked $ mapLedgerTables f
 
 zipOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsMapKind mk1, IsMapKind mk3)
+     TickedTableStuff l
   => (forall k v.
          (Ord k, Eq v)
       => mk1 k v

@@ -12,6 +12,7 @@
 {-# LANGUAGE Rank2Types                 #-}
 {-# LANGUAGE StandaloneKindSignatures   #-}
 {-# LANGUAGE TypeFamilies               #-}
+{-# LANGUAGE StandaloneDeriving #-}
 
 module Ouroboros.Consensus.Ledger.MapKind where
 
@@ -23,8 +24,14 @@ import           NoThunks.Class (NoThunks (..))
 
 import           Ouroboros.Consensus.Storage.LedgerDB.HD.DiffSeq
 
+-- | This is for backwards compatibility
+type ApplyMapKind (mk :: MapKind) = mk
 
 type MapKind         = {- key -} Type -> {- value -} Type -> Type
+
+{-------------------------------------------------------------------------------
+  Individual MKs
+-------------------------------------------------------------------------------}
 
 type DiffMK :: MapKind
 newtype DiffMK k v    = ApplyDiffMK (Diff k v)
@@ -72,10 +79,25 @@ data QueryAllMK k v = ApplyQueryAllMK
   deriving stock (Show, Eq, Generic, Functor)
   deriving anyclass NoThunks
 
-type QueryMK :: MapKind
-newtype QueryMK k v = ApplyQuerySomeMK (Keys k v)
+type QuerySomeMK :: MapKind
+newtype QuerySomeMK k v = ApplyQuerySomeMK (Keys k v)
   deriving stock (Show, Eq, Generic, Functor)
   deriving anyclass NoThunks
+
+-- | A codec 'MapKind' that will be used to refer to @'LedgerTables' l CodecMK@
+-- as the codecs that can encode every key and value in the @'LedgerTables' l
+-- mk@.
+data CodecMK k v = CodecMK
+                     (k -> CBOR.Encoding)
+                     (v -> CBOR.Encoding)
+                     (forall s . CBOR.Decoder s k)
+                     (forall s . CBOR.Decoder s v)
+
+newtype NameMK k v = NameMK String
+
+{-------------------------------------------------------------------------------
+  Interface to MKs required for MK-polymorphic operations
+-------------------------------------------------------------------------------}
 
 class IsMapKind mk where
   emptyMK :: forall k v. (Ord k, Eq v) => mk k v
@@ -94,15 +116,47 @@ class IsMapKind mk where
   default showsMK :: forall k v. Show (mk k v) => mk k v -> ShowS
   showsMK = shows
 
--- | A codec 'MapKind' that will be used to refer to @'LedgerTables' l CodecMK@
--- as the codecs that can encode every key and value in the @'LedgerTables' l
--- mk@.
-data CodecMK k v = CodecMK
-                     (k -> CBOR.Encoding)
-                     (v -> CBOR.Encoding)
-                     (forall s . CBOR.Decoder s k)
-                     (forall s . CBOR.Decoder s v)
+{-------------------------------------------------------------------------------
+  Grouping base MKs
+-------------------------------------------------------------------------------}
 
-newtype NameMK k v = NameMK String
+data BaseMK (mk :: MapKind) k v where
+  BEmptyMK    :: EmptyMK k v    -> BaseMK EmptyMK k v
+  BDiffMK     :: DiffMK k v     -> BaseMK DiffMK k v
+  BKeysMK     :: KeysMK k v     -> BaseMK KeysMK k v
+  BValuesMK   :: ValuesMK k v   -> BaseMK ValuesMK k v
+  BTrackingMK :: TrackingMK k v -> BaseMK TrackingMK k v
 
-type ApplyMapKind (mk :: MapKind) = mk
+fromBaseMK :: BaseMK mk k v -> mk k v
+fromBaseMK (BEmptyMK e)     = e
+fromBaseMK (BDiffMK d)      = d
+fromBaseMK (BKeysMK ks)     = ks
+fromBaseMK (BValuesMK vs)   = vs
+fromBaseMK (BTrackingMK tr) = tr
+
+deriving stock instance (Show k, Show v) => Show (BaseMK mk k v)
+deriving stock instance (Eq k, Eq v) => Eq (BaseMK mk k v)
+deriving stock instance Functor (BaseMK mk k)
+deriving anyclass instance Semigroup (BaseMK mk k v)
+deriving anyclass instance Monoid (BaseMK mk k v)
+
+instance IsMapKind (BaseMK mk)
+
+class IsBaseMK (mk :: MapKind) where
+  constr :: forall k v. mk k v -> BaseMK mk k v
+
+instance IsBaseMK EmptyMK where constr = BEmptyMK
+
+{-------------------------------------------------------------------------------
+  Grouping meta MKs
+-------------------------------------------------------------------------------}
+
+data MetaMK (mk :: MapKind) k v where
+  MSeqDiffMK :: SeqDiffMK k v     -> MetaMK SeqDiffMK k v
+  MQueryAllMK :: QueryAllMK k v   -> MetaMK QueryAllMK k v
+  MQuerySomeMK :: QuerySomeMK k v -> MetaMK QuerySomeMK k v
+
+fromMetaMK :: MetaMK mk k v -> mk k v
+fromMetaMK (MSeqDiffMK ds)   = ds
+fromMetaMK (MQueryAllMK qa)  = qa
+fromMetaMK (MQuerySomeMK qs) = qs
