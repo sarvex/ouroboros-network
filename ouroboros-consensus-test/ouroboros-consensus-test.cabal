@@ -114,6 +114,7 @@ library
     , quickcheck-state-machine
     , quiet                          >=0.2    && <0.3
     , random
+    , si-timers
     , serialise                      >=0.2    && <0.3
     , sop-core
     , tasty
@@ -191,6 +192,7 @@ test-suite test-consensus
     , quickcheck-state-machine
     , quiet
     , random
+    , si-timers
     , serialise
     , tasty
     , tasty-expected-failure

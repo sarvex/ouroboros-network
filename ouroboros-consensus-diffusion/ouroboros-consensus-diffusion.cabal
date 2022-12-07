@@ -88,7 +88,7 @@ library
     , filepath
     , fs-api
     , hashable
-    , io-classes                   ^>=0.3
+    , io-classes                   ^>=1.0
     , mtl
     , ouroboros-consensus          ==0.4.0.0
     , ouroboros-network            ^>=0.4.0.1
@@ -96,6 +96,7 @@ library
     , ouroboros-network-framework  ^>=0.3
     , ouroboros-network-protocols  ^>=0.3
     , random
+    , si-timers
     , serialise                    >=0.2      && <0.3
     , text
     , time

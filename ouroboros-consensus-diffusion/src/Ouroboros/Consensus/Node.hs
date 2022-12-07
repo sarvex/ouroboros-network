@@ -55,8 +55,8 @@ import qualified Codec.CBOR.Decoding as CBOR
 import qualified Codec.CBOR.Encoding as CBOR
 import           Codec.Serialise (DeserialiseFailure)
 import           Control.Monad.Class.MonadMVar (MonadMVar)
-import           Control.Monad.Class.MonadTime (MonadTime)
-import           Control.Monad.Class.MonadTimer (MonadTimer)
+import           Control.Monad.Class.MonadTime.SI (MonadTime)
+import           Control.Monad.Class.MonadTimer.SI (MonadTimer)
 import           Control.Tracer (Tracer, contramap, traceWith)
 import           Data.ByteString.Lazy (ByteString)
 import           Data.Hashable (Hashable)
