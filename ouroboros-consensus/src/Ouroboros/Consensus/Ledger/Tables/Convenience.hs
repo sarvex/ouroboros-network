@@ -26,6 +26,9 @@ module Ouroboros.Consensus.Ledger.Tables.Convenience (
   , prependLedgerTablesTrackingDiffs
   , rawReapplyTracking
   , reapplyTrackingTicked
+    -- * Testing
+  , rawCalculateDifference
+  , rawForgetValues
   ) where
 
 import           Ouroboros.Consensus.Ticked

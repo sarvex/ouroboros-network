@@ -96,6 +96,8 @@ import           Ouroboros.Consensus.Ledger.Inspect
 import           Ouroboros.Consensus.Ledger.Query
 import           Ouroboros.Consensus.Ledger.SupportsMempool
 import           Ouroboros.Consensus.Ledger.SupportsPeerSelection
+import           Ouroboros.Consensus.Ledger.Tables
+import           Ouroboros.Consensus.Ledger.Tables.Convenience
 import           Ouroboros.Consensus.Mock.Ledger.Address
 import           Ouroboros.Consensus.Mock.Ledger.State
 import qualified Ouroboros.Consensus.Mock.Ledger.UTxO as Mock
@@ -447,7 +449,7 @@ instance (SimpleCrypto c, Typeable ext) => TableStuff (LedgerState (SimpleBlock 
   type TableKey   (LedgerState (SimpleBlock c ext)) = Mock.TxIn
   type TableValue (LedgerState (SimpleBlock c ext)) = Mock.TxOut
 
-  projectMk = unSimpleLedgerTables
+  projectMK = unSimpleLedgerTables
   injectMK = SimpleLedgerTables
 
   projectLedgerTables = simpleLedgerTables

@@ -133,7 +133,7 @@ instance TableStuff TestLedger where
   projectLedgerTables                                                 = TestTables . tlUtxos
   withLedgerTables st    (TestTables x)                               = st { tlUtxos = x }
 
-  projectMk = unTestTables
+  projectMK = unTestTables
   injectMK = TestTables
 
   namesLedgerTables = TestTables $ NameMK "TestTables"

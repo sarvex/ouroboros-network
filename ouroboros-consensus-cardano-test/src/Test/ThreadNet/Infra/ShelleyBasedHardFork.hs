@@ -49,6 +49,8 @@ import           NoThunks.Class (NoThunks)
 import           Cardano.Binary (fromCBOR, toCBOR)
 
 import           Ouroboros.Consensus.Ledger.Abstract
+import           Ouroboros.Consensus.Ledger.Tables
+import           Ouroboros.Consensus.Ledger.Tables.Convenience
 import           Ouroboros.Consensus.Node
 import           Ouroboros.Consensus.Node.NetworkProtocolVersion
 import           Ouroboros.Consensus.TypeFamilyWrappers
@@ -393,7 +395,7 @@ instance ShelleyBasedHardForkConstraints proto1 era1 proto2 era2
           tables
 
   injectMK = ShelleyBasedHardForkLedgerTables
-  projectMk = shelleyBasedHardForkUTxOTable
+  projectMK = shelleyBasedHardForkUTxOTable
 
   namesLedgerTables = injectMK $ NameMK "shelleyBasedHardForkUTxOTable"
 

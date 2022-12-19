@@ -188,7 +188,7 @@ instance (LedgerSupportsProtocol blk, TableStuff (LedgerState blk)) => TableStuf
   withLedgerTables (ExtLedgerState lstate hstate) (ExtLedgerStateTables tables) =
       ExtLedgerState (lstate `withLedgerTables` tables) hstate
 
-  projectMk = error "Extended ledger state might wrap a ledger state that has no tables, thus this function should not be used!"
+  projectMK = error "Extended ledger state might wrap a ledger state that has no tables, thus this function should not be used!"
   injectMK = ExtLedgerStateTables . injectMK
 
   traverseLedgerTables f (ExtLedgerStateTables l) =

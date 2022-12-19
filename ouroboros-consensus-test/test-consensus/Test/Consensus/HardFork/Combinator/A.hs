@@ -217,7 +217,7 @@ instance TableStuff (LedgerState BlockA) where
   projectLedgerTables _st           = NoATables
   withLedgerTables    st  NoATables = convertMapKind st
 
-  projectMk = error "BlockA has no tables!"
+  projectMK = error "BlockA has no tables!"
   injectMK = const NoATables
 
   pureLedgerTables     _f                               = NoATables

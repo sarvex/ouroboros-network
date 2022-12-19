@@ -376,7 +376,7 @@ instance TableStuff (LedgerState (HardForkBlock '[BlockA, BlockB])) where
   type TableValue (LedgerState (HardForkBlock '[BlockA, BlockB])) = Void
 
   injectMK = const NoAbTables
-  projectMk = error "BlockAB has no tables!"
+  projectMK = error "BlockAB has no tables!"
 
   projectLedgerTables _st            = NoAbTables
   withLedgerTables    st  NoAbTables = convertMapKind st

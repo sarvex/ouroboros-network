@@ -78,6 +78,8 @@ import           Ouroboros.Consensus.HardFork.History (Bound (boundSlot),
                      addSlots)
 import           Ouroboros.Consensus.HardFork.Simple
 import           Ouroboros.Consensus.Ledger.Abstract
+import           Ouroboros.Consensus.Ledger.Tables
+import           Ouroboros.Consensus.Ledger.Tables.Convenience
 import qualified Ouroboros.Consensus.Storage.LedgerDB.HD.DiffSeq as DS
 import           Ouroboros.Consensus.TypeFamilyWrappers
 import           Ouroboros.Consensus.Util (eitherToMaybe)
@@ -551,7 +553,7 @@ instance CardanoHardForkConstraints c => TableStuff (LedgerState (CardanoBlock c
           hfstate
           tables
 
-  projectMk = cardanoUTxOTable
+  projectMK = cardanoUTxOTable
   injectMK = CardanoLedgerTables
 
   namesLedgerTables = injectMK $ NameMK "cardanoUTxOTable"

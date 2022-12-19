@@ -179,7 +179,7 @@ instance TableStuff (LedgerState BlockB) where
   projectLedgerTables _st           = NoBTables
   withLedgerTables    st  NoBTables = convertMapKind st
 
-  projectMk = error "BlockB has no tables!"
+  projectMK = error "BlockB has no tables!"
   injectMK = const NoBTables
 
   pureLedgerTables     _f                               = NoBTables

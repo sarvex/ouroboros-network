@@ -311,7 +311,7 @@ instance TableStuff (LedgerState TestBlock) where
                                         (payloadDependentState st) {utxtoktables = table}
                                     }
 
-  projectMk = testUtxtokTable
+  projectMK = testUtxtokTable
   injectMK = TokenToTValue
 
   namesLedgerTables = TokenToTValue $ NameMK "testblocktables"

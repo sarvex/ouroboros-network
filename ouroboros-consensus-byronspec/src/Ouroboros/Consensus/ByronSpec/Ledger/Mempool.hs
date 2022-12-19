@@ -16,8 +16,9 @@ import           Codec.Serialise
 import           GHC.Generics (Generic)
 import           NoThunks.Class (AllowThunk (..), NoThunks)
 
-import           Ouroboros.Consensus.Ledger.Basics (polyEmptyLedgerTables)
 import           Ouroboros.Consensus.Ledger.SupportsMempool
+import           Ouroboros.Consensus.Ledger.Tables.Convenience
+                     (polyEmptyLedgerTables)
 
 import           Ouroboros.Consensus.ByronSpec.Ledger.Block
 import           Ouroboros.Consensus.ByronSpec.Ledger.GenTx

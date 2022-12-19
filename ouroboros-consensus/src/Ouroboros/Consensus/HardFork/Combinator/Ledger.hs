@@ -218,7 +218,7 @@ instance (SingleEraBlock x, TableStuff (LedgerState x)) => TableStuff (LedgerSta
   withLedgerTables st (LedgerTablesOne tables) =
       withOneState st $ projectOneState st `withLedgerTables` tables
 
-  projectMk (LedgerTablesOne tbs) = projectMk tbs
+  projectMK (LedgerTablesOne tbs) = projectMK tbs
   injectMK = LedgerTablesOne . injectMK
 
   namesLedgerTables   = coerce $ namesLedgerTables @(LedgerState x)

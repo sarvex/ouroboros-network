@@ -572,7 +572,7 @@ instance TableStuff (LedgerState TestBlock) where
   type TableKey (LedgerState TestBlock) = Void
   type TableValue (LedgerState TestBlock) = Void
 
-  projectMk = error "TestBlock has no tables!"
+  projectMK = error "TestBlock has no tables!"
   injectMK = const NoTestLedgerTables
 
   projectLedgerTables _st                    = NoTestLedgerTables

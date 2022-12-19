@@ -123,6 +123,8 @@ import           Ouroboros.Consensus.Ledger.Extended
 import           Ouroboros.Consensus.Ledger.Inspect
 import           Ouroboros.Consensus.Ledger.Query
 import           Ouroboros.Consensus.Ledger.SupportsProtocol
+import           Ouroboros.Consensus.Ledger.Tables
+import           Ouroboros.Consensus.Ledger.Tables.Convenience
 import           Ouroboros.Consensus.Node.NetworkProtocolVersion
 import           Ouroboros.Consensus.Node.ProtocolInfo
 import           Ouroboros.Consensus.NodeId
@@ -475,7 +477,7 @@ instance TableStuff (LedgerState TestBlock) where
   type TableKey (LedgerState TestBlock) = Void
   type TableValue (LedgerState TestBlock) = Void
 
-  projectMk = error "Byron-spec has no tables!"
+  projectMK = error "Byron-spec has no tables!"
   injectMK = const NoTestLedgerTables
 
   projectLedgerTables _                  = NoTestLedgerTables
