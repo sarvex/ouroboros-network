@@ -211,8 +211,14 @@ instance TableStuff (LedgerState BlockA) where
   data LedgerTables (LedgerState BlockA) mk = NoATables
     deriving (Eq, Generic, NoThunks, Show)
 
+  type TableKey (LedgerState BlockA) = Void
+  type TableValue (LedgerState BlockA) = Void
+
   projectLedgerTables _st           = NoATables
   withLedgerTables    st  NoATables = convertMapKind st
+
+  projectMk = error "BlockA has no tables!"
+  injectMK = const NoATables
 
   pureLedgerTables     _f                               = NoATables
   mapLedgerTables      _f                     NoATables = NoATables

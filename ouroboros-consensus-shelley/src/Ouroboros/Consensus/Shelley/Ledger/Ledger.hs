@@ -273,6 +273,9 @@ instance ShelleyBasedEra era => TableStuff (LedgerState (ShelleyBlock proto era)
       }
     deriving (Generic)
 
+  type TableKey   (LedgerState (ShelleyBlock proto era)) = SL.TxIn (EraCrypto era)
+  type TableValue (LedgerState (ShelleyBlock proto era)) = Core.TxOut era
+
   projectLedgerTables        = shelleyLedgerTables
   withLedgerTables st tables =
       ShelleyLedgerState {
@@ -288,35 +291,8 @@ instance ShelleyBasedEra era => TableStuff (LedgerState (ShelleyBlock proto era)
         , shelleyLedgerTransition
         } = st
 
-  pureLedgerTables f = ShelleyLedgerTables f
-
-  mapLedgerTables f (ShelleyLedgerTables utxo) = ShelleyLedgerTables (f utxo)
-
-  traverseLedgerTables f (ShelleyLedgerTables utxo) = ShelleyLedgerTables <$> f utxo
-
-  zipLedgerTables f (ShelleyLedgerTables utxoL) (ShelleyLedgerTables utxoR) =
-      ShelleyLedgerTables (f utxoL utxoR)
-
-  zipLedgerTables2
-    f
-    (ShelleyLedgerTables utxoL)
-    (ShelleyLedgerTables utxoC)
-    (ShelleyLedgerTables utxoR) =
-      ShelleyLedgerTables (f utxoL utxoC utxoR)
-
-  zipLedgerTablesA f (ShelleyLedgerTables utxoL) (ShelleyLedgerTables utxoR) =
-      ShelleyLedgerTables <$> f utxoL utxoR
-
-  zipLedgerTables2A
-    f
-    (ShelleyLedgerTables utxoL)
-    (ShelleyLedgerTables utxoC)
-    (ShelleyLedgerTables utxoR) =
-      ShelleyLedgerTables <$> f utxoL utxoC utxoR
-
-  foldLedgerTables f (ShelleyLedgerTables utxo) = f utxo
-
-  foldLedgerTables2 f (ShelleyLedgerTables utxoL) (ShelleyLedgerTables utxoR) = f utxoL utxoR
+  projectMk = shelleyUTxOTable
+  injectMK = ShelleyLedgerTables
 
   namesLedgerTables = ShelleyLedgerTables (NameMK "utxo")
 

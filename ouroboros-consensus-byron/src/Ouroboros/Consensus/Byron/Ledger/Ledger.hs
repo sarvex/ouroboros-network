@@ -52,6 +52,7 @@ import           Data.ByteString (ByteString)
 import           Data.Kind (Type)
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
+import           Data.Void (Void)
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
 
@@ -190,6 +191,12 @@ instance ShowLedgerState (LedgerState ByronBlock) where
 instance TableStuff (LedgerState ByronBlock) where
   data LedgerTables (LedgerState ByronBlock) mk = NoByronLedgerTables
     deriving (Generic, Eq, Show, NoThunks)
+
+  type TableKey (LedgerState ByronBlock) = Void
+  type TableValue (LedgerState ByronBlock) = Void
+
+  projectMk = error "Byron has no tables, so don't try to project them!"
+  injectMK = const NoByronLedgerTables
 
   projectLedgerTables _st                     = NoByronLedgerTables
   withLedgerTables     st NoByronLedgerTables = convertMapKind st

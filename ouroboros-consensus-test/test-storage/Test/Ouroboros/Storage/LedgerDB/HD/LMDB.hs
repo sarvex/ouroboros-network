@@ -185,6 +185,12 @@ instance TableStuff T where
     , lgrTbl2 :: mk Text Word
     }
 
+  type TableKey T = Int
+  type TableValue T = Bool
+
+  projectMk = error "unimplemented, T has two tables!"
+  injectMK = error "unimplemented, T has two tables!"
+
   projectLedgerTables T{tbl1, tbl2} =
     TLedgerTables { lgrTbl1 = tbl1, lgrTbl2 = tbl2 }
 

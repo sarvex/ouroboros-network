@@ -98,6 +98,7 @@ import           Data.Tree (Tree (..))
 import qualified Data.Tree as Tree
 import           Data.TreeDiff (ToExpr)
 import           Data.Typeable (Typeable)
+import           Data.Void (Void)
 import           Data.Word
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
@@ -470,6 +471,12 @@ instance TableStuff (LedgerState TestBlock) where
   data LedgerTables (LedgerState TestBlock) mk = NoTestLedgerTables
     deriving stock    (Generic, Eq, Show)
     deriving anyclass (NoThunks)
+
+  type TableKey (LedgerState TestBlock) = Void
+  type TableValue (LedgerState TestBlock) = Void
+
+  projectMk = error "Byron-spec has no tables!"
+  injectMK = const NoTestLedgerTables
 
   projectLedgerTables _                  = NoTestLedgerTables
   withLedgerTables st NoTestLedgerTables = convertMapKind st

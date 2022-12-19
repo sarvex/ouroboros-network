@@ -208,25 +208,18 @@ instance (SingleEraBlock x, TableStuff (LedgerState x)) => TableStuff (LedgerSta
   newtype LedgerTables (LedgerState (HardForkBlock '[x])) mk = LedgerTablesOne (LedgerTables (LedgerState x) mk)
     deriving (Generic)
 
+  type TableKey   (LedgerState (HardForkBlock '[x])) = TableKey   (LedgerState x)
+  type TableValue (LedgerState (HardForkBlock '[x])) = TableValue (LedgerState x)
+
   projectLedgerTables = LedgerTablesOne . projectLedgerTables . projectOneState
 
   withLedgerTables st (LedgerTablesOne tables) =
       withOneState st $ projectOneState st `withLedgerTables` tables
 
-  traverseLedgerTables f (LedgerTablesOne tables) =
-      LedgerTablesOne <$> traverseLedgerTables f tables
+  projectMk (LedgerTablesOne tbs) = projectMk tbs
+  injectMK = LedgerTablesOne . injectMK
 
-  pureLedgerTables  f = coerce $ pureLedgerTables  @(LedgerState x) f
-  mapLedgerTables   f = coerce $ mapLedgerTables   @(LedgerState x) f
-  zipLedgerTables   f = coerce $ zipLedgerTables   @(LedgerState x) f
-  zipLedgerTables2  f = coerce $ zipLedgerTables2  @(LedgerState x) f
-  foldLedgerTables  f = coerce $ foldLedgerTables  @(LedgerState x) f
-  foldLedgerTables2 f = coerce $ foldLedgerTables2 @(LedgerState x) f
   namesLedgerTables   = coerce $ namesLedgerTables @(LedgerState x)
-  zipLedgerTablesA   f (LedgerTablesOne l) (LedgerTablesOne r) =
-      LedgerTablesOne <$> zipLedgerTablesA f l r
-  zipLedgerTables2A  f (LedgerTablesOne l) (LedgerTablesOne c) (LedgerTablesOne r) =
-      LedgerTablesOne <$> zipLedgerTables2A f l c r
 
 deriving instance Eq (LedgerTables (LedgerState x) mk) => Eq (LedgerTables (LedgerState (HardForkBlock '[x])) mk)
 

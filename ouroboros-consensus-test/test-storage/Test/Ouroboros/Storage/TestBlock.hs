@@ -75,6 +75,7 @@ import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as Map
 import           Data.Maybe (maybeToList)
 import           Data.Typeable (Typeable)
+import           Data.Void (Void)
 import           Data.Word
 import           GHC.Generics (Generic)
 import           GHC.Stack (HasCallStack)
@@ -567,6 +568,12 @@ instance TableStuff (LedgerState TestBlock) where
   data LedgerTables (LedgerState TestBlock) mk = NoTestLedgerTables
     deriving stock    (Generic, Eq, Show)
     deriving anyclass (NoThunks)
+
+  type TableKey (LedgerState TestBlock) = Void
+  type TableValue (LedgerState TestBlock) = Void
+
+  projectMk = error "TestBlock has no tables!"
+  injectMK = const NoTestLedgerTables
 
   projectLedgerTables _st                    = NoTestLedgerTables
   withLedgerTables    st  NoTestLedgerTables = convertMapKind st

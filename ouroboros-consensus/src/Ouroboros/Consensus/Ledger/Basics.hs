@@ -350,9 +350,14 @@ class ( ShowLedgerState (LedgerTables l)
       , Eq (l EmptyMK)
       , Eq (LedgerTables l DiffMK)
       , Eq (LedgerTables l ValuesMK)
+      , Ord (TableKey l)
+      , Eq (TableValue l)
       ) => TableStuff (l :: LedgerStateKind) where
 
   data family LedgerTables l :: LedgerStateKind
+
+  type family TableKey l :: Type
+  type family TableValue l :: Type
 
   -- | Some values of @l mk@ do not determine @mk@, hence the 'SingI' constraint.
   --
@@ -377,12 +382,17 @@ class ( ShowLedgerState (LedgerTables l)
   -- 'CardanoBlock' instance uses 'projectLedgerTables'.
   withLedgerTables :: IsApplyMapKind mk => l any -> LedgerTables l mk -> l mk
 
+  projectMk :: LedgerTables l mk -> mk (TableKey l) (TableValue l)
+
+  injectMK  :: mk (TableKey l) (TableValue l) -> LedgerTables l mk
+
   pureLedgerTables ::
        (forall k v.
             (Ord k, Eq v)
          => mk k v
        )
     -> LedgerTables l mk
+  pureLedgerTables = injectMK
 
   mapLedgerTables ::
        (forall k v.
@@ -392,6 +402,7 @@ class ( ShowLedgerState (LedgerTables l)
        )
     -> LedgerTables l mk1
     -> LedgerTables l mk2
+  mapLedgerTables f = injectMK . f . projectMk
 
   traverseLedgerTables ::
        Applicative f
@@ -402,6 +413,7 @@ class ( ShowLedgerState (LedgerTables l)
        )
     ->    LedgerTables l mk1
     -> f (LedgerTables l mk2)
+  traverseLedgerTables f = fmap injectMK . f . projectMk
 
   zipLedgerTables ::
        (forall k v.
@@ -413,6 +425,7 @@ class ( ShowLedgerState (LedgerTables l)
     -> LedgerTables l mk1
     -> LedgerTables l mk2
     -> LedgerTables l mk3
+  zipLedgerTables f t1 = injectMK . f (projectMk t1) . projectMk
 
   zipLedgerTables2 ::
        (forall k v.
@@ -426,6 +439,8 @@ class ( ShowLedgerState (LedgerTables l)
     -> LedgerTables l mk2
     -> LedgerTables l mk3
     -> LedgerTables l mk4
+  zipLedgerTables2 f t1 t2 =
+    injectMK . f (projectMk t1) (projectMk t2) . projectMk
 
   zipLedgerTablesA ::
        Applicative f
@@ -438,6 +453,7 @@ class ( ShowLedgerState (LedgerTables l)
     -> LedgerTables l mk1
     -> LedgerTables l mk2
     -> f (LedgerTables l mk3)
+  zipLedgerTablesA f t1 = fmap injectMK . f (projectMk t1) . projectMk
 
   zipLedgerTables2A ::
        Applicative f
@@ -452,6 +468,8 @@ class ( ShowLedgerState (LedgerTables l)
     -> LedgerTables l mk2
     -> LedgerTables l mk3
     -> f (LedgerTables l mk4)
+  zipLedgerTables2A f t1 t2 =
+    fmap injectMK . f (projectMk t1) (projectMk t2) . projectMk
 
   foldLedgerTables ::
        Monoid m
@@ -462,6 +480,7 @@ class ( ShowLedgerState (LedgerTables l)
        )
     -> LedgerTables l mk
     -> m
+  foldLedgerTables f = f . projectMk
 
   foldLedgerTables2 ::
        Monoid m
@@ -474,6 +493,7 @@ class ( ShowLedgerState (LedgerTables l)
     -> LedgerTables l mk1
     -> LedgerTables l mk2
     -> m
+  foldLedgerTables2 f t1 = f (projectMk t1) . projectMk
 
   namesLedgerTables :: LedgerTables l NameMK
 
