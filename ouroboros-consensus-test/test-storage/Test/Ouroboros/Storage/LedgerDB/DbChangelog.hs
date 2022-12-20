@@ -126,16 +126,17 @@ instance ShowLedgerState TestLedger where
 
 instance TableStuff TestLedger where
   data LedgerTables TestLedger mk = TestTables { unTestTables :: ApplyMapKind mk Key Int }
-
-  type TableKey TestLedger = Key
-  type TableValue TestLedger = Int
-
   projectLedgerTables                                                 = TestTables . tlUtxos
   withLedgerTables st    (TestTables x)                               = st { tlUtxos = x }
-
-  projectMK = unTestTables
-  injectMK = TestTables
-
+  pureLedgerTables                                                    = TestTables
+  mapLedgerTables f      (TestTables x)                               = TestTables (f x)
+  traverseLedgerTables f (TestTables x)                               = TestTables <$> f x
+  zipLedgerTables f      (TestTables x) (TestTables y)                = TestTables (f x y)
+  zipLedgerTables2 f     (TestTables x) (TestTables y) (TestTables z) = TestTables (f x y z)
+  zipLedgerTablesA f     (TestTables x) (TestTables y)                = TestTables <$> f x y
+  zipLedgerTables2A f    (TestTables x) (TestTables y) (TestTables z) = TestTables <$> f x y z
+  foldLedgerTables f     (TestTables x)                               = f x
+  foldLedgerTables2 f    (TestTables x) (TestTables y)                = f x y
   namesLedgerTables = TestTables $ NameMK "TestTables"
 
 deriving instance Eq (LedgerTables TestLedger SeqDiffMK)

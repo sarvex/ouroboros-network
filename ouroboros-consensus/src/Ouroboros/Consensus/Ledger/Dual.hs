@@ -382,12 +382,6 @@ instance Bridge m a => IsLedger (LedgerState (DualBlock m a)) where
 
 instance Bridge m a => TableStuff (LedgerState (DualBlock m a)) where
 
-  type TableKey (LedgerState (DualBlock m a)) = TableKey (LedgerState m)
-  type TableValue (LedgerState (DualBlock m a)) = TableValue (LedgerState m)
-
-  projectMK = error "It is unclear how to define this, don't use it!"
-  injectMK = error "It is unclear how to define this, don't use it!"
-
   data LedgerTables (LedgerState (DualBlock m a)) mk =
       DualBlockLedgerTables
         (LedgerTables (LedgerState m) mk)

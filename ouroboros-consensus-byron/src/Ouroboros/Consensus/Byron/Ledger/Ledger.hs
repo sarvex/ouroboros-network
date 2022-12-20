@@ -194,12 +194,6 @@ instance TableStuff (LedgerState ByronBlock) where
   data LedgerTables (LedgerState ByronBlock) mk = NoByronLedgerTables
     deriving (Generic, Eq, Show, NoThunks)
 
-  type TableKey (LedgerState ByronBlock) = Void
-  type TableValue (LedgerState ByronBlock) = Void
-
-  projectMK = error "Byron has no tables, so don't try to project them!"
-  injectMK = const NoByronLedgerTables
-
   projectLedgerTables _st                     = NoByronLedgerTables
   withLedgerTables     st NoByronLedgerTables = convertMapKind st
 

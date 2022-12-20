@@ -446,15 +446,39 @@ instance (SimpleCrypto c, Typeable ext) => TableStuff (LedgerState (SimpleBlock 
     }
     deriving (Generic)
 
-  type TableKey   (LedgerState (SimpleBlock c ext)) = Mock.TxIn
-  type TableValue (LedgerState (SimpleBlock c ext)) = Mock.TxOut
-
-  projectMK = unSimpleLedgerTables
-  injectMK = SimpleLedgerTables
-
   projectLedgerTables = simpleLedgerTables
 
   withLedgerTables (SimpleLedgerState s _) tbs' = SimpleLedgerState s tbs'
+
+  pureLedgerTables f = SimpleLedgerTables f
+
+  mapLedgerTables f (SimpleLedgerTables tbs) = SimpleLedgerTables (f tbs)
+
+  traverseLedgerTables f (SimpleLedgerTables tbs) = SimpleLedgerTables <$> f tbs
+
+  zipLedgerTables f (SimpleLedgerTables tbsL) (SimpleLedgerTables tbsR) =
+    SimpleLedgerTables (f tbsL tbsR)
+
+  zipLedgerTables2
+    f
+    (SimpleLedgerTables utxoL)
+    (SimpleLedgerTables utxoC)
+    (SimpleLedgerTables utxoR) =
+      SimpleLedgerTables (f utxoL utxoC utxoR)
+
+  zipLedgerTablesA f (SimpleLedgerTables utxoL) (SimpleLedgerTables utxoR) =
+      SimpleLedgerTables <$> f utxoL utxoR
+
+  zipLedgerTables2A
+    f
+    (SimpleLedgerTables utxoL)
+    (SimpleLedgerTables utxoC)
+    (SimpleLedgerTables utxoR) =
+      SimpleLedgerTables <$> f utxoL utxoC utxoR
+
+  foldLedgerTables f (SimpleLedgerTables utxo) = f utxo
+
+  foldLedgerTables2 f (SimpleLedgerTables utxoL) (SimpleLedgerTables utxoR) = f utxoL utxoR
 
   namesLedgerTables = SimpleLedgerTables (NameMK "mock-utxo")
 

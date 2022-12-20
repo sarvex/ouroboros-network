@@ -538,9 +538,6 @@ instance CardanoHardForkConstraints c => TableStuff (LedgerState (CardanoBlock c
       }
     deriving (Generic)
 
-  type TableKey   (LedgerState (CardanoBlock c)) = SL.TxIn c
-  type TableValue (LedgerState (CardanoBlock c)) = CardanoTxOut c
-
   projectLedgerTables (HardForkLedgerState hfstate) =
       projectLedgerTablesHelper
         (projectLedgerTables . unFlip)
@@ -553,10 +550,17 @@ instance CardanoHardForkConstraints c => TableStuff (LedgerState (CardanoBlock c
           hfstate
           tables
 
-  projectMK = cardanoUTxOTable
-  injectMK = CardanoLedgerTables
+  pureLedgerTables     f                                                                         = CardanoLedgerTables f
+  mapLedgerTables      f                                                 (CardanoLedgerTables x) = CardanoLedgerTables (f x)
+  traverseLedgerTables f                                                 (CardanoLedgerTables x) = CardanoLedgerTables <$> f x
+  zipLedgerTables      f                         (CardanoLedgerTables l) (CardanoLedgerTables r) = CardanoLedgerTables (f l r)
+  zipLedgerTables2     f (CardanoLedgerTables l) (CardanoLedgerTables c) (CardanoLedgerTables r) = CardanoLedgerTables (f l c r)
+  zipLedgerTablesA     f                         (CardanoLedgerTables l) (CardanoLedgerTables r) = CardanoLedgerTables <$> f l r
+  zipLedgerTables2A    f (CardanoLedgerTables l) (CardanoLedgerTables c) (CardanoLedgerTables r) = CardanoLedgerTables <$> f l c r
+  foldLedgerTables     f                                                 (CardanoLedgerTables x) = f x
+  foldLedgerTables2    f                         (CardanoLedgerTables l) (CardanoLedgerTables r) = f l r
 
-  namesLedgerTables = injectMK $ NameMK "cardanoUTxOTable"
+  namesLedgerTables = CardanoLedgerTables { cardanoUTxOTable = NameMK "cardanoUTxOTable" }
 
 instance CardanoHardForkConstraints c
       => SufficientSerializationForAnyBackingStore (LedgerState (CardanoBlock c)) where

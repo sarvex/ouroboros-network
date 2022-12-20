@@ -180,16 +180,10 @@ instance (LedgerSupportsProtocol blk, TableStuff (LedgerState blk)) => TableStuf
     ExtLedgerStateTables { unExtLedgerStateTables :: LedgerTables (LedgerState blk) mk }
     deriving (Generic)
 
-  type TableKey (ExtLedgerState blk) = TableKey (LedgerState blk)
-  type TableValue (ExtLedgerState blk) = TableValue (LedgerState blk)
-
   projectLedgerTables (ExtLedgerState lstate _) =
       ExtLedgerStateTables (projectLedgerTables lstate)
   withLedgerTables (ExtLedgerState lstate hstate) (ExtLedgerStateTables tables) =
       ExtLedgerState (lstate `withLedgerTables` tables) hstate
-
-  projectMK = error "Extended ledger state might wrap a ledger state that has no tables, thus this function should not be used!"
-  injectMK = ExtLedgerStateTables . injectMK
 
   traverseLedgerTables f (ExtLedgerStateTables l) =
     ExtLedgerStateTables <$> traverseLedgerTables f l

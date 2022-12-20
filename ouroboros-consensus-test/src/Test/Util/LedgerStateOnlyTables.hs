@@ -66,17 +66,40 @@ instance (Ord k, Eq v, Show k, Show v)
       otltLedgerTables :: mk k v
     } deriving Generic
 
-  type TableKey (OTLedgerState k v) = k
-  type TableValue (OTLedgerState k v) = v
-
   projectLedgerTables OTLedgerState{otlsLedgerTables} =
     otlsLedgerTables
 
   withLedgerTables st lt =
     st { otlsLedgerTables = lt }
 
-  projectMK = otltLedgerTables
-  injectMK = OTLedgerTables
+  pureLedgerTables f =
+    OTLedgerTables { otltLedgerTables = f }
+
+  mapLedgerTables f OTLedgerTables{otltLedgerTables} =
+    OTLedgerTables $ f otltLedgerTables
+
+  traverseLedgerTables f OTLedgerTables{otltLedgerTables} =
+    OTLedgerTables <$> f otltLedgerTables
+
+  zipLedgerTables f l r =
+    OTLedgerTables (f (otltLedgerTables l) (otltLedgerTables r))
+
+  zipLedgerTablesA f l r =
+    OTLedgerTables <$> f (otltLedgerTables l) (otltLedgerTables r)
+
+  zipLedgerTables2 f l m r =
+    OTLedgerTables $
+      f (otltLedgerTables l) (otltLedgerTables m) (otltLedgerTables r)
+
+  zipLedgerTables2A f l c r =
+    OTLedgerTables <$>
+      f (otltLedgerTables l) (otltLedgerTables c) (otltLedgerTables r)
+
+  foldLedgerTables f OTLedgerTables{otltLedgerTables} =
+    f otltLedgerTables
+
+  foldLedgerTables2 f l r =
+    f (otltLedgerTables l) (otltLedgerTables r)
 
   namesLedgerTables =
     OTLedgerTables { otltLedgerTables = NameMK "otltLedgerTables" }

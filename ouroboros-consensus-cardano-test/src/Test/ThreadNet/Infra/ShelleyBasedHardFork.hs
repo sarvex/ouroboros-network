@@ -379,9 +379,6 @@ instance ShelleyBasedHardForkConstraints proto1 era1 proto2 era2
       }
     deriving (Generic)
 
-  type TableKey (LedgerState (ShelleyBasedHardForkBlock proto1 era1 proto2 era2)) = SL.TxIn (EraCrypto era1)
-  type TableValue (LedgerState (ShelleyBasedHardForkBlock proto1 era1 proto2 era2)) = ShelleyTxOut '[era1, era2]
-
   projectLedgerTables (HardForkLedgerState hfstate) =
       projectLedgerTablesHelper
         (projectLedgerTables . unFlip)
@@ -394,10 +391,16 @@ instance ShelleyBasedHardForkConstraints proto1 era1 proto2 era2
           hfstate
           tables
 
-  injectMK = ShelleyBasedHardForkLedgerTables
-  projectMK = shelleyBasedHardForkUTxOTable
-
-  namesLedgerTables = injectMK $ NameMK "shelleyBasedHardForkUTxOTable"
+  pureLedgerTables     f                                                                                                                = ShelleyBasedHardForkLedgerTables f
+  mapLedgerTables      f                                                                           (ShelleyBasedHardForkLedgerTables x) = ShelleyBasedHardForkLedgerTables (f x)
+  traverseLedgerTables f                                                                           (ShelleyBasedHardForkLedgerTables x) = ShelleyBasedHardForkLedgerTables <$> f x
+  zipLedgerTables      f                                      (ShelleyBasedHardForkLedgerTables l) (ShelleyBasedHardForkLedgerTables r) = ShelleyBasedHardForkLedgerTables (f l r)
+  zipLedgerTables2     f (ShelleyBasedHardForkLedgerTables l) (ShelleyBasedHardForkLedgerTables c) (ShelleyBasedHardForkLedgerTables r) = ShelleyBasedHardForkLedgerTables (f l c r)
+  zipLedgerTablesA     f                                      (ShelleyBasedHardForkLedgerTables l) (ShelleyBasedHardForkLedgerTables r) = ShelleyBasedHardForkLedgerTables <$> f l r
+  zipLedgerTables2A    f (ShelleyBasedHardForkLedgerTables l) (ShelleyBasedHardForkLedgerTables c) (ShelleyBasedHardForkLedgerTables r) = ShelleyBasedHardForkLedgerTables <$> f l c r
+  foldLedgerTables     f                                                                           (ShelleyBasedHardForkLedgerTables x) = f x
+  foldLedgerTables2    f                                      (ShelleyBasedHardForkLedgerTables l) (ShelleyBasedHardForkLedgerTables r) = f l r
+  namesLedgerTables = ShelleyBasedHardForkLedgerTables { shelleyBasedHardForkUTxOTable = NameMK "shelleyBasedHardForkUTxOTable" }
 
 instance ShelleyBasedHardForkConstraints proto1 era1 proto2 era2
       => SufficientSerializationForAnyBackingStore (LedgerState (ShelleyBasedHardForkBlock proto1 era1 proto2 era2)) where

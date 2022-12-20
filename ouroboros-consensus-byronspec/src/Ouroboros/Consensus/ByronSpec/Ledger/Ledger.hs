@@ -20,7 +20,6 @@ module Ouroboros.Consensus.ByronSpec.Ledger.Ledger (
 
 import           Codec.Serialise
 import           Control.Monad.Except
-import           Data.Void (Void)
 import           GHC.Generics (Generic)
 import           NoThunks.Class (AllowThunk (..), NoThunks)
 
@@ -127,12 +126,6 @@ instance ShowLedgerState (LedgerState ByronSpecBlock) where
 instance TableStuff (LedgerState ByronSpecBlock) where
   data LedgerTables (LedgerState ByronSpecBlock) mk = NoByronSpecLedgerTables
     deriving (Generic, Eq, Show, NoThunks)
-
-  type TableKey (LedgerState ByronSpecBlock) = Void
-  type TableValue (LedgerState ByronSpecBlock) = Void
-
-  projectMK = error "Byron-spec has no tables!"
-  injectMK = const NoByronSpecLedgerTables
 
   projectLedgerTables _st                     = NoByronSpecLedgerTables
   withLedgerTables st NoByronSpecLedgerTables = convertMapKind st

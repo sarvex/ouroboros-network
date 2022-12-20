@@ -24,7 +24,6 @@ module Test.Consensus.HardFork.Combinator (tests) where
 
 import qualified Data.Map.Strict as Map
 import           Data.SOP.Strict hiding (shape)
-import           Data.Void (Void)
 import           Data.Word
 import           GHC.Generics (Generic)
 import           NoThunks.Class (NoThunks)
@@ -371,12 +370,6 @@ instance TxGen TestBlock where
 instance TableStuff (LedgerState (HardForkBlock '[BlockA, BlockB])) where
   data LedgerTables (LedgerState TestBlock) mk = NoAbTables
     deriving (Eq, Generic, NoThunks, Show)
-
-  type TableKey (LedgerState (HardForkBlock '[BlockA, BlockB])) = Void
-  type TableValue (LedgerState (HardForkBlock '[BlockA, BlockB])) = Void
-
-  injectMK = const NoAbTables
-  projectMK = error "BlockAB has no tables!"
 
   projectLedgerTables _st            = NoAbTables
   withLedgerTables    st  NoAbTables = convertMapKind st
