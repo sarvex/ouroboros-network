@@ -60,7 +60,7 @@ class ( UpdateLedger blk
       , NoThunks (GenTx blk)
       , NoThunks (GenTxId blk)
       , NoThunks (Validated (GenTx blk))
-      , NoThunks (TickedLedgerState blk TrackingMK)
+      , NoThunks (TickedLedgerState blk TrackingMK EmptyMK)
       , Show (GenTx blk)
       , Show (Validated (GenTx blk))
       , Show (ApplyTxErr blk)
@@ -75,8 +75,8 @@ class ( UpdateLedger blk
           -> WhetherToIntervene
           -> SlotNo -- ^ Slot number of the block containing the tx
           -> GenTx blk
-          -> TickedLedgerState blk ValuesMK
-          -> Except (ApplyTxErr blk) (TickedLedgerState blk TrackingMK, Validated (GenTx blk))
+          -> TickedLedgerState blk ValuesMK EmptyMK
+          -> Except (ApplyTxErr blk) (TickedLedgerState blk TrackingMK EmptyMK, Validated (GenTx blk))
 
   -- | Apply a previously validated transaction to a potentially different
   -- ledger state
@@ -88,8 +88,8 @@ class ( UpdateLedger blk
             => LedgerConfig blk
             -> SlotNo -- ^ Slot number of the block containing the tx
             -> Validated (GenTx blk)
-            -> TickedLedgerState blk ValuesMK
-            -> Except (ApplyTxErr blk) (TickedLedgerState blk TrackingMK)
+            -> TickedLedgerState blk ValuesMK EmptyMK
+            -> Except (ApplyTxErr blk) (TickedLedgerState blk TrackingMK EmptyMK)
 
   -- | The maximum number of bytes worth of transactions that can be put into
   -- a block according to the currently adopted protocol parameters of the
@@ -97,7 +97,7 @@ class ( UpdateLedger blk
   --
   -- This is (conservatively) computed by subtracting the header size and any
   -- other fixed overheads from the maximum block size.
-  txsMaxBytes :: TickedLedgerState blk mk -> Word32
+  txsMaxBytes :: TickedLedgerState blk mk1 mk2 -> Word32
 
   -- | Return the post-serialisation size in bytes of a 'GenTx' /when it is
   -- embedded in a block/. This size might differ from the size of the
@@ -124,7 +124,7 @@ class ( UpdateLedger blk
 
   -- | Given a transaction, get the key-sets that we need to apply it to a
   -- ledger state.
-  getTransactionKeySets :: GenTx blk -> LedgerTables (LedgerState blk) KeysMK
+  getTransactionKeySets :: GenTx blk -> LedgerTables (LedgerState blk) KeysMK EmptyMK
 
 -- | A generalized transaction, 'GenTx', identifier.
 data family TxId tx :: Type

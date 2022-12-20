@@ -10,6 +10,7 @@
 module Ouroboros.Consensus.Ticked (
     Ticked (..)
   , Ticked1
+  , Ticked2
   ) where
 
 import           Data.Kind (Type)
@@ -62,3 +63,4 @@ deriving newtype instance
 -------------------------------------------------------------------------------}
 
 data family Ticked1 (st :: k -> Type) :: k -> Type
+data family Ticked2 (st :: k1 -> k2 -> Type) :: k1 -> k2 -> Type

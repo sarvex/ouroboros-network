@@ -1,4 +1,7 @@
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Ouroboros.Consensus.Ledger.SupportsProtocol (LedgerSupportsProtocol (..)) where
 
@@ -12,6 +15,7 @@ import           Ouroboros.Consensus.Ledger.Abstract
 import           Ouroboros.Consensus.Ledger.Tables
 import           Ouroboros.Consensus.Protocol.Abstract
 
+import Data.Map.Diff.Strict
 -- | Link protocol to ledger
 class ( BlockSupportsProtocol blk
       , UpdateLedger          blk
@@ -22,7 +26,7 @@ class ( BlockSupportsProtocol blk
   -- See 'ledgerViewForecastAt' for a discussion and precise definition of the
   -- relation between this and forecasting.
   protocolLedgerView :: LedgerConfig blk
-                     -> TickedLedgerState blk mk
+                     -> TickedLedgerState blk mk1 ValuesMK
                      -> Ticked (LedgerView (BlockProtocol blk))
 
   -- | Get a forecast at the given ledger state.
@@ -63,7 +67,7 @@ class ( BlockSupportsProtocol blk
   ledgerViewForecastAt ::
        HasCallStack
     => LedgerConfig blk
-    -> LedgerState blk mk
+    -> LedgerState blk mk1 ValuesMK
     -> Forecast (LedgerView (BlockProtocol blk))
 
 -- | Relation between 'ledgerViewForecastAt' and 'applyChainTick'
@@ -73,7 +77,7 @@ _lemma_ledgerViewForecastAt_applyChainTick
      , Show (Ticked (LedgerView (BlockProtocol blk)))
      )
   => LedgerConfig blk
-  -> LedgerState blk EmptyMK
+  -> LedgerState blk EmptyMK ValuesMK
   -> Forecast (LedgerView (BlockProtocol blk))
   -> SlotNo
   -> Either String ()
@@ -81,6 +85,7 @@ _lemma_ledgerViewForecastAt_applyChainTick cfg st forecast for
     | NotOrigin for >= ledgerTipSlot st
     , let lhs = forecastFor forecast for
           rhs = protocolLedgerView cfg
+              . applyDiff2 st
               . applyChainTick cfg for
               $ st
     , Right lhs' <- runExcept lhs
@@ -93,3 +98,8 @@ _lemma_ledgerViewForecastAt_applyChainTick cfg st forecast for
       ]
     | otherwise
     = Right ()
+
+applyDiff2 :: forall blk. TickedTableStuff (LedgerState blk) => LedgerState blk EmptyMK ValuesMK
+           -> TickedLedgerState blk DiffMK DiffMK
+           -> TickedLedgerState blk DiffMK ValuesMK
+applyDiff2 before after = zipOverLedgerTablesTicked @(LedgerState blk) const (\(ApplyDiffMK d) (ApplyValuesMK v) -> ApplyValuesMK $ applyDiff v d) after (projectLedgerTables before)

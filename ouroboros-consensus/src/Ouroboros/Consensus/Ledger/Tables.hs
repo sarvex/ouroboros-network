@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE ConstraintKinds    #-}
 {-# LANGUAGE DataKinds          #-}
 {-# LANGUAGE DerivingVia        #-}
@@ -9,6 +10,7 @@
 {-# LANGUAGE Rank2Types         #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeFamilies       #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 -- |
 
 module Ouroboros.Consensus.Ledger.Tables (
@@ -77,12 +79,38 @@ import           Ouroboros.Consensus.Storage.LedgerDB.HD.DiffSeq
 -------------------------------------------------------------------------------}
 
 class ShowLedgerState (l :: LedgerStateKind) where
-  showsLedgerState :: SMapKind mk -> l (ApplyMapKind' mk) -> ShowS
+  showsLedgerState :: SMapKind mk -> l (ApplyMapKind' mk) (ApplyMapKind' mk) -> ShowS
 
-class ( ShowLedgerState (LedgerTables l)
-      , Eq (l EmptyMK)
-      , Eq (LedgerTables l DiffMK)
-      , Eq (LedgerTables l ValuesMK)
+class TableTagC (tt :: TableTag) (l :: Type) mk where
+
+instance TableTagC UTxO (l mk1 mk2) mk1
+instance TableTagC SecondTable (l mk1 mk2) mk2
+
+type family MappedTable tt l mk1 mk2 mkX where
+  MappedTable UTxO l mk1 mk2 mkX = l mkX mk2
+  MappedTable SecondTable l mk1 mk2 mkX = l mk1 mkX
+
+type Fun1 mkA = forall k v. (Ord k, Eq v) => mkA k v
+type Fun2 mkA mkB = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v
+type Fun3 mkA mkB mkC = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v -> mkC k v
+type Fun4 mkA mkB mkC mkD = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v -> mkC k v -> mkD k v
+type Fun2F mkA mkB f = forall k v. (Ord k, Eq v) => mkA k v -> f (mkB k v)
+type Fun3F mkA mkB mkC f = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v -> f (mkC k v)
+type Fun4F mkA mkB mkC mkD f = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v -> mkC k v -> f (mkD k v)
+type FunFold1 mkA m = forall k v. (Ord k, Eq v) => mkA k v -> m
+type FunFold2 mkA mkB m = forall k v. (Ord k, Eq v) => mkA k v -> mkB k v -> m
+
+type (~~>) mkA mkB = Fun2 mkA mkB
+type (~~~>) mkA mkB mkC = Fun3 mkA mkB mkC
+type (~~~~>) mkA mkB mkC mkD = Fun4 mkA mkB mkC mkD
+type (~&~>) mkA mkB f = Fun2F mkA mkB f
+type (~&~~>) mkA mkB mkC f = Fun3F mkA mkB mkC f
+type (~&~~~>) mkA mkB mkC mkD f = Fun4F mkA mkB mkC mkD f
+type (~+~>) mkA mkB m = FunFold2 mkA mkB m
+
+class ( Eq (l EmptyMK EmptyMK)
+      , Eq (LedgerTables l DiffMK DiffMK)
+      , Eq (LedgerTables l ValuesMK DiffMK )
       ) => TableStuff (l :: LedgerStateKind) where
 
   data family LedgerTables l :: LedgerStateKind
@@ -94,7 +122,7 @@ class ( ShowLedgerState (LedgerTables l)
   -- the 'SingI' constraint. Unfortunately, that is not always the case. The
   -- example we have found in our prototype UTxO HD implementat is that a Byron
   -- ledger state does not determine @mk@, but the Cardano ledger tables do.
-  projectLedgerTables :: IsApplyMapKind mk => l mk -> LedgerTables l mk
+  projectLedgerTables :: l mk1 mk2 -> LedgerTables l mk1 mk2
 
   -- | Overwrite the tables in some ledger state.
   --
@@ -105,198 +133,157 @@ class ( ShowLedgerState (LedgerTables l)
   -- current era of the ledger state argument.
   --
   -- TODO: reconsider the name: don't we use 'withX' in the context of bracket like functions?
-  --
-  -- TODO: This 'IsApplyMapKind' constraint is necessary because the
-  -- 'CardanoBlock' instance uses 'projectLedgerTables'.
-  withLedgerTables :: IsApplyMapKind mk => l any -> LedgerTables l mk -> l mk
+  withLedgerTables :: l any1 any2 -> LedgerTables l mk1 mk2 -> l mk1 mk2
 
   pureLedgerTables ::
-       (forall k v.
-            (Ord k, Eq v)
-         => mk k v
-       )
-    -> LedgerTables l mk
+       Fun1 mkA
+    -> Fun1 mkB
+    -> LedgerTables l mkA mkB
 
   mapLedgerTables ::
-       (forall k v.
-            (Ord k, Eq v)
-         => mk1 k v
-         -> mk2 k v
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
+       mkA ~~> mkX
+    -> mkB ~~> mkY
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
 
   traverseLedgerTables ::
        Applicative f
-    => (forall k v .
-           (Ord k, Eq v)
-        =>    mk1 k v
-        -> f (mk2 k v)
-       )
-    ->    LedgerTables l mk1
-    -> f (LedgerTables l mk2)
+    => (mkA ~&~> mkX) f
+    -> (mkB ~&~> mkY) f
+    -> LedgerTables l mk1 mk2
+    -> f (LedgerTables l mkX mkY)
 
   zipLedgerTables ::
-       (forall k v.
-            (Ord k, Eq v)
-         => mk1 k v
-         -> mk2 k v
-         -> mk3 k v
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
-    -> LedgerTables l mk3
+       (mkA ~~~> mkX) mkP
+    -> (mkB ~~~> mkY) mkQ
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
+    -> LedgerTables l mkP mkQ
 
   zipLedgerTables2 ::
-       (forall k v.
-            (Ord k, Eq v)
-         => mk1 k v
-         -> mk2 k v
-         -> mk3 k v
-         -> mk4 k v
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
-    -> LedgerTables l mk3
-    -> LedgerTables l mk4
+       (mkA ~~~~> mkX) mkP mkM
+    -> (mkB ~~~~> mkY) mkQ mkN
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
+    -> LedgerTables l mkP mkQ
+    -> LedgerTables l mkM mkN
 
   zipLedgerTablesA ::
        Applicative f
-    => (forall k v.
-            (Ord k, Eq v)
-         => mk1 k v
-         -> mk2 k v
-         -> f (mk3 k v)
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
-    -> f (LedgerTables l mk3)
+    => (mkA ~&~~> mkX) mkP f
+    -> (mkB ~&~~> mkY) mkQ f
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
+    -> f (LedgerTables l mkP mkQ)
 
   zipLedgerTables2A ::
        Applicative f
-    => (forall k v.
-            (Ord k, Eq v)
-         => mk1 k v
-         -> mk2 k v
-         -> mk3 k v
-         -> f (mk4 k v)
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
-    -> LedgerTables l mk3
-    -> f (LedgerTables l mk4)
+    => (mkA ~&~~~> mkX) mkP mkM f
+    -> (mkB ~&~~~> mkY) mkQ mkN f
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
+    -> LedgerTables l mkP mkQ
+    -> f (LedgerTables l mkM mkN)
 
   foldLedgerTables ::
-       Monoid m
-    => (forall k v.
-            (Ord k, Eq v)
-         => mk k v
-         -> m
-       )
-    -> LedgerTables l mk
-    -> m
+       (Monoid m, Monoid n)
+    => FunFold1 mkA m
+    -> FunFold1 mkB n
+    -> LedgerTables l mkA mkB
+    -> (m, n)
 
   foldLedgerTables2 ::
-       Monoid m
-    => (forall k v.
-           (Ord k, Eq v)
-        => mk1 k v
-        -> mk2 k v
-        -> m
-       )
-    -> LedgerTables l mk1
-    -> LedgerTables l mk2
-    -> m
+       (Monoid m, Monoid n)
+    => (mkA ~+~> mkX) m
+    -> (mkB ~+~> mkY) n
+    -> LedgerTables l mkA mkB
+    -> LedgerTables l mkX mkY
+    -> (m, n)
 
-  namesLedgerTables :: LedgerTables l NameMK
+  namesLedgerTables :: LedgerTables l NameMK NameMK
 
 overLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
-  => (LedgerTables l mk1 -> LedgerTables l mk2)
-  -> l mk1
-  -> l mk2
+     TableStuff l
+  => (LedgerTables l mkA mkB -> LedgerTables l mkX mkY)
+  -> l mkA mkB
+  -> l mkX mkY
 overLedgerTables f l = withLedgerTables l $ f $ projectLedgerTables l
 
-mapOverLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
-  => (forall k v.
-          (Ord k, Eq v)
-       => mk1 k v
-       -> mk2 k v
-     )
-  -> l mk1
-  -> l mk2
-mapOverLedgerTables f = overLedgerTables $ mapLedgerTables f
+mapOverLedgerTables :: forall l mkA mkX mkB mkY.
+     TableStuff l
+  => mkA ~~> mkX
+  -> mkB ~~> mkY
+  -> l mkA mkB
+  -> l mkX mkY
+mapOverLedgerTables f1 f2 = overLedgerTables $ mapLedgerTables f1 f2
 
 zipOverLedgerTables ::
-     (TableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk3)
-  => (forall k v.
-          (Ord k, Eq v)
-       => mk1 k v
-       -> mk2 k v
-       -> mk3 k v
-     )
-  ->              l mk1
-  -> LedgerTables l mk2
-  ->              l mk3
-zipOverLedgerTables f l tables2 =
+     TableStuff l
+  => (mkA ~~~> mkX) mkP
+  -> (mkB ~~~> mkY) mkQ
+  ->              l mkA mkB
+  -> LedgerTables l mkX mkY
+  ->              l mkP mkQ
+zipOverLedgerTables f1 f2 l tables2 =
     overLedgerTables
-      (\tables1 -> zipLedgerTables f tables1 tables2)
+      (\tables1 -> zipLedgerTables f1 f2 tables1 tables2)
       l
 
 class TableStuff l => TickedTableStuff (l :: LedgerStateKind) where
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'projectLedgerTables'
-  projectLedgerTablesTicked :: IsApplyMapKind mk => Ticked1 l mk  -> LedgerTables l mk
+  projectLedgerTablesTicked :: Ticked2 l mk1 mk2  -> LedgerTables l mk1 mk2
   -- | NOTE: The 'IsApplyMapKind mk2' constraint is here for the same reason
   -- it's on 'withLedgerTables'
-  withLedgerTablesTicked    :: IsApplyMapKind mk => Ticked1 l any -> LedgerTables l mk -> Ticked1 l mk
+  withLedgerTablesTicked    :: Ticked2 l any1 any2 -> LedgerTables l mk1 mk2 -> Ticked2 l mk1 mk2
 
 overLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
-  => (LedgerTables l mk1 -> LedgerTables l mk2)
-  -> Ticked1 l mk1
-  -> Ticked1 l mk2
+     TickedTableStuff l
+  => (LedgerTables l mk1 mk2 -> LedgerTables l mk1' mk2')
+  -> Ticked2 l mk1 mk2
+  -> Ticked2 l mk1' mk2'
 overLedgerTablesTicked f l =
     withLedgerTablesTicked l $ f $ projectLedgerTablesTicked l
 
 mapOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk2)
-  => (forall k v.
-         (Ord k, Eq v)
-      => mk1 k v
-      -> mk2 k v
-     )
-  -> Ticked1 l mk1
-  -> Ticked1 l mk2
-mapOverLedgerTablesTicked f = overLedgerTablesTicked $ mapLedgerTables f
+     TickedTableStuff l
+  => mkA ~~> mkX
+  -> mkB ~~> mkY
+  -> Ticked2 l mkA mkB
+  -> Ticked2 l mkX mkY
+mapOverLedgerTablesTicked f1 f2 = overLedgerTablesTicked $ mapLedgerTables f1 f2
 
 zipOverLedgerTablesTicked ::
-     (TickedTableStuff l, IsApplyMapKind mk1, IsApplyMapKind mk3)
-  => (forall k v.
-         (Ord k, Eq v)
-      => mk1 k v
-      -> mk2 k v
-      -> mk3 k v
-     )
-  -> Ticked1      l mk1
-  -> LedgerTables l mk2
-  -> Ticked1      l mk3
-zipOverLedgerTablesTicked f l tables2 =
+     TickedTableStuff l
+  => (mkA ~~~> mkX) mkP
+  -> (mkB ~~~> mkY) mkQ
+  -> Ticked2      l mkA mkB
+  -> LedgerTables l mkX mkY
+  -> Ticked2      l mkP mkQ
+zipOverLedgerTablesTicked f1 f2 l tables2 =
     overLedgerTablesTicked
-      (\tables1 -> zipLedgerTables f tables1 tables2)
+      (\tables1 -> zipLedgerTables f1 f2 tables1 tables2)
       l
 
 class StowableLedgerTables (l :: LedgerStateKind) where
-  stowLedgerTables     :: l ValuesMK -> l EmptyMK
-  unstowLedgerTables   :: l EmptyMK  -> l ValuesMK
+  stowLedgerTables1     :: l ValuesMK mk2 -> l EmptyMK mk2
+  unstowLedgerTables1   :: l EmptyMK mk2 -> l ValuesMK mk2
+  stowLedgerTables2     :: l mk1 ValuesMK -> l mk1 EmptyMK
+  unstowLedgerTables2   :: l mk1 EmptyMK -> l mk1 ValuesMK
 
 {-------------------------------------------------------------------------------
   Concrete ledger tables
 -------------------------------------------------------------------------------}
 
 type MapKind         = {- key -} Type -> {- value -} Type -> Type
-type LedgerStateKind = MapKind -> Type
+type TableKind       = TableTag -> MapKind -> Type
+type LedgerStateKind = MapKind -> MapKind -> Type
+
+data TableTag = UTxO | SecondTable
+
+data STableTag tt where
+  SUTxO        :: STableTag UTxO
+  SSecondTable :: STableTag SecondTable
 
 data MapKind' = DiffMK'
               | EmptyMK'
@@ -490,7 +477,7 @@ instance FromCBOR (Sing QueryMK')    where fromCBOR = SQueryMK    <$ CBOR.decode
 -- | This class provides a 'CodecMK' that can be used to encode/decode keys and
 -- values on @'LedgerTables' l mk@
 class SufficientSerializationForAnyBackingStore (l :: LedgerStateKind) where
-  codecLedgerTables :: LedgerTables l CodecMK
+  codecLedgerTables :: LedgerTables l CodecMK CodecMK
 
 -- | Default encoder of @'LedgerTables' l ''ValuesMK'@ to be used by the
 -- in-memory backing store.
@@ -498,11 +485,11 @@ valuesMKEncoder ::
      ( TableStuff l
      , SufficientSerializationForAnyBackingStore l
      )
-  => LedgerTables l ValuesMK
+  => LedgerTables l ValuesMK ValuesMK
   -> CBOR.Encoding
 valuesMKEncoder tables =
-       CBOR.encodeListLen (getSum (foldLedgerTables (\_ -> Sum 1) tables))
-    <> foldLedgerTables2 go codecLedgerTables tables
+       CBOR.encodeListLen (getSum (uncurry (+) $ foldLedgerTables (\_ -> Sum 1) (\_ -> Sum 1) tables))
+    <> (uncurry (<>) (foldLedgerTables2 go go codecLedgerTables tables))
   where
     go :: CodecMK k v -> ApplyMapKind ValuesMK k v -> CBOR.Encoding
     go (CodecMK encK encV _decK _decV) (ApplyValuesMK (Values m)) =
@@ -517,16 +504,18 @@ valuesMKDecoder ::
      ( TableStuff l
      , SufficientSerializationForAnyBackingStore l
      )
-  => CBOR.Decoder s (LedgerTables l ValuesMK)
+  => CBOR.Decoder s (LedgerTables l ValuesMK ValuesMK)
 valuesMKDecoder = do
     numTables <- CBOR.decodeListLen
     if numTables == 0
       then
-        return $ pureLedgerTables $ emptyAppliedMK sMapKind
+        return $ pureLedgerTables (emptyAppliedMK sMapKind) (emptyAppliedMK sMapKind)
       else do
-        mapLen <- CBOR.decodeMapLen
-        ret    <- traverseLedgerTables (go mapLen) codecLedgerTables
-        Exn.assert ((getSum (foldLedgerTables (\_ -> Sum 1) ret)) == numTables)
+        ret    <- traverseLedgerTables
+                     (\tb -> CBOR.decodeMapLen >>= \mapLen -> go mapLen tb)
+                     (\tb -> CBOR.decodeMapLen >>= \mapLen -> go mapLen tb)
+                     codecLedgerTables
+        Exn.assert ((getSum (uncurry (+) $ foldLedgerTables (\_ -> Sum 1) (\_ -> Sum 1) ret)) == numTables)
           $ return ret
  where
   go :: Ord k
@@ -549,5 +538,4 @@ class InMemory (l :: LedgerStateKind) where
   --
   -- This function is useful to combine functions that operate on functions that
   -- transform the map kind on a ledger state (eg applyChainTickLedgerResult).
-  convertMapKind :: l mk -> l mk'
-
+  convertMapKind :: l mk1 mk2 -> l mk1' mk2'

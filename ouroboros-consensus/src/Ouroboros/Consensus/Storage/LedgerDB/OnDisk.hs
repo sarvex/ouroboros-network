@@ -332,10 +332,10 @@ initLedgerDB ::
   => Tracer m (ReplayGoal blk -> TraceReplayEvent blk)
   -> Tracer m (TraceEvent blk)
   -> SomeHasFS m
-  -> (forall s. Decoder s (ExtLedgerState blk EmptyMK))
+  -> (forall s. Decoder s (ExtLedgerState blk EmptyMK EmptyMK))
   -> (forall s. Decoder s (HeaderHash blk))
   -> LedgerDbCfg (ExtLedgerState blk)
-  -> m (ExtLedgerState blk ValuesMK) -- ^ Genesis ledger state
+  -> m (ExtLedgerState blk ValuesMK ValuesMK) -- ^ Genesis ledger state
   -> StreamAPI m blk blk
   -> BackingStoreSelector m
   -> m (InitLog blk, LedgerDB' blk, Word64, LedgerBackingStore' m blk)
@@ -351,7 +351,7 @@ initLedgerDB replayTracer
     listSnapshots hasFS >>= tryNewestFirst id
   where
     lbsi ::
-         (TableStuff l, NoThunks (LedgerTables l ValuesMK)
+         (TableStuff l, NoThunks (LedgerTables l ValuesMK ValuesMK)
          , SufficientSerializationForAnyBackingStore l)
       => LedgerBackingStoreInitialiser m l
     lbsi = newBackingStoreInitialiser nullTracer bss
@@ -515,7 +515,7 @@ newBackingStore ::
      IOLike m
   => LedgerBackingStoreInitialiser m l
   -> SomeHasFS m
-  -> LedgerTables l ValuesMK
+  -> LedgerTables l ValuesMK ValuesMK
   -> m (LedgerBackingStore m l)
 newBackingStore lbsi someHasFS tables = do
     LedgerBackingStore <$> BackingStore.initFromValues bsi someHasFS Origin tables
@@ -524,7 +524,7 @@ newBackingStore lbsi someHasFS tables = do
 
 newBackingStoreInitialiser ::
      ( IOLike m
-     , NoThunks (LedgerTables l ValuesMK)
+     , NoThunks (LedgerTables l ValuesMK ValuesMK)
      , TableStuff l
      , SufficientSerializationForAnyBackingStore l
      )
@@ -539,14 +539,14 @@ newBackingStoreInitialiser tracer bss = LedgerBackingStoreInitialiser $
         limits
     InMemoryBackingStore ->
       BackingStore.newTVarBackingStoreInitialiser
-        (zipLedgerTables lookup_)
+        (zipLedgerTables lookup_ lookup_)
         (\rq values -> case BackingStore.rqPrev rq of
             Nothing   ->
-              mapLedgerTables (rangeRead0_ (BackingStore.rqCount rq))      values
+              mapLedgerTables (rangeRead0_ (BackingStore.rqCount rq)) (rangeRead0_ (BackingStore.rqCount rq))      values
             Just keys ->
-              zipLedgerTables (rangeRead_  (BackingStore.rqCount rq)) keys values
+              zipLedgerTables (rangeRead_  (BackingStore.rqCount rq)) (rangeRead_  (BackingStore.rqCount rq)) keys values
         )
-        (zipLedgerTables applyDiff_)
+        (zipLedgerTables applyDiff_ applyDiff_)
         valuesMKEncoder
         valuesMKDecoder
 
@@ -588,18 +588,18 @@ applyDiff_ (ApplyValuesMK values) (ApplyDiffMK diff) =
 
 newtype LedgerBackingStoreInitialiser m l = LedgerBackingStoreInitialiser
   (BackingStore.BackingStoreInitialiser m
-    (LedgerTables l KeysMK)
-    (LedgerTables l ValuesMK)
-    (LedgerTables l DiffMK)
+    (LedgerTables l KeysMK KeysMK)
+    (LedgerTables l ValuesMK ValuesMK)
+    (LedgerTables l DiffMK DiffMK)
   )
   deriving newtype (NoThunks)
 
 -- | A handle to the backing store for the ledger tables
 newtype LedgerBackingStore m l = LedgerBackingStore
     (BackingStore.BackingStore m
-      (LedgerTables l KeysMK)
-      (LedgerTables l ValuesMK)
-      (LedgerTables l DiffMK)
+      (LedgerTables l KeysMK KeysMK)
+      (LedgerTables l ValuesMK ValuesMK)
+      (LedgerTables l DiffMK DiffMK)
     )
   deriving newtype (NoThunks)
 
@@ -607,8 +607,8 @@ newtype LedgerBackingStore m l = LedgerBackingStore
 data LedgerBackingStoreValueHandle m l = LedgerBackingStoreValueHandle
     !(WithOrigin SlotNo)
     !(BackingStore.BackingStoreValueHandle m
-      (LedgerTables l KeysMK)
-      (LedgerTables l ValuesMK)
+      (LedgerTables l KeysMK KeysMK)
+      (LedgerTables l ValuesMK ValuesMK)
     )
   deriving stock    (Generic)
   deriving anyclass (NoThunks)
@@ -616,7 +616,7 @@ data LedgerBackingStoreValueHandle m l = LedgerBackingStoreValueHandle
 type LedgerBackingStore' m blk = LedgerBackingStore m (ExtLedgerState blk)
 
 mkDiskLedgerView ::
-     (GetTip (l EmptyMK), IOLike m, TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), IOLike m, TableStuff l)
   => (LedgerBackingStoreValueHandle m l, LedgerDB l, m ())
   -> DiskLedgerView m l
 mkDiskLedgerView (LedgerBackingStoreValueHandle seqNo vh, ldb, close) =
@@ -639,9 +639,9 @@ mkDiskLedgerView (LedgerBackingStoreValueHandle seqNo vh, ldb, close) =
               diffs =
                 maybe
                   id
-                  (zipLedgerTables doDropLTE)
+                  (zipLedgerTables doDropLTE doDropLTE)
                   (BackingStore.rqPrev rq)
-                  $ mapLedgerTables prj
+                  $ mapLedgerTables prj prj
                   $ changelogDiffs chlog
               -- (1) Ensure that we never delete everything read from disk (ie
               --     if our result is non-empty then it contains something read
@@ -651,7 +651,7 @@ mkDiskLedgerView (LedgerBackingStoreValueHandle seqNo vh, ldb, close) =
               --     the result but need in order to know which in-memory
               --     insertions to include.
               maxDeletes = maybe 0 getMax
-                         $ foldLedgerTables (Just . Max . numDeletesDiffMK) diffs
+                         $ (\(a, b) -> Max <$> a <*> b) $ foldLedgerTables (Just . Max . numDeletesDiffMK) (Just . Max . numDeletesDiffMK) diffs
               nrequested = 1 + max (BackingStore.rqCount rq) (1 + maxDeletes)
 
           values <- BackingStore.bsvhRangeRead vh (rq{BackingStore.rqCount = nrequested})
@@ -759,7 +759,7 @@ readKeySets (LedgerBackingStore backingStore) rew = do
 
 readKeySetsVH :: forall m l.
      IOLike m
-  => (LedgerTables l KeysMK -> m (WithOrigin SlotNo, LedgerTables l ValuesMK))
+  => (LedgerTables l KeysMK KeysMK -> m (WithOrigin SlotNo, LedgerTables l ValuesMK ValuesMK))
   -> RewoundTableKeySets l
   -> m (UnforwardedReadSets l)
 readKeySetsVH readKeys (RewoundTableKeySets _seqNo rew) = do
@@ -820,7 +820,7 @@ readKeySetsVH readKeys (RewoundTableKeySets _seqNo rew) = do
 -- Which solution to use depends on the desired behaviour, which in turn
 -- depends on which diffs are /supposed/ to be flushed.
 flush ::
-     (Applicative m, TableStuff l, GetTip (l EmptyMK))
+     (Applicative m, TableStuff l, GetTip (l EmptyMK EmptyMK))
   => LedgerBackingStore m l -> DbChangelog l -> m ()
 flush (LedgerBackingStore backingStore) dblog =
     case youngestImmutableSlotDbChangelog dblog of
@@ -944,7 +944,7 @@ takeSnapshot ::
   => Tracer m (TraceEvent blk)
   -> SomeHasFS m
   -> LedgerBackingStore' m blk
-  -> (ExtLedgerState blk EmptyMK -> Encoding)
+  -> (ExtLedgerState blk EmptyMK EmptyMK -> Encoding)
   -> LedgerDB' blk
   -> m (Maybe (DiskSnapshot, RealPoint blk))
 takeSnapshot tracer hasFS backingStore encLedger db =
@@ -970,9 +970,9 @@ writeSnapshot ::
      forall m blk. MonadThrow m
   => SomeHasFS m
   -> LedgerBackingStore' m blk
-  -> (ExtLedgerState blk EmptyMK -> Encoding)
+  -> (ExtLedgerState blk EmptyMK EmptyMK -> Encoding)
   -> DiskSnapshot
-  -> ExtLedgerState blk EmptyMK
+  -> ExtLedgerState blk EmptyMK EmptyMK
   -> m ()
 writeSnapshot (SomeHasFS hasFS) backingStore encLedger snapshot cs = do
     createDirectory hasFS (snapshotToDirPath snapshot)
@@ -1019,10 +1019,10 @@ deleteSnapshot (SomeHasFS HasFS{..}) =
 readSnapshot ::
      forall m blk. IOLike m
   => SomeHasFS m
-  -> (forall s. Decoder s (ExtLedgerState blk EmptyMK))
+  -> (forall s. Decoder s (ExtLedgerState blk EmptyMK EmptyMK))
   -> (forall s. Decoder s (HeaderHash blk))
   -> DiskSnapshot
-  -> ExceptT ReadIncrementalErr m (ExtLedgerState blk EmptyMK)
+  -> ExceptT ReadIncrementalErr m (ExtLedgerState blk EmptyMK EmptyMK)
 readSnapshot hasFS decLedger decHash = do
       ExceptT
     . readIncremental hasFS decoder

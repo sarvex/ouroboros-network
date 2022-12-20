@@ -83,7 +83,6 @@ import           Test.Util.Slots (NumSlots (..))
 import           Test.Consensus.HardFork.Combinator.A
 import           Test.Consensus.HardFork.Combinator.B
 
-
 tests :: TestTree
 tests = testGroup "Consensus" [
       testProperty "simple convergence" $

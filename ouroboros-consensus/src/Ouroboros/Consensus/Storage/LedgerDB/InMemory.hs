@@ -161,9 +161,9 @@ deriving instance (ShowLedgerState l, ShowLedgerState (LedgerTables l)) => Show 
 -- | Ledger DB starting at the specified ledger state
 ledgerDbWithAnchor ::
      ( TableStuff l
-     , GetTip (l EmptyMK)
+     , GetTip (l EmptyMK EmptyMK)
      )
-  => l EmptyMK -> LedgerDB l
+  => l EmptyMK EmptyMK -> LedgerDB l
 ledgerDbWithAnchor = LedgerDB . emptyDbChangeLog
 
 {-------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ applyBlock :: forall m c l blk
            => LedgerCfg l
            -> Ap m l blk c
            -> LedgerDB l
-           -> m (l DiffMK)
+           -> m (l DiffMK DiffMK)
 applyBlock cfg ap db = case ap of
   ReapplyVal b -> withBlockReadSets b $ \lh ->
     return $ tickThenReapply cfg b lh
@@ -313,11 +313,13 @@ applyBlock cfg ap db = case ap of
     withBlockReadSets
       :: ReadsKeySets m l
       => blk
-      -> (l ValuesMK -> m (l DiffMK))
-      -> m (l DiffMK)
+      -> (l ValuesMK ValuesMK -> m (l DiffMK DiffMK))
+      -> m (l DiffMK DiffMK)
     withBlockReadSets b f = do
-      let ks = getBlockKeySets b :: LedgerTables l KeysMK
-      let aks = rewindTableKeySets (ledgerDbChangelog db) ks :: RewoundTableKeySets l
+      let ks = getBlockKeySets b :: LedgerTables l KeysMK EmptyMK
+      let noSecondValues :: LedgerTables l KeysMK EmptyMK -> LedgerTables l KeysMK KeysMK
+          noSecondValues = mapLedgerTables id (const $ ApplyKeysMK mempty)
+      let aks = rewindTableKeySets (ledgerDbChangelog db) $ noSecondValues ks :: RewoundTableKeySets l
       urs <- readDb aks
       case withHydratedLedgerState urs f of
         Left err ->
@@ -336,7 +338,7 @@ applyBlock cfg ap db = case ap of
 
     withHydratedLedgerState
       :: UnforwardedReadSets l
-      -> (l ValuesMK -> a)
+      -> (l ValuesMK ValuesMK -> a)
       -> Either (WithOrigin SlotNo, WithOrigin SlotNo) a
     withHydratedLedgerState urs f =
           f
@@ -348,8 +350,8 @@ applyBlock cfg ap db = case ap of
 getLedgerTablesFor ::
      (Monad m, ReadsKeySets m l, TableStuff l)
   => LedgerDB l
-  -> LedgerTables l KeysMK
-  -> m (Either (WithOrigin SlotNo, WithOrigin SlotNo) (LedgerTables l ValuesMK))
+  -> LedgerTables l KeysMK KeysMK
+  -> m (Either (WithOrigin SlotNo, WithOrigin SlotNo) (LedgerTables l ValuesMK ValuesMK))
 getLedgerTablesFor db keys = do
   let aks = rewindTableKeySets (ledgerDbChangelog db) keys
   urs <- readDb aks
@@ -362,10 +364,10 @@ getLedgerTablesFor db keys = do
 data RewoundTableKeySets l =
     RewoundTableKeySets
       !(WithOrigin SlotNo)   -- ^ the slot to which the keys were rewounded
-      !(LedgerTables l KeysMK)
+      !(LedgerTables l KeysMK KeysMK)
 
 rewindTableKeySets ::
-     DbChangelog l -> LedgerTables l KeysMK -> RewoundTableKeySets l
+     DbChangelog l -> LedgerTables l KeysMK KeysMK -> RewoundTableKeySets l
 rewindTableKeySets dblog =
       RewoundTableKeySets
         (changelogDiffAnchor dblog)
@@ -375,22 +377,22 @@ data UnforwardedReadSets l = UnforwardedReadSets {
     -- rewinding and reading.
     ursSeqNo  :: !(WithOrigin SlotNo)
     -- | The values that were found in the 'BackingStore'.
-  , ursValues :: !(LedgerTables l ValuesMK)
+  , ursValues :: !(LedgerTables l ValuesMK ValuesMK)
     -- | All the requested keys, being or not present in the 'BackingStore'.
-  , ursKeys   :: !(LedgerTables l KeysMK)
+  , ursKeys   :: !(LedgerTables l KeysMK KeysMK)
   }
 
 forwardTableKeySets' ::
      TableStuff l
   => WithOrigin SlotNo
-  -> LedgerTables l SeqDiffMK
+  -> LedgerTables l SeqDiffMK SeqDiffMK
   -> UnforwardedReadSets l
   -> Either (WithOrigin SlotNo, WithOrigin SlotNo)
-            (LedgerTables l ValuesMK)
+            (LedgerTables l ValuesMK ValuesMK)
 forwardTableKeySets' seqNo chdiffs = \(UnforwardedReadSets seqNo' values keys) ->
     if seqNo /= seqNo' then Left (seqNo, seqNo') else
     Right
-      $ zipLedgerTables2 forward values keys chdiffs
+      $ zipLedgerTables2 forward forward values keys chdiffs
   where
     forward ::
          (Ord k, Eq v)
@@ -406,7 +408,7 @@ forwardTableKeySets ::
   => DbChangelog l
   -> UnforwardedReadSets l
   -> Either (WithOrigin SlotNo, WithOrigin SlotNo)
-            (LedgerTables l ValuesMK)
+            (LedgerTables l ValuesMK ValuesMK)
 forwardTableKeySets dblog =
   forwardTableKeySets' (changelogDiffAnchor dblog) (changelogDiffs dblog)
 
@@ -414,7 +416,7 @@ forwardTableKeySets dblog =
 --
 -- TODO take some argument to bound the size of the resulting prefix?
 ledgerDbFlush ::
-     (GetTip (l EmptyMK), TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), TableStuff l)
   => DbChangelogFlushPolicy -> LedgerDB l -> (DbChangelog l, LedgerDB l)
 ledgerDbFlush policy db = do
     (l, db { ledgerDbChangelog = r })
@@ -454,7 +456,7 @@ defaultReadKeySets f dbReader = runReaderT (runDbReader dbReader) f
 -------------------------------------------------------------------------------}
 
 -- | The ledger state at the tip of the chain
-ledgerDbCurrent :: GetTip (l EmptyMK) => LedgerDB l -> l EmptyMK
+ledgerDbCurrent :: GetTip (l EmptyMK EmptyMK) => LedgerDB l -> l EmptyMK EmptyMK
 ledgerDbCurrent =
     either unDbChangelogState unDbChangelogState
   . AS.head
@@ -462,7 +464,7 @@ ledgerDbCurrent =
   . ledgerDbChangelog
 
 -- | Information about the state of the ledger at the anchor
-ledgerDbAnchor :: LedgerDB l -> l EmptyMK
+ledgerDbAnchor :: LedgerDB l -> l EmptyMK EmptyMK
 ledgerDbAnchor =
     unDbChangelogState
   . AS.anchor
@@ -489,7 +491,7 @@ ledgerDbAnchor =
 --
 -- PRECONDITION: if you are running the legacy ledger, then you must flush
 -- before calling this function
-ledgerDbLastFlushedState :: LedgerDB l -> l EmptyMK
+ledgerDbLastFlushedState :: LedgerDB l -> l EmptyMK EmptyMK
 ledgerDbLastFlushedState =
     unDbChangelogState
   . AS.anchor
@@ -502,7 +504,7 @@ ledgerDbLastFlushedState =
 -- return the distance from the tip.
 --
 -- TODO: this name is misleading. Probably deserves a renaming.
-ledgerDbSnapshots :: LedgerDB l -> [(Word64, l EmptyMK)]
+ledgerDbSnapshots :: LedgerDB l -> [(Word64, l EmptyMK EmptyMK)]
 ledgerDbSnapshots =
       zip [0..]
     . map unDbChangelogState
@@ -511,7 +513,7 @@ ledgerDbSnapshots =
     . ledgerDbChangelog
 
 -- | How many blocks can we currently roll back?
-ledgerDbMaxRollback :: GetTip (l EmptyMK) => LedgerDB l -> Word64
+ledgerDbMaxRollback :: GetTip (l EmptyMK EmptyMK) => LedgerDB l -> Word64
 ledgerDbMaxRollback =
     fromIntegral
   . AS.length
@@ -519,11 +521,11 @@ ledgerDbMaxRollback =
   . ledgerDbChangelog
 
 -- | Reference to the block at the tip of the chain
-ledgerDbTip :: IsLedger l => LedgerDB l -> Point (l EmptyMK)
+ledgerDbTip :: IsLedger l => LedgerDB l -> Point (l EmptyMK EmptyMK)
 ledgerDbTip = getTip . ledgerDbCurrent
 
 -- | Have we seen at least @k@ blocks?
-ledgerDbIsSaturated :: (forall mk. GetTip (l mk)) => SecurityParam -> LedgerDB l -> Bool
+ledgerDbIsSaturated :: (forall mk1 mk2. GetTip (l mk1 mk2)) => SecurityParam -> LedgerDB l -> Bool
 ledgerDbIsSaturated (SecurityParam k) db =
     ledgerDbMaxRollback db >= k
 
@@ -535,11 +537,11 @@ ledgerDbIsSaturated (SecurityParam k) db =
 -- returned.
 ledgerDbPast ::
      ( HasHeader blk, IsLedger l, HeaderHash l ~ HeaderHash blk
-     , TableStuff l, StandardHash (l EmptyMK)
+     , TableStuff l, StandardHash (l EmptyMK EmptyMK)
      )
   => Point blk
   -> LedgerDB l
-  -> Maybe (l EmptyMK)
+  -> Maybe (l EmptyMK EmptyMK)
 ledgerDbPast pt db = ledgerDbCurrent <$> ledgerDbPrefix pt db
 
 -- | Get a prefix of the LedgerDB that ends at the given point
@@ -550,7 +552,7 @@ ledgerDbPast pt db = ledgerDbCurrent <$> ledgerDbPrefix pt db
 -- returned.
 ledgerDbPrefix ::
      ( HasHeader blk, IsLedger l, HeaderHash l ~ HeaderHash blk
-     , TableStuff l, StandardHash (l EmptyMK)
+     , TableStuff l, StandardHash (l EmptyMK EmptyMK)
      )
   => Point blk
   -> LedgerDB l
@@ -564,8 +566,8 @@ ledgerDbPrefix pt db
 -- | Transform the underlying 'AnchoredSeq' using the given functions.
 volatileStatesBimap ::
      Anchorable (WithOrigin SlotNo) a b
-  => (l EmptyMK -> a)
-  -> (l EmptyMK -> b)
+  => (l EmptyMK EmptyMK -> a)
+  -> (l EmptyMK EmptyMK -> b)
   -> LedgerDB l
   -> AnchoredSeq (WithOrigin SlotNo) a b
 volatileStatesBimap f g =
@@ -576,7 +578,7 @@ volatileStatesBimap f g =
 -- | Prune snapshots until at we have at most @k@ snapshots in the LedgerDB,
 -- excluding the snapshots stored at the anchor.
 ledgerDbPrune ::
-     GetTip (l EmptyMK)
+     GetTip (l EmptyMK EmptyMK)
   => SecurityParam -> LedgerDB l -> LedgerDB l
 ledgerDbPrune k db = db {
       ledgerDbChangelog   = pruneVolatilePartDbChangelog k (ledgerDbChangelog db)
@@ -595,7 +597,7 @@ ledgerDbPrune k db = db {
 pushLedgerState ::
      (IsLedger l, TickedTableStuff l)
   => SecurityParam
-  -> l DiffMK -- ^ Updated ledger state
+  -> l DiffMK DiffMK -- ^ Updated ledger state
   -> LedgerDB l -> LedgerDB l
 pushLedgerState secParam currentNew' db@LedgerDB{..}  =
     ledgerDbPrune secParam $ db {
@@ -613,7 +615,7 @@ pushLedgerState secParam currentNew' db@LedgerDB{..}  =
 --
 -- Returns 'Nothing' if maximum rollback is exceeded.
 rollback ::
-     (GetTip (l EmptyMK), TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), TableStuff l)
   => Word64
   -> LedgerDB l
   -> Maybe (LedgerDB l)

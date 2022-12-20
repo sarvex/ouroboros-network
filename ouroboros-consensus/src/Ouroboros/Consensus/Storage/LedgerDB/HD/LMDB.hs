@@ -61,20 +61,20 @@ import qualified Database.LMDB.Simple.Internal as LMDB.Internal
 
 type LMDBBackingStoreInitialiser l m =
   HD.BackingStoreInitialiser m
-    (LedgerTables l KeysMK)
-    (LedgerTables l ValuesMK)
-    (LedgerTables l DiffMK)
+    (LedgerTables l KeysMK KeysMK)
+    (LedgerTables l ValuesMK ValuesMK)
+    (LedgerTables l DiffMK DiffMK)
 
 type LMDBBackingStore l m =
   HD.BackingStore m
-    (LedgerTables l KeysMK)
-    (LedgerTables l ValuesMK)
-    (LedgerTables l DiffMK)
+    (LedgerTables l KeysMK KeysMK)
+    (LedgerTables l ValuesMK ValuesMK)
+    (LedgerTables l DiffMK DiffMK)
 
 type LMDBValueHandle l m =
   HD.BackingStoreValueHandle m
-    (LedgerTables l KeysMK)
-    (LedgerTables l ValuesMK)
+    (LedgerTables l KeysMK KeysMK)
+    (LedgerTables l ValuesMK ValuesMK)
 
 {-------------------------------------------------------------------------------
  Tracing
@@ -197,7 +197,7 @@ data Db m l = Db {
     -- The current sequence number of the @`Db`@.
   , dbState         :: !(LMDB.Database () DbState)
     -- | The LMDB tables with the key-value stores.
-  , dbBackingTables :: !(LedgerTables l LMDBMK)
+  , dbBackingTables :: !(LedgerTables l LMDBMK LMDBMK)
   , dbFilePath      :: !FilePath
   , dbTracer        :: !(Trace.Tracer m TraceDb)
   , dbClosed        :: !(IOLike.TVar m Bool)
@@ -435,7 +435,7 @@ guardDbDirWithRetry gdd shfs@(FS.SomeHasFS fs) path =
 -- | How to initialise an LMDB Backing store.
 data LMDBInit l =
     -- | Initialise with these values.
-    LIInitialiseFromMemory (WithOrigin SlotNo) (LedgerTables l ValuesMK)
+    LIInitialiseFromMemory (WithOrigin SlotNo) (LedgerTables l ValuesMK ValuesMK)
     -- | Initialise by copying from an LMDB database at a given path.
   | LIInitialiseFromLMDB FS.FsPath
     -- | The database is already initialised.
@@ -447,14 +447,14 @@ initFromVals ::
      (TableStuff l, SufficientSerializationForAnyBackingStore l, MonadIO m)
   => WithOrigin SlotNo
      -- ^ The slot number up to which the ledger tables contain values.
-  -> LedgerTables l ValuesMK
+  -> LedgerTables l ValuesMK ValuesMK
      -- ^ The ledger tables to initialise the LMDB database tables with.
   -> Db m l
      -- ^ The LMDB database.
   -> m ()
 initFromVals dbsSeq vals Db{..} = liftIO $ LMDB.readWriteTransaction dbEnv $
   withDbStateRWMaybeNull dbState $ \case
-    Nothing -> zipLedgerTables2A initLMDBTable dbBackingTables codecLedgerTables vals
+    Nothing -> zipLedgerTables2A initLMDBTable initLMDBTable dbBackingTables codecLedgerTables vals
                 $> ((), DbState{dbsSeq})
     Just _ -> liftIO . throwIO $ DbErrStr "initFromVals: db already had state"
 
@@ -554,7 +554,7 @@ newLMDBBackingStoreInitialiser dbTracer limits = HD.BackingStoreInitialiser $ \s
   -- Here we get the LMDB.Databases for the tables of the ledger state
   -- Must be read-write transaction because tables may need to be created
   dbBackingTables <- liftIO $ LMDB.readWriteTransaction dbEnv $
-    traverseLedgerTables getDb namesLedgerTables
+    traverseLedgerTables getDb getDb namesLedgerTables
 
   dbNextId <- IOLike.newTVarIO 0
 
@@ -579,13 +579,13 @@ newLMDBBackingStoreInitialiser dbTracer limits = HD.BackingStoreInitialiser $ \s
       guardDbClosed dbClosed >>
       mkLMDBBackingStoreValueHandle db
 
-    bsWrite :: SlotNo -> LedgerTables l DiffMK -> m ()
+    bsWrite :: SlotNo -> LedgerTables l DiffMK DiffMK -> m ()
     bsWrite slot diffs = do
       guardDbClosed dbClosed
       oldSlot <- liftIO $ LMDB.readWriteTransaction dbEnv $ withDbStateRW dbState $ \s@DbState{dbsSeq} -> do
         -- TODO This should be <. However the test harness does call bsWrite with the same slot
         unless (dbsSeq <= At slot) $ liftIO . throwIO $ DbErrNonMonotonicSeq (At slot) dbsSeq
-        void $ zipLedgerTables2A writeLMDBTable dbBackingTables codecLedgerTables diffs
+        void $ zipLedgerTables2A writeLMDBTable writeLMDBTable dbBackingTables codecLedgerTables diffs
         pure (dbsSeq, s {dbsSeq = At slot})
       Trace.traceWith dbTracer $ TDBWrite oldSlot slot
 
@@ -648,30 +648,31 @@ mkLMDBBackingStoreValueHandle Db{..} = do
       IOLike.atomically $ IOLike.modifyTVar' dbOpenHandles (Map.delete vhId)
       Trace.traceWith tracer TVHClosed
 
-    bsvhRead :: LedgerTables l KeysMK -> m (LedgerTables l ValuesMK)
+    bsvhRead :: LedgerTables l KeysMK KeysMK -> m (LedgerTables l ValuesMK ValuesMK)
     bsvhRead keys = do
       Trace.traceWith tracer TVHReadStarted
       guardDbClosed dbClosed
       guardBsvhClosed vhId dbOpenHandles
-      res <- liftIO $ TrH.submitReadOnly trh (zipLedgerTables2A readLMDBTable dbBackingTables codecLedgerTables keys)
+      res <- liftIO $ TrH.submitReadOnly trh (zipLedgerTables2A readLMDBTable readLMDBTable dbBackingTables codecLedgerTables keys)
       Trace.traceWith tracer TVHReadEnded
       pure res
 
     bsvhRangeRead ::
-         HD.RangeQuery (LedgerTables l KeysMK)
-      -> m (LedgerTables l ValuesMK)
+         HD.RangeQuery (LedgerTables l KeysMK KeysMK)
+      -> m (LedgerTables l ValuesMK ValuesMK)
     bsvhRangeRead HD.RangeQuery{rqPrev, rqCount} = do
       Trace.traceWith tracer TVHRangeReadStarted
 
       let
         outsideIn ::
-             Maybe (LedgerTables l mk1)
-          -> LedgerTables l (Maybe :..: mk1)
-        outsideIn Nothing       = pureLedgerTables (Comp2 Nothing)
-        outsideIn (Just tables) = mapLedgerTables (Comp2 . Just) tables
+             Maybe (LedgerTables l mk1 mk2)
+          -> LedgerTables l (Maybe :..: mk1) (Maybe :..: mk2)
+        outsideIn Nothing       = pureLedgerTables (Comp2 Nothing) (Comp2 Nothing)
+        outsideIn (Just tables) = mapLedgerTables (Comp2 . Just) (Comp2 . Just) tables
 
         transaction =
           zipLedgerTables2A
+            (rangeRead rqCount)
             (rangeRead rqCount)
             dbBackingTables
             codecLedgerTables

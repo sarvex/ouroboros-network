@@ -92,7 +92,7 @@ class GetTip l where
 
 type instance HeaderHash (Ticked  l)                   = HeaderHash l
 type instance HeaderHash (Ticked1 (l :: k -> Type))    = HeaderHash l
-type instance HeaderHash (Ticked1 (l :: k -> Type) mk) = HeaderHash l
+type instance HeaderHash (Ticked2 (l :: k1 -> k2 -> Type) mk1 mk2) = HeaderHash l
 
 getTipHash :: GetTip l => l -> ChainHash l
 getTipHash = pointHash . getTip
@@ -148,13 +148,13 @@ class ( -- Requirements on the ledger state itself
         ShowLedgerState                     l
 --      , forall mk. IsApplyMapKind mk                => Eq       (l mk)
 --      , forall mk. (IsApplyMapKind mk, Typeable mk) => NoThunks (l mk)
-      , Eq       (l EmptyMK)
-      , NoThunks (l EmptyMK)
-      , Eq       (l DiffMK)
-      , NoThunks (l DiffMK)
-      , Eq       (l ValuesMK)
-      , NoThunks (l ValuesMK)
-      , NoThunks (l SeqDiffMK)
+      , Eq       (l EmptyMK EmptyMK)
+      , NoThunks (l EmptyMK EmptyMK)
+      , Eq       (l DiffMK DiffMK)
+      , NoThunks (l DiffMK DiffMK)
+      , Eq       (l ValuesMK ValuesMK)
+      , NoThunks (l ValuesMK ValuesMK)
+      , NoThunks (l SeqDiffMK SeqDiffMK)
         -- Requirements on 'LedgerCfg'
       , NoThunks (LedgerCfg l)
         -- Requirements on 'LedgerErr'
@@ -165,14 +165,14 @@ class ( -- Requirements on the ledger state itself
         --
         -- See comment for 'applyChainTickLedgerResult' about the tip of the
         -- ticked ledger.
-      , forall mk. GetTip         (l mk)
-      , forall mk. GetTip (Ticked1 l mk)
-      , HeaderHash (l EmptyMK) ~ HeaderHash l
-      , HeaderHash (l ValuesMK) ~ HeaderHash l
-      , HeaderHash (l DiffMK) ~ HeaderHash l
-      , HeaderHash (l TrackingMK) ~ HeaderHash l
-      , NoThunks (LedgerTables l SeqDiffMK)
-      , NoThunks (LedgerTables l ValuesMK) -- for TVars in in-memory backing store
+      , forall mk1 mk2. GetTip         (l mk1 mk2)
+      , forall mk1 mk2. GetTip (Ticked2 l mk1 mk2)
+      , HeaderHash (l EmptyMK EmptyMK) ~ HeaderHash l
+      , HeaderHash (l ValuesMK ValuesMK) ~ HeaderHash l
+      , HeaderHash (l DiffMK DiffMK) ~ HeaderHash l
+      , HeaderHash (l TrackingMK TrackingMK) ~ HeaderHash l
+      , NoThunks (LedgerTables l SeqDiffMK SeqDiffMK)
+      , NoThunks (LedgerTables l ValuesMK ValuesMK) -- for TVars in in-memory backing store
       , StowableLedgerTables l
       ) => IsLedger (l :: LedgerStateKind) where
   -- | Errors that can arise when updating the ledger
@@ -229,16 +229,16 @@ class ( -- Requirements on the ledger state itself
   applyChainTickLedgerResult ::
        LedgerCfg l
     -> SlotNo
-    -> l EmptyMK
-    -> LedgerResult l (Ticked1 l DiffMK)
+    -> l EmptyMK ValuesMK
+    -> LedgerResult l (Ticked2 l DiffMK DiffMK)
 
 -- | 'lrResult' after 'applyChainTickLedgerResult'
 applyChainTick ::
      IsLedger l
   => LedgerCfg l
   -> SlotNo
-  -> l EmptyMK
-  -> Ticked1 l DiffMK
+  -> l EmptyMK ValuesMK
+  -> Ticked2 l DiffMK DiffMK
 applyChainTick = lrResult ..: applyChainTickLedgerResult
 
 {-------------------------------------------------------------------------------
@@ -249,14 +249,14 @@ applyChainTick = lrResult ..: applyChainTickLedgerResult
 data family LedgerState blk :: LedgerStateKind
 
 type instance HeaderHash (LedgerState blk)    = HeaderHash blk
-type instance HeaderHash (LedgerState blk mk) = HeaderHash blk
+type instance HeaderHash (LedgerState blk mk1 mk2) = HeaderHash blk
 
 instance StandardHash blk => StandardHash (LedgerState blk)
-instance StandardHash blk => StandardHash (LedgerState blk mk)
+instance StandardHash blk => StandardHash (LedgerState blk mk mk2)
 
 type LedgerConfig      blk    = LedgerCfg (LedgerState blk)
 type LedgerError       blk    = LedgerErr (LedgerState blk)
-type TickedLedgerState blk mk = Ticked1   (LedgerState blk) mk
+type TickedLedgerState blk mk1 mk2 = Ticked2   (LedgerState blk) mk1 mk2
 
 {-------------------------------------------------------------------------------
   UTxO HD stubs
@@ -266,9 +266,9 @@ type TickedLedgerState blk mk = Ticked1   (LedgerState blk) mk
 -- states, which typically involve accessing disk.
 data DiskLedgerView m l =
     DiskLedgerView
-      !(l EmptyMK)
-      (LedgerTables l KeysMK -> m (LedgerTables l ValuesMK))
-      (RangeQuery (LedgerTables l KeysMK) -> m (LedgerTables l ValuesMK))   -- TODO will be unacceptably coarse once we have multiple tables
+      !(l EmptyMK EmptyMK)
+      (LedgerTables l KeysMK KeysMK -> m (LedgerTables l ValuesMK ValuesMK))
+      (RangeQuery (LedgerTables l KeysMK KeysMK) -> m (LedgerTables l ValuesMK ValuesMK))   -- TODO will be unacceptably coarse once we have multiple tables
       (m ())
 
 {-------------------------------------------------------------------------------
@@ -281,7 +281,7 @@ data DiskLedgerView m l =
 -- 'changelogVolatileStates'.
 data DbChangelog l = DbChangelog {
     changelogDiffAnchor      :: !(WithOrigin SlotNo)
-  , changelogDiffs           :: !(LedgerTables l SeqDiffMK)
+  , changelogDiffs           :: !(LedgerTables l SeqDiffMK SeqDiffMK)
   , changelogImmutableStates ::
       !(AnchoredSeq
           (WithOrigin SlotNo)
@@ -297,8 +297,8 @@ data DbChangelog l = DbChangelog {
   }
   deriving (Generic)
 
-deriving instance (Eq       (LedgerTables l SeqDiffMK), Eq       (l EmptyMK)) => Eq       (DbChangelog l)
-deriving instance (NoThunks (LedgerTables l SeqDiffMK), NoThunks (l EmptyMK)) => NoThunks (DbChangelog l)
+deriving instance (Eq       (LedgerTables l SeqDiffMK SeqDiffMK), Eq       (l EmptyMK EmptyMK)) => Eq       (DbChangelog l)
+deriving instance (NoThunks (LedgerTables l SeqDiffMK SeqDiffMK), NoThunks (l EmptyMK EmptyMK)) => NoThunks (DbChangelog l)
 
 instance (ShowLedgerState l, ShowLedgerState (LedgerTables l)) => Show (DbChangelog l) where
   showsPrec p dblog =
@@ -318,40 +318,40 @@ instance (ShowLedgerState l, ShowLedgerState (LedgerTables l)) => Show (DbChange
         , changelogVolatileStates
         } = dblog
 
-newtype DbChangelogState l = DbChangelogState {unDbChangelogState :: l EmptyMK}
+newtype DbChangelogState l = DbChangelogState {unDbChangelogState :: l EmptyMK EmptyMK}
   deriving (Generic)
 
-deriving instance Eq       (l EmptyMK) => Eq       (DbChangelogState l)
-deriving instance NoThunks (l EmptyMK) => NoThunks (DbChangelogState l)
+deriving instance Eq       (l EmptyMK EmptyMK) => Eq       (DbChangelogState l)
+deriving instance NoThunks (l EmptyMK EmptyMK) => NoThunks (DbChangelogState l)
 
 instance ShowLedgerState l => Show (DbChangelogState l) where
   showsPrec p (DbChangelogState x) =
         showParen (p >= 11)
       $ showString "DbChangelogState " . showsLedgerState sMapKind x
 
-instance GetTip (l EmptyMK) => AS.Anchorable (WithOrigin SlotNo) (DbChangelogState l) (DbChangelogState l) where
+instance GetTip (l EmptyMK EmptyMK) => AS.Anchorable (WithOrigin SlotNo) (DbChangelogState l) (DbChangelogState l) where
   asAnchor = id
   getAnchorMeasure _ = getTipSlot . unDbChangelogState
 
 emptyDbChangeLog ::
-     (TableStuff l, GetTip (l EmptyMK))
-  => l EmptyMK -> DbChangelog l
+     (TableStuff l, GetTip (l EmptyMK EmptyMK))
+  => l EmptyMK EmptyMK -> DbChangelog l
 emptyDbChangeLog anchor =
     DbChangelog {
         changelogDiffAnchor      = getTipSlot anchor
-      , changelogDiffs           = pureLedgerTables (ApplySeqDiffMK empty)
+      , changelogDiffs           = pureLedgerTables (ApplySeqDiffMK empty) (ApplySeqDiffMK empty)
       , changelogImmutableStates = AS.Empty (DbChangelogState anchor)
       , changelogVolatileStates  = AS.Empty (DbChangelogState anchor)
       }
 
 extendDbChangelog ::
-     (TableStuff l, GetTip (l EmptyMK))
-  => DbChangelog l -> l DiffMK -> DbChangelog l
+     (TableStuff l, GetTip (l EmptyMK EmptyMK))
+  => DbChangelog l -> l DiffMK DiffMK -> DbChangelog l
 extendDbChangelog dblog newState =
     DbChangelog {
         changelogDiffAnchor
       , changelogDiffs           =
-          zipLedgerTables ext changelogDiffs tablesDiff
+          zipLedgerTables ext ext changelogDiffs tablesDiff
       , changelogImmutableStates
       , changelogVolatileStates  =
           changelogVolatileStates AS.:> DbChangelogState l'
@@ -380,7 +380,7 @@ extendDbChangelog dblog newState =
       ApplySeqDiffMK $ extend sq slot d
 
 pruneVolatilePartDbChangelog ::
-     GetTip (l EmptyMK)
+     GetTip (l EmptyMK EmptyMK)
   => SecurityParam -> DbChangelog l -> DbChangelog l
 pruneVolatilePartDbChangelog (SecurityParam k) dblog =
     Exn.assert (AS.length imm' + AS.length vol' == AS.length imm + AS.length vol) $
@@ -414,7 +414,7 @@ data DbChangelogFlushPolicy =
     DbChangelogFlushAllImmutable
 
 flushDbChangelog :: forall l.
-     (GetTip (l EmptyMK), TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), TableStuff l)
   => DbChangelogFlushPolicy
   -> DbChangelog l
   -> (DbChangelog l, DbChangelog l)
@@ -443,8 +443,8 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
       $ splitlAt (AS.length imm) sq
 
     -- TODO #1 one pass
-    l = mapLedgerTables (fst . split) changelogDiffs
-    r = mapLedgerTables (snd . split) changelogDiffs
+    l = mapLedgerTables (fst . split) (fst . split) changelogDiffs
+    r = mapLedgerTables (snd . split) (snd . split) changelogDiffs
 
     ldblog = DbChangelog {
         changelogDiffAnchor
@@ -462,11 +462,11 @@ flushDbChangelog DbChangelogFlushAllImmutable dblog =
 
 -- | Roll back the volatile states up to the specified point.
 prefixDbChangelog ::
-     ( StandardHash (l EmptyMK)
-     , GetTip (l EmptyMK)
+     ( StandardHash (l EmptyMK EmptyMK)
+     , GetTip (l EmptyMK EmptyMK)
      , TableStuff l
      )
-  => Point (l EmptyMK) -> DbChangelog l -> Maybe (DbChangelog l)
+  => Point (l EmptyMK EmptyMK) -> DbChangelog l -> Maybe (DbChangelog l)
 prefixDbChangelog pt dblog = do
     let vol = changelogVolatileStates
     vol' <-
@@ -476,7 +476,7 @@ prefixDbChangelog pt dblog = do
         vol
     let ndropped                  = AS.length vol - AS.length vol'
         diffs'                    =
-          mapLedgerTables (trunc ndropped) changelogDiffs
+          mapLedgerTables (trunc ndropped) (trunc ndropped) changelogDiffs
     Exn.assert (ndropped >= 0) $ pure DbChangelog {
           changelogDiffAnchor
         , changelogDiffs           = diffs'
@@ -492,7 +492,7 @@ prefixDbChangelog pt dblog = do
       } = dblog
 
 prefixBackToAnchorDbChangelog ::
-     (GetTip (l EmptyMK), TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), TableStuff l)
   => DbChangelog l -> DbChangelog l
 prefixBackToAnchorDbChangelog dblog =
     DbChangelog {
@@ -512,7 +512,7 @@ prefixBackToAnchorDbChangelog dblog =
     vol                       = changelogVolatileStates
     ndropped                  = AS.length vol
     diffs'                    =
-      mapLedgerTables (trunc ndropped) changelogDiffs
+      mapLedgerTables (trunc ndropped) (trunc ndropped) changelogDiffs
 
 trunc ::
      (Ord k, Eq v)
@@ -521,12 +521,12 @@ trunc n (ApplySeqDiffMK sq) =
   ApplySeqDiffMK $ fst $ splitrAtFromEnd n sq
 
 rollbackDbChangelog ::
-     (GetTip (l EmptyMK), TableStuff l)
+     (GetTip (l EmptyMK EmptyMK), TableStuff l)
   => Int -> DbChangelog l -> DbChangelog l
 rollbackDbChangelog n dblog =
     DbChangelog {
         changelogDiffAnchor
-      , changelogDiffs           = mapLedgerTables (trunc n) changelogDiffs
+      , changelogDiffs           = mapLedgerTables (trunc n) (trunc n) changelogDiffs
       , changelogImmutableStates
       , changelogVolatileStates  = AS.dropNewest n changelogVolatileStates
       }
@@ -539,7 +539,7 @@ rollbackDbChangelog n dblog =
       } = dblog
 
 youngestImmutableSlotDbChangelog ::
-     GetTip (l EmptyMK)
+     GetTip (l EmptyMK EmptyMK)
   => DbChangelog l -> WithOrigin SlotNo
 youngestImmutableSlotDbChangelog =
       getTipSlot

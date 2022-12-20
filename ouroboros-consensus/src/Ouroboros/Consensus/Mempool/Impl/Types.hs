@@ -66,6 +66,8 @@ import           Ouroboros.Consensus.Storage.LedgerDB.HD.DiffSeq (applyDiff)
 import           Ouroboros.Consensus.Util.IOLike
 
 import           Ouroboros.Network.Protocol.TxSubmission2.Type (TxSizeInBytes)
+import Ouroboros.Consensus.Storage.LedgerDB.InMemory (ReadsKeySets (readDb), defaultReadKeySets)
+import Ouroboros.Consensus.Storage.LedgerDB.OnDisk (readKeySets)
 
 {-------------------------------------------------------------------------------
   Ledger state considered for forging
@@ -85,7 +87,7 @@ data ForgeLedgerState blk =
     --
     -- This will only be the case when we realized that we are the slot leader
     -- and we are actually producing a block.
-    ForgeInKnownSlot SlotNo (TickedLedgerState blk DiffMK)
+    ForgeInKnownSlot SlotNo (TickedLedgerState blk DiffMK DiffMK)
 
     -- | The slot number of the block is not yet known
     --
@@ -93,16 +95,16 @@ data ForgeLedgerState blk =
     -- will end up, we have to make an assumption about which slot number to use
     -- for 'applyChainTick' to prepare the ledger state; we will assume that
     -- they will end up in the slot after the slot at the tip of the ledger. -- TODO @js See comment in 'tickLedgerState'
-  | ForgeInUnknownSlot (LedgerState blk EmptyMK)
+  | ForgeInUnknownSlot (LedgerState blk EmptyMK EmptyMK)
 
 -- | Tick the 'LedgerState' using the given 'BlockSlot' or the next slot after
 -- the ledger state on top of which we are going to apply the transactions.
 tickLedgerState
-  :: forall blk. (UpdateLedger blk, ValidateEnvelope blk)
+  :: forall blk m . (ReadsKeySets m (LedgerState blk), UpdateLedger blk, ValidateEnvelope blk)
   => LedgerConfig     blk
   -> ForgeLedgerState blk
-  -> (SlotNo, TickedLedgerState blk DiffMK)
-tickLedgerState _   (ForgeInKnownSlot slot st) = (slot, st)
+  -> m (SlotNo, TickedLedgerState blk DiffMK DiffMK)
+tickLedgerState _   (ForgeInKnownSlot slot st) = pure (slot, st)
 tickLedgerState cfg (ForgeInUnknownSlot st) =
   let
       slot =
@@ -113,8 +115,9 @@ tickLedgerState cfg (ForgeInUnknownSlot st) =
           -- <https://github.com/input-output-hk/ouroboros-network/issues/1298>
           -- Once we do, the ValidateEnvelope constraint can go.
           withOrigin (minimumPossibleSlotNo (Proxy @blk)) succ $ ledgerTipSlot st
-  in
-    (slot, applyChainTick cfg slot st)
+  in do
+    tbs' <- defaultReadKeySets (readKeySets backingStore) $ readDb undefined
+    pure (slot, applyChainTick cfg slot $ withLedgerTables st tbs')
 
 {-------------------------------------------------------------------------------
   Internal State
@@ -149,7 +152,7 @@ data InternalState blk = IS {
       -- INVARIANT: 'isLedgerState' is the ledger resulting from applying the
       -- transactions in 'isTxs' against the ledger identified 'isTip' as tip
       -- after ticking it to 'isSlotNo'.
-    , isLedgerState  :: !(TickedLedgerState blk DiffMK)
+    , isLedgerState  :: !(TickedLedgerState blk DiffMK DiffMK)
 
       -- | The tip of the chain that 'isTxs' was validated against
     , isTip          :: !(Point blk)
@@ -187,9 +190,7 @@ data InternalState blk = IS {
 
 deriving instance ( NoThunks (Validated (GenTx blk))
                   , NoThunks (GenTxId blk)
-                  , NoThunks (TickedLedgerState blk DiffMK)
-                  , NoThunks (LedgerTables (LedgerState blk) SeqDiffMK)
-                  , NoThunks (LedgerTables (LedgerState blk) KeysMK)
+                  , NoThunks (TickedLedgerState blk DiffMK DiffMK)
                   , StandardHash blk
                   , Typeable blk
                   ) => NoThunks (InternalState blk)
@@ -204,7 +205,7 @@ initInternalState
   => MempoolCapacityBytesOverride
   -> TicketNo  -- ^ Used for 'isLastTicketNo'
   -> SlotNo
-  -> TickedLedgerState blk DiffMK
+  -> TickedLedgerState blk DiffMK DiffMK
   -> InternalState blk
 initInternalState capacityOverride lastTicketNo slot st = IS {
       isTxs          = TxSeq.Empty
@@ -256,7 +257,7 @@ data ValidationResult invalidTx blk = ValidationResult {
       -- during the validation process in which this ValidationResult is being
       -- created, as well as the values for the new transactions remaining to be
       -- validated.
-    , vrAfter          :: TickedLedgerState blk TrackingMK
+    , vrAfter          :: TickedLedgerState blk TrackingMK EmptyMK
 
       -- | The transactions that were invalid, along with their errors
       --
@@ -373,7 +374,7 @@ internalStateFromVR vr = IS {
 
 -- | Construct a 'ValidationResult' from internal state.
 validationResultFromIS :: TickedTableStuff (LedgerState blk)
-                       => LedgerTables (LedgerState blk) ValuesMK
+                       => LedgerTables (LedgerState blk) ValuesMK DiffMK
                        -> InternalState blk
                        -> ValidationResult invalidTx blk
 validationResultFromIS values is = ValidationResult {
@@ -427,7 +428,7 @@ data MempoolCapacityBytesOverride
 -- the current ledger's maximum transaction capacity of a block.
 computeMempoolCapacity
   :: LedgerSupportsMempool blk
-  => TickedLedgerState blk mk
+  => TickedLedgerState blk mk1 mk2
   -> MempoolCapacityBytesOverride
   -> MempoolCapacityBytes
 computeMempoolCapacity st = \case
