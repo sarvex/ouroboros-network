@@ -77,9 +77,9 @@ belowTarget actions
   = Guarded Nothing $ do
       -- Max selected should be <= numPeerShareReqsPossible
       selectedForPeerShare <- pickPeers st
-                             policyPickKnownPeersForPeerShare
-                             canAsk
-                             numPeerShareReqsPossible
+                              policyPickKnownPeersForPeerShare
+                              canAsk
+                              numPeerShareReqsPossible
 
       let -- Should be <= numPeerShareReqsPossible
           numPeerShareReqs = Set.size selectedForPeerShare
@@ -143,12 +143,12 @@ jobPeerShare PeerSelectionActions{requestPeerShare}
     handler :: [peeraddr] -> SomeException -> m (Completion m peeraddr peerconn)
     handler peers e = return $
       Completion $ \st _ ->
-      Decision { decisionTrace = [TracePeerShareResults [ (p, Left e) | p <- peers ]]
-               , decisionState =
+      Decision { decisionTrace = [TracePeerShareResults [ (p, Left e) | p <- peers ]],
+                 decisionState =
                   st { inProgressPeerShareReqs = inProgressPeerShareReqs st
                                                - length peers
-                     }
-               , decisionJobs  = []
+                     },
+                 decisionJobs = []
                }
 
     jobPhase1 :: [(PeerSharingAmount, peeraddr)] -> m (Completion m peeraddr peerconn)
