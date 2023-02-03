@@ -19,14 +19,14 @@ import           Control.Monad.Class.MonadSTM
 import           Control.Monad.Class.MonadTime
 import           Control.Monad.Class.MonadTimer
 
-import qualified Ouroboros.Network.PeerSelection.EstablishedPeers as EstablishedPeers
 import           Ouroboros.Network.PeerSelection.Governor.Types
-import           Ouroboros.Network.PeerSelection.KnownPeers (isKnownLedgerPeer)
-import qualified Ouroboros.Network.PeerSelection.KnownPeers as KnownPeers
 import           Ouroboros.Network.PeerSelection.LedgerPeers (IsLedgerPeer (..))
-import qualified Ouroboros.Network.PeerSelection.LocalRootPeers as LocalRootPeers
 import           Ouroboros.Network.PeerSelection.PeerAdvertise.Type
                      (PeerAdvertise (..))
+import qualified Ouroboros.Network.PeerSelection.State.EstablishedPeers as EstablishedPeers
+import           Ouroboros.Network.PeerSelection.State.KnownPeers (isKnownLedgerPeer)
+import qualified Ouroboros.Network.PeerSelection.State.KnownPeers as KnownPeers
+import qualified Ouroboros.Network.PeerSelection.State.LocalRootPeers as LocalRootPeers
 import           Ouroboros.Network.PeerSelection.PeerSharing.Type
                      (PeerSharing (..))
 import           Ouroboros.Network.Protocol.PeerSharing.Type (PeerSharingAmount)

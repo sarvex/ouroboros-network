@@ -44,15 +44,15 @@ import           Ouroboros.Network.Diffusion.P2P (TracersExtra (..))
 import qualified Ouroboros.Network.Diffusion.P2P as Diff.P2P
 import           Ouroboros.Network.InboundGovernor hiding
                      (TrUnexpectedlyFalseAssertion)
-import qualified Ouroboros.Network.PeerSelection.EstablishedPeers as EstablishedPeers
 import           Ouroboros.Network.PeerSelection.Governor hiding
                      (PeerSelectionState (..))
 import qualified Ouroboros.Network.PeerSelection.Governor as Governor
-import qualified Ouroboros.Network.PeerSelection.LocalRootPeers as LocalRootPeers
 import           Ouroboros.Network.PeerSelection.PeerStateActions
 import           Ouroboros.Network.PeerSelection.RootPeersDNS
 import           Ouroboros.Network.PeerSelection.RootPeersDNS.DNSActions
 import           Ouroboros.Network.PeerSelection.Types
+import qualified Ouroboros.Network.PeerSelection.State.EstablishedPeers as EstablishedPeers
+import qualified Ouroboros.Network.PeerSelection.State.LocalRootPeers as LocalRootPeers
 import           Ouroboros.Network.Server2 (ServerTrace (..))
 import           Ouroboros.Network.Testing.Data.AbsBearerInfo
 import           Ouroboros.Network.Testing.Data.Script (singletonScript)

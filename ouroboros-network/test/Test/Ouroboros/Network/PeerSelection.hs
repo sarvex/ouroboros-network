@@ -50,13 +50,13 @@ import           Control.Tracer (Tracer (..))
 import qualified Network.DNS as DNS (defaultResolvConf)
 import           Network.Socket (SockAddr)
 
-import qualified Ouroboros.Network.PeerSelection.EstablishedPeers as EstablishedPeers
 import           Ouroboros.Network.PeerSelection.Governor hiding
                      (PeerSelectionState (..), peerSharing)
 import qualified Ouroboros.Network.PeerSelection.Governor as Governor
-import qualified Ouroboros.Network.PeerSelection.KnownPeers as KnownPeers
-import qualified Ouroboros.Network.PeerSelection.LocalRootPeers as LocalRootPeers
 import           Ouroboros.Network.PeerSelection.RootPeersDNS
+import qualified Ouroboros.Network.PeerSelection.State.EstablishedPeers as EstablishedPeers
+import qualified Ouroboros.Network.PeerSelection.State.KnownPeers as KnownPeers
+import qualified Ouroboros.Network.PeerSelection.State.LocalRootPeers as LocalRootPeers
 
 import           Ouroboros.Network.Testing.Data.Script
 import           Ouroboros.Network.Testing.Data.Signal (E (E), Events, Signal,

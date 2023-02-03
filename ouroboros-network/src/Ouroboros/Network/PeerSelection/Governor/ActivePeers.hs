@@ -20,11 +20,11 @@ import           Control.Monad.Class.MonadTime
 import           Control.Monad.Class.MonadTimer
 import           System.Random (randomR)
 
-import qualified Ouroboros.Network.PeerSelection.EstablishedPeers as EstablishedPeers
 import           Ouroboros.Network.PeerSelection.Governor.Types
-import           Ouroboros.Network.PeerSelection.KnownPeers (setTepidFlag)
-import qualified Ouroboros.Network.PeerSelection.KnownPeers as KnownPeers
-import qualified Ouroboros.Network.PeerSelection.LocalRootPeers as LocalRootPeers
+import qualified Ouroboros.Network.PeerSelection.State.EstablishedPeers as EstablishedPeers
+import           Ouroboros.Network.PeerSelection.State.KnownPeers (setTepidFlag)
+import qualified Ouroboros.Network.PeerSelection.State.LocalRootPeers as LocalRootPeers
+import qualified Ouroboros.Network.PeerSelection.State.KnownPeers as KnownPeers
 
 
 ----------------------------

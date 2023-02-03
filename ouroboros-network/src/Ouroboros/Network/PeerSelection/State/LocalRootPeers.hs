@@ -2,7 +2,7 @@
 {-# LANGUAGE NamedFieldPuns  #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Ouroboros.Network.PeerSelection.LocalRootPeers
+module Ouroboros.Network.PeerSelection.State.LocalRootPeers
   ( -- * Types
     LocalRootPeers (..)
     -- Export constructors for defining tests.
