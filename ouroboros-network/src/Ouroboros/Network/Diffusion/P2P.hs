@@ -113,7 +113,7 @@ import           Ouroboros.Network.PeerSelection.RootPeersDNS (DNSActions,
                      DomainAccessPoint, LookupReqs (..), RelayAccessPoint (..),
                      TraceLocalRootPeers (..), TracePublicRootPeers (..),
                      ioDNSActions, resolveDomainAccessPoint)
-import           Ouroboros.Network.PeerSelection.Simple
+import           Ouroboros.Network.PeerSelection.PeerSelectionActions
 import           Ouroboros.Network.PeerSharing (PeerSharingRegistry (..))
 import           Ouroboros.Network.Protocol.PeerSharing.Type (PeerSharingAmount)
 import           Ouroboros.Network.RethrowPolicy
