@@ -312,6 +312,8 @@ mockPeerSelectionActions' tracer
       peerSharing              = peerSharing,
       peerConnToPeerSharing    = \(PeerConn _ ps _) -> ps,
       requestPublicRootPeers,
+      -- TODO
+      requestBigLedgerPeers  = \_ -> return (Set.empty, 0),
       readPeerSelectionTargets = readTVar targetsVar,
       requestPeerShare,
       peerStateActions         = PeerStateActions {

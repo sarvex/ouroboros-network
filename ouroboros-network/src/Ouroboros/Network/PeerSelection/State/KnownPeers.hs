@@ -214,6 +214,7 @@ insert peeraddrs
       -- Preserve Ledger Peer information if the peer is ledger.
       , knownLedgerPeer    = case (knownLedgerPeer old) of
                                IsLedgerPeer    -> IsLedgerPeer
+                               IsBigLedgerPeer -> IsBigLedgerPeer
                                IsNotLedgerPeer -> knownLedgerPeer new
       }
 
