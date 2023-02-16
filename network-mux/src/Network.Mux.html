@@ -48,7 +48,7 @@
 </span><span id="line-48"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/containers-0.6.5.1/src"><span class="hs-identifier">Data.Map</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/containers-0.6.5.1/src"><span class="hs-identifier">Map</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-49"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/containers-0.6.5.1/src"><span class="hs-identifier">Data.Map.Strict</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Map</span></span><span>
 </span><span id="line-50"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Data.Maybe</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">isNothing</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-51"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">Data.Monoid.Synchronisation</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-51"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">Data.Monoid.Synchronisation</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-52"></span><span>
 </span><span id="line-53"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Control.Applicative</span></a></span><span>
 </span><span id="line-54"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Control.Concurrent.Class.MonadSTM.Strict</span></span><span>
@@ -1040,7 +1040,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">FirstToFinish (STM m) (MonitorEvent mode m)
 -&gt; STM m (MonitorEvent mode m)
 forall (m :: * -&gt; *) a. FirstToFinish m a -&gt; m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runFirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(FirstToFinish (STM m) (MonitorEvent mode m)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runFirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(FirstToFinish (STM m) (MonitorEvent mode m)
  -&gt; STM m (MonitorEvent mode m))
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
 -&gt; STM m (MonitorEvent mode m)
@@ -1050,7 +1050,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-367"></span><span>           </span><span class="hs-special">(</span><span class="annot"><span class="annottext">STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
 forall (m :: * -&gt; *) a. m a -&gt; FirstToFinish m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
  -&gt; FirstToFinish (STM m) (MonitorEvent mode m))
 -&gt; STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
@@ -1076,7 +1076,7 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
 forall (m :: * -&gt; *) a. m a -&gt; FirstToFinish m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
  -&gt; FirstToFinish (STM m) (MonitorEvent mode m))
 -&gt; STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
@@ -1114,7 +1114,7 @@ forall (t :: * -&gt; *) m a.
 </span><span id="line-376"></span><span>               </span><span class="annot"><span class="annottext">STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)
 forall (m :: * -&gt; *) a. m a -&gt; FirstToFinish m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m (MonitorEvent mode m)
  -&gt; FirstToFinish (STM m) (MonitorEvent mode m))
 -&gt; STM m (MonitorEvent mode m)
 -&gt; FirstToFinish (STM m) (MonitorEvent mode m)

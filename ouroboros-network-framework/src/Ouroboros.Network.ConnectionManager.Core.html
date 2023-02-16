@@ -46,7 +46,7 @@
 </span><span id="line-46"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/containers-0.6.5.1/src"><span class="hs-identifier">Data.Map</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Map</span></span><span>
 </span><span id="line-47"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/containers-0.6.5.1/src"><span class="hs-identifier">Data.Set</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Set</span></span><span>
 </span><span id="line-48"></span><span>
-</span><span id="line-49"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">Data.Monoid.Synchronisation</span></a></span><span>
+</span><span id="line-49"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier">Data.Monoid.Synchronisation</span></a></span><span>
 </span><span id="line-50"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Data.Wedge.html"><span class="hs-identifier">Data.Wedge</span></a></span><span>
 </span><span id="line-51"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Data.Word</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Word32</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-52"></span><span>
@@ -2362,7 +2362,7 @@ STM m a -&gt; m a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">LastToFinishM (STM m) () -&gt; STM m ()
 forall (m :: * -&gt; *) a. LastToFinishM m a -&gt; m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runLastToFinishM</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runLastToFinishM</span></a></span><span>
 </span><span id="line-743"></span><span>                   </span><span class="annot"><span class="annottext">(LastToFinishM (STM m) () -&gt; STM m ())
 -&gt; LastToFinishM (STM m) () -&gt; STM m ()
 forall a b. (a -&gt; b) -&gt; a -&gt; b
@@ -2373,7 +2373,7 @@ forall (t :: * -&gt; *) m a.
 (a -&gt; m) -&gt; t a -&gt; m
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">foldMap</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">STM m () -&gt; LastToFinishM (STM m) ()
 forall (m :: * -&gt; *) a. m a -&gt; LastToFinishM m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">LastToFinishM</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m () -&gt; LastToFinishM (STM m) ())
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">LastToFinishM</span></a></span><span> </span><span class="annot"><span class="annottext">(STM m () -&gt; LastToFinishM (STM m) ())
 -&gt; (STM m (Either SomeException ()) -&gt; STM m ())
 -&gt; STM m (Either SomeException ())
 -&gt; LastToFinishM (STM m) ()
@@ -12108,7 +12108,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
         (ConnectionState peerAddr handle handleError version m)
         (ConnectionState peerAddr handle handleError version m))
 forall (m :: * -&gt; *) a. FirstToFinish m a -&gt; m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runFirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(FirstToFinish
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var hs-var">runFirstToFinish</span></a></span><span> </span><span class="annot"><span class="annottext">(FirstToFinish
    (STM m)
    (Either
       (ConnectionState peerAddr handle handleError version m)
@@ -12141,7 +12141,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
         (ConnectionState peerAddr handle handleError version m)
         (ConnectionState peerAddr handle handleError version m))
 forall (m :: * -&gt; *) a. m a -&gt; FirstToFinish m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-keyword">do</span><span> </span><span id="local-6989586621679190551"><span class="annot"><span class="annottext">ConnectionState peerAddr handle handleError version m
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-keyword">do</span><span> </span><span id="local-6989586621679190551"><span class="annot"><span class="annottext">ConnectionState peerAddr handle handleError version m
 </span><a href="#local-6989586621679190551"><span class="hs-identifier hs-var">connState</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">StrictTVar
   m (ConnectionState peerAddr handle handleError version m)
 -&gt; STM m (ConnectionState peerAddr handle handleError version m)
@@ -12203,7 +12203,7 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
         (ConnectionState peerAddr handle handleError version m)
         (ConnectionState peerAddr handle handleError version m))
 forall (m :: * -&gt; *) a. m a -&gt; FirstToFinish m a
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.0/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-keyword">do</span><span> </span><span id="local-6989586621679190549"><span class="annot"><span class="annottext">Bool
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/monoidal-synchronisation-0.1.0.2/noopt/doc/html/monoidal-synchronisation/src"><span class="hs-identifier hs-var">FirstToFinish</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-keyword">do</span><span> </span><span id="local-6989586621679190549"><span class="annot"><span class="annottext">Bool
 </span><a href="#local-6989586621679190549"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">TVar m Bool -&gt; STM m Bool
 forall (m :: * -&gt; *) a. MonadSTM m =&gt; TVar m a -&gt; STM m a
 </span><span class="hs-identifier hs-var">LazySTM.readTVar</span></span><span> </span><span class="annot"><span class="annottext">TVar m Bool
