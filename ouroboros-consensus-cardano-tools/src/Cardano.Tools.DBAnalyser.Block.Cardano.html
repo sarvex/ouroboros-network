@@ -1084,7 +1084,7 @@ Key
 -&gt; (:.:) Parser ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371197"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestConwayHardForkAtEpoch&quot;</span></span><span>  </span><span class="annot"><span class="annottext">Word16
-</span><span class="hs-number">8</span></span><span> </span><span class="annot"><span class="annottext">(AlonzoGenesis, ConwayGenesis StandardCrypto)
+</span><span class="hs-number">9</span></span><span> </span><span class="annot"><span class="annottext">(AlonzoGenesis, ConwayGenesis StandardCrypto)
 -&gt; TranslationContext (ConwayEra StandardCrypto)
 forall a b. (a, b) -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">snd</span></a></span><span>        </span><span class="annot"><span class="annottext">(:.:)
@@ -1397,12 +1397,15 @@ ProtVer
 -&gt; TxOverrides (ShelleyBlock (TPraos c) (ShelleyEra c))
 -&gt; ProtocolParamsShelley c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsShelley</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-313"></span><span>          </span><span class="annot"><span class="annottext">$sel:shelleyProtVer:ProtocolParamsShelley :: ProtVer
+</span><span id="line-313"></span><span>          </span><span class="hs-comment">-- Note that this is /not/ the Shelley protocol version, see</span><span>
+</span><span id="line-314"></span><span>          </span><span class="hs-comment">-- https://github.com/input-output-hk/cardano-node/blob/daeae61a005776ee7b7514ce47de3933074234a8/cardano-node/src/Cardano/Node/Protocol/Cardano.hs#L167-L170</span><span>
+</span><span id="line-315"></span><span>          </span><span class="hs-comment">-- and the succeeding comments.</span><span>
+</span><span id="line-316"></span><span>          </span><span class="annot"><span class="annottext">$sel:shelleyProtVer:ProtocolParamsShelley :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">shelleyProtVer</span></a></span><span>                </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">3</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-314"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:shelleyMaxTxCapacityOverrides:ProtocolParamsShelley :: TxOverrides (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
+</span><span id="line-317"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:shelleyMaxTxCapacityOverrides:ProtocolParamsShelley :: TxOverrides (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">shelleyMaxTxCapacityOverrides</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 -&gt; TxOverrides
      (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
@@ -1410,18 +1413,18 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.mkOverrides</span></a></span><span> </span><span class="annot"><span class="annottext">TxMeasure (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-315"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-316"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsAllegra :: forall c.
+</span><span id="line-318"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-319"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsAllegra :: forall c.
 ProtVer
 -&gt; TxOverrides (ShelleyBlock (TPraos c) (AllegraEra c))
 -&gt; ProtocolParamsAllegra c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsAllegra</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-317"></span><span>          </span><span class="annot"><span class="annottext">$sel:allegraProtVer:ProtocolParamsAllegra :: ProtVer
+</span><span id="line-320"></span><span>          </span><span class="annot"><span class="annottext">$sel:allegraProtVer:ProtocolParamsAllegra :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">allegraProtVer</span></a></span><span>                </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">4</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-318"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:allegraMaxTxCapacityOverrides:ProtocolParamsAllegra :: TxOverrides
+</span><span id="line-321"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:allegraMaxTxCapacityOverrides:ProtocolParamsAllegra :: TxOverrides
   (ShelleyBlock (TPraos StandardCrypto) (AllegraEra StandardCrypto))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">allegraMaxTxCapacityOverrides</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure
   (ShelleyBlock (TPraos StandardCrypto) (AllegraEra StandardCrypto))
@@ -1432,18 +1435,18 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
   (ShelleyBlock (TPraos StandardCrypto) (AllegraEra StandardCrypto))
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-319"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-320"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsMary :: forall c.
+</span><span id="line-322"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-323"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsMary :: forall c.
 ProtVer
 -&gt; TxOverrides (ShelleyBlock (TPraos c) (MaryEra c))
 -&gt; ProtocolParamsMary c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsMary</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-321"></span><span>          </span><span class="annot"><span class="annottext">$sel:maryProtVer:ProtocolParamsMary :: ProtVer
+</span><span id="line-324"></span><span>          </span><span class="annot"><span class="annottext">$sel:maryProtVer:ProtocolParamsMary :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">maryProtVer</span></a></span><span>                   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">5</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-322"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:maryMaxTxCapacityOverrides:ProtocolParamsMary :: TxOverrides
+</span><span id="line-325"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:maryMaxTxCapacityOverrides:ProtocolParamsMary :: TxOverrides
   (ShelleyBlock (TPraos StandardCrypto) (MaryEra StandardCrypto))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">maryMaxTxCapacityOverrides</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure
   (ShelleyBlock (TPraos StandardCrypto) (MaryEra StandardCrypto))
@@ -1454,18 +1457,18 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
   (ShelleyBlock (TPraos StandardCrypto) (MaryEra StandardCrypto))
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-323"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-324"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsAlonzo :: forall c.
+</span><span id="line-326"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-327"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsAlonzo :: forall c.
 ProtVer
 -&gt; TxOverrides (ShelleyBlock (TPraos c) (AlonzoEra c))
 -&gt; ProtocolParamsAlonzo c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsAlonzo</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-325"></span><span>          </span><span class="annot"><span class="annottext">$sel:alonzoProtVer:ProtocolParamsAlonzo :: ProtVer
+</span><span id="line-328"></span><span>          </span><span class="annot"><span class="annottext">$sel:alonzoProtVer:ProtocolParamsAlonzo :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">alonzoProtVer</span></a></span><span>                 </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
-</span><span class="hs-number">6</span></span><span> </span><span class="annot"><span class="annottext">Natural
+</span><span class="hs-number">7</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-326"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:alonzoMaxTxCapacityOverrides:ProtocolParamsAlonzo :: TxOverrides
+</span><span id="line-329"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:alonzoMaxTxCapacityOverrides:ProtocolParamsAlonzo :: TxOverrides
   (ShelleyBlock (TPraos StandardCrypto) (AlonzoEra StandardCrypto))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">alonzoMaxTxCapacityOverrides</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure
   (ShelleyBlock (TPraos StandardCrypto) (AlonzoEra StandardCrypto))
@@ -1476,18 +1479,18 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
   (ShelleyBlock (TPraos StandardCrypto) (AlonzoEra StandardCrypto))
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-327"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-328"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsBabbage :: forall c.
+</span><span id="line-330"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-331"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsBabbage :: forall c.
 ProtVer
 -&gt; TxOverrides (ShelleyBlock (Praos c) (BabbageEra c))
 -&gt; ProtocolParamsBabbage c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsBabbage</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-329"></span><span>          </span><span class="annot"><span class="annottext">babbageProtVer :: ProtVer
+</span><span id="line-332"></span><span>          </span><span class="annot"><span class="annottext">babbageProtVer :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">babbageProtVer</span></a></span><span>                 </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
-</span><span class="hs-number">7</span></span><span> </span><span class="annot"><span class="annottext">Natural
+</span><span class="hs-number">9</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-330"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">babbageMaxTxCapacityOverrides :: TxOverrides
+</span><span id="line-333"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">babbageMaxTxCapacityOverrides :: TxOverrides
   (ShelleyBlock (Praos StandardCrypto) (BabbageEra StandardCrypto))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">babbageMaxTxCapacityOverrides</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure
   (ShelleyBlock (Praos StandardCrypto) (BabbageEra StandardCrypto))
@@ -1498,18 +1501,18 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
   (ShelleyBlock (Praos StandardCrypto) (BabbageEra StandardCrypto))
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-331"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-332"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsConway :: forall c.
+</span><span id="line-334"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-335"></span><span>      </span><span class="annot"><span class="annottext">ProtocolParamsConway :: forall c.
 ProtVer
 -&gt; TxOverrides (ShelleyBlock (Praos c) (ConwayEra c))
 -&gt; ProtocolParamsConway c
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ProtocolParamsConway</span></a></span><span> </span><span class="hs-special">{</span><span>
-</span><span id="line-333"></span><span>          </span><span class="annot"><span class="annottext">conwayProtVer :: ProtVer
+</span><span id="line-336"></span><span>          </span><span class="annot"><span class="annottext">conwayProtVer :: ProtVer
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">conwayProtVer</span></a></span><span>                  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Natural -&gt; Natural -&gt; ProtVer
 </span><span class="hs-identifier hs-var">ProtVer</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">9</span></span><span> </span><span class="annot"><span class="annottext">Natural
 </span><span class="hs-number">0</span></span><span>
-</span><span id="line-334"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">conwayMaxTxCapacityOverrides :: TxOverrides
+</span><span id="line-337"></span><span>        </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">conwayMaxTxCapacityOverrides :: TxOverrides
   (ShelleyBlock (Praos StandardCrypto) (ConwayEra StandardCrypto))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-var">conwayMaxTxCapacityOverrides</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TxMeasure
   (ShelleyBlock (Praos StandardCrypto) (ConwayEra StandardCrypto))
@@ -1520,8 +1523,8 @@ forall blk. TxMeasure blk -&gt; TxOverrides blk
   (ShelleyBlock (Praos StandardCrypto) (ConwayEra StandardCrypto))
 forall a. BoundedMeasure a =&gt; a
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Mempool.noOverridesMeasure</span></a></span><span>
-</span><span id="line-335"></span><span>        </span><span class="hs-special">}</span><span>
-</span><span id="line-336"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-338"></span><span>        </span><span class="hs-special">}</span><span>
+</span><span id="line-339"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 -&gt; ProtocolTransitionParamsShelleyBased StandardShelley
 forall proto era.
@@ -1530,7 +1533,7 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) StandardShelley)
 </span><a href="#local-6989586621679371119"><span class="hs-identifier hs-var">shelleyTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-337"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-340"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (AllegraEra StandardCrypto))
 -&gt; ProtocolTransitionParamsShelleyBased (AllegraEra StandardCrypto)
 forall proto era.
@@ -1539,7 +1542,7 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (AllegraEra StandardCrypto))
 </span><a href="#local-6989586621679371118"><span class="hs-identifier hs-var">allegraTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-338"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-341"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (MaryEra StandardCrypto))
 -&gt; ProtocolTransitionParamsShelleyBased (MaryEra StandardCrypto)
 forall proto era.
@@ -1548,7 +1551,7 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (MaryEra StandardCrypto))
 </span><a href="#local-6989586621679371117"><span class="hs-identifier hs-var">maryTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-339"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-342"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (AlonzoEra StandardCrypto))
 -&gt; ProtocolTransitionParamsShelleyBased (AlonzoEra StandardCrypto)
 forall proto era.
@@ -1557,7 +1560,7 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (TPraos StandardCrypto) (AlonzoEra StandardCrypto))
 </span><a href="#local-6989586621679371116"><span class="hs-identifier hs-var">alonzoTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-340"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-343"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (Praos StandardCrypto) (BabbageEra StandardCrypto))
 -&gt; ProtocolTransitionParamsShelleyBased (BabbageEra StandardCrypto)
 forall proto era.
@@ -1566,7 +1569,7 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (Praos StandardCrypto) (BabbageEra StandardCrypto))
 </span><a href="#local-6989586621679371115"><span class="hs-identifier hs-var">babbageTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-341"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
+</span><span id="line-344"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (Praos StandardCrypto) (ConwayEra StandardCrypto))
 -&gt; ProtocolTransitionParamsShelleyBased (ConwayEra StandardCrypto)
 forall proto era.
@@ -1575,34 +1578,34 @@ ShelleyTransitionArguments (ShelleyBlock proto era)
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var">unShelleyTransitionArguments</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyTransitionArguments
   (ShelleyBlock (Praos StandardCrypto) (ConwayEra StandardCrypto))
 </span><a href="#local-6989586621679371114"><span class="hs-identifier hs-var">conwayTransition</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-342"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-343"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679371119"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-345"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-346"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679371119"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371119"><span class="hs-identifier hs-var">shelleyTransition</span></a></span></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-344"></span><span>      </span><span id="local-6989586621679371118"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-347"></span><span>      </span><span id="local-6989586621679371118"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371118"><span class="hs-identifier hs-var">allegraTransition</span></a></span></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-345"></span><span>      </span><span id="local-6989586621679371117"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-348"></span><span>      </span><span id="local-6989586621679371117"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371117"><span class="hs-identifier hs-var">maryTransition</span></a></span></span><span>    </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-346"></span><span>      </span><span id="local-6989586621679371116"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-349"></span><span>      </span><span id="local-6989586621679371116"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371116"><span class="hs-identifier hs-var">alonzoTransition</span></a></span></span><span>  </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-347"></span><span>      </span><span id="local-6989586621679371115"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-350"></span><span>      </span><span id="local-6989586621679371115"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371115"><span class="hs-identifier hs-var">babbageTransition</span></a></span></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-348"></span><span>      </span><span id="local-6989586621679371114"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
+</span><span id="line-351"></span><span>      </span><span id="local-6989586621679371114"><span class="annot"><span class="annottext">ShelleyTransitionArguments x
 </span><a href="#local-6989586621679371114"><span class="hs-identifier hs-var">conwayTransition</span></a></span></span><span>  </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-operator hs-type">:*</span></a></span><span>
-</span><span id="line-349"></span><span>      </span><span class="annot"><span class="annottext">NP ShelleyTransitionArguments xs
+</span><span id="line-352"></span><span>      </span><span class="annot"><span class="annottext">NP ShelleyTransitionArguments xs
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">Nil</span></a></span><span>
-</span><span id="line-350"></span><span>      </span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NP ShelleyTransitionArguments (CardanoShelleyEras StandardCrypto)
+</span><span id="line-353"></span><span>      </span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NP ShelleyTransitionArguments (CardanoShelleyEras StandardCrypto)
 </span><a href="#local-6989586621679371156"><span class="hs-identifier hs-var">hardForkTriggers</span></a></span><span>
-</span><span id="line-351"></span><span>
-</span><span id="line-352"></span><span>    </span><span id="local-6989586621679371332"><span id="local-6989586621679371333"><span class="annot"><a href="#local-6989586621679371120"><span class="hs-identifier hs-type">unShelleyTransitionArguments</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-353"></span><span>         </span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#ShelleyTransitionArguments"><span class="hs-identifier hs-type">ShelleyTransitionArguments</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ShelleyBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371333"><span class="hs-identifier hs-type">proto</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371332"><span class="hs-identifier hs-type">era</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-354"></span><span>      </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">ProtocolTransitionParamsShelleyBased</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371332"><span class="hs-identifier hs-type">era</span></a></span></span></span><span>
-</span><span id="line-355"></span><span>    </span><span id="local-6989586621679371120"><span class="annot"><span class="annottext">unShelleyTransitionArguments :: ShelleyTransitionArguments (ShelleyBlock proto era)
+</span><span id="line-354"></span><span>
+</span><span id="line-355"></span><span>    </span><span id="local-6989586621679371332"><span id="local-6989586621679371333"><span class="annot"><a href="#local-6989586621679371120"><span class="hs-identifier hs-type">unShelleyTransitionArguments</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-356"></span><span>         </span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#ShelleyTransitionArguments"><span class="hs-identifier hs-type">ShelleyTransitionArguments</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-shelley-0.3.0.0/noopt/doc/html/ouroboros-consensus-shelley/src"><span class="hs-identifier hs-type">ShelleyBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371333"><span class="hs-identifier hs-type">proto</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371332"><span class="hs-identifier hs-type">era</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-357"></span><span>      </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">ProtocolTransitionParamsShelleyBased</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679371332"><span class="hs-identifier hs-type">era</span></a></span></span></span><span>
+</span><span id="line-358"></span><span>    </span><span id="local-6989586621679371120"><span class="annot"><span class="annottext">unShelleyTransitionArguments :: ShelleyTransitionArguments (ShelleyBlock proto era)
 -&gt; ProtocolTransitionParamsShelleyBased era
 </span><a href="#local-6989586621679371120"><span class="hs-identifier hs-var hs-var">unShelleyTransitionArguments</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#ShelleyTransitionArguments"><span class="hs-identifier hs-type">ShelleyTransitionArguments</span></a></span><span> </span><span id="local-6989586621679371113"><span class="annot"><span class="annottext">(AlonzoGenesis, ConwayGenesis StandardCrypto)
 -&gt; TranslationContext era
 </span><a href="#local-6989586621679371113"><span class="hs-identifier hs-var">ctxt</span></a></span></span><span> </span><span id="local-6989586621679371112"><span class="annot"><span class="annottext">TriggerHardFork
 </span><a href="#local-6989586621679371112"><span class="hs-identifier hs-var">trigger</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-356"></span><span>      </span><span class="annot"><span class="annottext">TranslationContext era
+</span><span id="line-359"></span><span>      </span><span class="annot"><span class="annottext">TranslationContext era
 -&gt; TriggerHardFork -&gt; ProtocolTransitionParamsShelleyBased era
 forall era.
 TranslationContext era
@@ -1613,11 +1616,11 @@ TranslationContext era
 </span><a href="#local-6989586621679371159"><span class="hs-identifier hs-var">genesisAlonzo</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ConwayGenesis StandardCrypto
 </span><a href="#local-6989586621679371158"><span class="hs-identifier hs-var">genesisConway</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">TriggerHardFork
 </span><a href="#local-6989586621679371112"><span class="hs-identifier hs-var">trigger</span></a></span><span>
-</span><span id="line-357"></span><span>
-</span><span id="line-358"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castHeaderHash"><span class="hs-identifier hs-type">castHeaderHash</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-359"></span><span>     </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">HeaderHash</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.3.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span>
-</span><span id="line-360"></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">HeaderHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">CardanoBlock</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">StandardCrypto</span></span><span class="hs-special">)</span><span>
-</span><span id="line-361"></span><span id="castHeaderHash"><span class="annot"><span class="annottext">castHeaderHash :: HeaderHash ByronBlock -&gt; HeaderHash (CardanoBlock StandardCrypto)
+</span><span id="line-360"></span><span>
+</span><span id="line-361"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castHeaderHash"><span class="hs-identifier hs-type">castHeaderHash</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-362"></span><span>     </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">HeaderHash</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.3.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span>
+</span><span id="line-363"></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">HeaderHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">CardanoBlock</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">StandardCrypto</span></span><span class="hs-special">)</span><span>
+</span><span id="line-364"></span><span id="castHeaderHash"><span class="annot"><span class="annottext">castHeaderHash :: HeaderHash ByronBlock -&gt; HeaderHash (CardanoBlock StandardCrypto)
 </span><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castHeaderHash"><span class="hs-identifier hs-var hs-var">castHeaderHash</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShortByteString -&gt; OneEraHash (CardanoEras StandardCrypto)
 forall k (xs :: [k]). ShortByteString -&gt; OneEraHash xs
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">OneEraHash</span></a></span><span> </span><span class="annot"><span class="annottext">(ShortByteString -&gt; OneEraHash (CardanoEras StandardCrypto))
@@ -1632,16 +1635,16 @@ proxy blk -&gt; HeaderHash blk -&gt; ShortByteString
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.2.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">toShortRawHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Proxy ByronBlock
 forall k (t :: k). Proxy t
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Proxy</span></a></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.3.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-362"></span><span>
-</span><span id="line-363"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castChainHash"><span class="hs-identifier hs-type">castChainHash</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-364"></span><span>     </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">ChainHash</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.3.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span>
-</span><span id="line-365"></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">ChainHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">CardanoBlock</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">StandardCrypto</span></span><span class="hs-special">)</span><span>
-</span><span id="line-366"></span><span id="castChainHash"><span class="annot"><span class="annottext">castChainHash :: ChainHash ByronBlock -&gt; ChainHash (CardanoBlock StandardCrypto)
+</span><span id="line-365"></span><span>
+</span><span id="line-366"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castChainHash"><span class="hs-identifier hs-type">castChainHash</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-367"></span><span>     </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">ChainHash</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-byron-0.3.0.0/noopt/doc/html/ouroboros-consensus-byron/src"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span>
+</span><span id="line-368"></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">ChainHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-cardano-0.3.0.0/noopt/doc/html/ouroboros-consensus-cardano/src"><span class="hs-identifier hs-type">CardanoBlock</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">StandardCrypto</span></span><span class="hs-special">)</span><span>
+</span><span id="line-369"></span><span id="castChainHash"><span class="annot"><span class="annottext">castChainHash :: ChainHash ByronBlock -&gt; ChainHash (CardanoBlock StandardCrypto)
 </span><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castChainHash"><span class="hs-identifier hs-var hs-var">castChainHash</span></a></span></span><span> </span><span class="annot"><span class="annottext">ChainHash ByronBlock
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisHash</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ChainHash (CardanoBlock StandardCrypto)
 forall b. ChainHash b
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisHash</span></a></span><span>
-</span><span id="line-367"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castChainHash"><span class="hs-identifier hs-var">castChainHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">BlockHash</span></a></span><span> </span><span id="local-6989586621679371106"><span class="annot"><span class="annottext">HeaderHash ByronBlock
+</span><span id="line-370"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castChainHash"><span class="hs-identifier hs-var">castChainHash</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">BlockHash</span></a></span><span> </span><span id="local-6989586621679371106"><span class="annot"><span class="annottext">HeaderHash ByronBlock
 </span><a href="#local-6989586621679371106"><span class="hs-identifier hs-var">h</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">HeaderHash (CardanoBlock StandardCrypto)
 -&gt; ChainHash (CardanoBlock StandardCrypto)
 forall b. HeaderHash b -&gt; ChainHash b
@@ -1653,4 +1656,4 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">HeaderHash ByronBlock -&gt; HeaderHash (CardanoBlock StandardCrypto)
 </span><a href="Cardano.Tools.DBAnalyser.Block.Cardano.html#castHeaderHash"><span class="hs-identifier hs-var">castHeaderHash</span></a></span><span> </span><span class="annot"><span class="annottext">HeaderHash ByronBlock
 </span><a href="#local-6989586621679371106"><span class="hs-identifier hs-var">h</span></a></span><span>
-</span><span id="line-368"></span></pre></body></html>
+</span><span id="line-371"></span></pre></body></html>
