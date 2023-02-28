@@ -18,34 +18,34 @@
 </span><span id="line-18"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Cardano.Tools.DBSynthesizer.Types.html"><span class="hs-identifier">Cardano.Tools.DBSynthesizer.Types</span></a></span><span>
 </span><span id="line-19"></span><span>
 </span><span id="line-20"></span><span>
-</span><span id="line-21"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679372958"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Tools.DBSynthesizer.Types.html#NodeConfigStub"><span class="hs-identifier hs-type">NodeConfigStub</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-22"></span><span>    </span><span id="local-6989586621679372956"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeConfigStub
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></span></span><span> </span><span id="local-6989586621679372954"><span class="annot"><span class="annottext">Value
-</span><a href="#local-6989586621679372954"><span class="hs-identifier hs-var">val</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
+</span><span id="line-21"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679373002"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Tools.DBSynthesizer.Types.html#NodeConfigStub"><span class="hs-identifier hs-type">NodeConfigStub</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-22"></span><span>    </span><span id="local-6989586621679373000"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeConfigStub
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></span></span><span> </span><span id="local-6989586621679372998"><span class="annot"><span class="annottext">Value
+</span><a href="#local-6989586621679372998"><span class="hs-identifier hs-var">val</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 -&gt; (Object -&gt; Parser NodeConfigStub)
 -&gt; Value
 -&gt; Parser NodeConfigStub
 forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 </span><span class="hs-identifier hs-var">withObject</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;NodeConfigStub&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Value -&gt; Object -&gt; Parser NodeConfigStub
-</span><a href="#local-6989586621679372953"><span class="hs-identifier hs-var">parse'</span></a></span><span> </span><span class="annot"><span class="annottext">Value
-</span><a href="#local-6989586621679372954"><span class="hs-identifier hs-var">val</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Value
-</span><a href="#local-6989586621679372954"><span class="hs-identifier hs-var">val</span></a></span><span>
+</span><a href="#local-6989586621679372997"><span class="hs-identifier hs-var">parse'</span></a></span><span> </span><span class="annot"><span class="annottext">Value
+</span><a href="#local-6989586621679372998"><span class="hs-identifier hs-var">val</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Value
+</span><a href="#local-6989586621679372998"><span class="hs-identifier hs-var">val</span></a></span><span>
 </span><span id="line-23"></span><span>      </span><span class="hs-keyword">where</span><span>
-</span><span id="line-24"></span><span>        </span><span id="local-6989586621679372953"><span class="annot"><span class="annottext">parse' :: Value -&gt; Object -&gt; Parser NodeConfigStub
-</span><a href="#local-6989586621679372953"><span class="hs-identifier hs-var hs-var">parse'</span></a></span></span><span> </span><span id="local-6989586621679372952"><span class="annot"><span class="annottext">Value
-</span><a href="#local-6989586621679372952"><span class="hs-identifier hs-var">o</span></a></span></span><span> </span><span id="local-6989586621679372951"><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-25"></span><span>          </span><span id="local-6989586621679372950"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679372950"><span class="hs-identifier hs-var">proto</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
+</span><span id="line-24"></span><span>        </span><span id="local-6989586621679372997"><span class="annot"><span class="annottext">parse' :: Value -&gt; Object -&gt; Parser NodeConfigStub
+</span><a href="#local-6989586621679372997"><span class="hs-identifier hs-var hs-var">parse'</span></a></span></span><span> </span><span id="local-6989586621679372996"><span class="annot"><span class="annottext">Value
+</span><a href="#local-6989586621679372996"><span class="hs-identifier hs-var">o</span></a></span></span><span> </span><span id="local-6989586621679372995"><span class="annot"><span class="annottext">Object
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-25"></span><span>          </span><span id="local-6989586621679372994"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679372994"><span class="hs-identifier hs-var">proto</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Object
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;Protocol&quot;</span></span><span>
 </span><span id="line-26"></span><span>          </span><span class="annot"><span class="annottext">Bool -&gt; Parser () -&gt; Parser ()
 forall (f :: * -&gt; *). Applicative f =&gt; Bool -&gt; f () -&gt; f ()
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">when</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679372950"><span class="hs-identifier hs-var">proto</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; Bool
+</span><a href="#local-6989586621679372994"><span class="hs-identifier hs-var">proto</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; Bool
 forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">/=</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Cardano&quot;</span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">String</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Parser () -&gt; Parser ()) -&gt; Parser () -&gt; Parser ()
@@ -59,16 +59,16 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-string">&quot;nodeConfig.Protocol expected: Cardano; found: &quot;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 forall a. [a] -&gt; [a] -&gt; [a]
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">++</span></a></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679372950"><span class="hs-identifier hs-var">proto</span></a></span><span>
+</span><a href="#local-6989586621679372994"><span class="hs-identifier hs-var">proto</span></a></span><span>
 </span><span id="line-28"></span><span>          </span><span class="annot"><span class="annottext">Value -&gt; String -&gt; String -&gt; String -&gt; String -&gt; NodeConfigStub
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#NodeConfigStub"><span class="hs-identifier hs-var">NodeConfigStub</span></a></span><span> </span><span class="annot"><span class="annottext">Value
-</span><a href="#local-6989586621679372952"><span class="hs-identifier hs-var">o</span></a></span><span>
+</span><a href="#local-6989586621679372996"><span class="hs-identifier hs-var">o</span></a></span><span>
 </span><span id="line-29"></span><span>            </span><span class="annot"><span class="annottext">(String -&gt; String -&gt; String -&gt; String -&gt; NodeConfigStub)
 -&gt; Parser String
 -&gt; Parser (String -&gt; String -&gt; String -&gt; NodeConfigStub)
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;AlonzoGenesisFile&quot;</span></span><span>
@@ -76,7 +76,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 -&gt; Parser String -&gt; Parser (String -&gt; String -&gt; NodeConfigStub)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ShelleyGenesisFile&quot;</span></span><span>
@@ -84,7 +84,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 -&gt; Parser String -&gt; Parser (String -&gt; NodeConfigStub)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ByronGenesisFile&quot;</span></span><span>
@@ -92,90 +92,90 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 -&gt; Parser String -&gt; Parser NodeConfigStub
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372951"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
+</span><a href="#local-6989586621679372995"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser String
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ConwayGenesisFile&quot;</span></span><span>
 </span><span id="line-33"></span><span>
 </span><span id="line-34"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#AdjustFilePaths"><span class="hs-identifier hs-type">AdjustFilePaths</span></a></span><span> </span><span class="annot"><a href="Cardano.Tools.DBSynthesizer.Types.html#NodeConfigStub"><span class="hs-identifier hs-type">NodeConfigStub</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-35"></span><span>    </span><span id="local-6989586621679372944"><span class="annot"><span class="annottext">adjustFilePaths :: (String -&gt; String) -&gt; NodeConfigStub -&gt; NodeConfigStub
-</span><a href="Cardano.Node.Types.html#adjustFilePaths"><span class="hs-identifier hs-var hs-var hs-var hs-var">adjustFilePaths</span></a></span></span><span> </span><span id="local-6989586621679372942"><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372942"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679372941"><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-35"></span><span>    </span><span id="local-6989586621679372988"><span class="annot"><span class="annottext">adjustFilePaths :: (String -&gt; String) -&gt; NodeConfigStub -&gt; NodeConfigStub
+</span><a href="Cardano.Node.Types.html#adjustFilePaths"><span class="hs-identifier hs-var hs-var hs-var hs-var">adjustFilePaths</span></a></span></span><span> </span><span id="local-6989586621679372986"><span class="annot"><span class="annottext">String -&gt; String
+</span><a href="#local-6989586621679372986"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679372985"><span class="annot"><span class="annottext">NodeConfigStub
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-36"></span><span>        </span><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span><span> </span><span class="hs-special">{</span><span>
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-37"></span><span>            </span><span class="annot"><span class="annottext">ncsAlonzoGenesisFile :: String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsAlonzoGenesisFile"><span class="hs-identifier hs-var">ncsAlonzoGenesisFile</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372942"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
+</span><a href="#local-6989586621679372986"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub -&gt; String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsAlonzoGenesisFile"><span class="hs-identifier hs-var hs-var">ncsAlonzoGenesisFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-38"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ncsShelleyGenesisFile :: String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsShelleyGenesisFile"><span class="hs-identifier hs-var">ncsShelleyGenesisFile</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372942"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
+</span><a href="#local-6989586621679372986"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub -&gt; String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsShelleyGenesisFile"><span class="hs-identifier hs-var hs-var">ncsShelleyGenesisFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-39"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ncsByronGenesisFile :: String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsByronGenesisFile"><span class="hs-identifier hs-var">ncsByronGenesisFile</span></a></span><span>     </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372942"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
+</span><a href="#local-6989586621679372986"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub -&gt; String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsByronGenesisFile"><span class="hs-identifier hs-var hs-var">ncsByronGenesisFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-40"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ncsConwayGenesisFile :: String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsConwayGenesisFile"><span class="hs-identifier hs-var">ncsConwayGenesisFile</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372942"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
+</span><a href="#local-6989586621679372986"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub -&gt; String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#ncsConwayGenesisFile"><span class="hs-identifier hs-var hs-var">ncsConwayGenesisFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeConfigStub
-</span><a href="#local-6989586621679372941"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372985"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-41"></span><span>          </span><span class="hs-special">}</span><span>
 </span><span id="line-42"></span><span>
 </span><span id="line-43"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#AdjustFilePaths"><span class="hs-identifier hs-type">AdjustFilePaths</span></a></span><span> </span><span class="annot"><a href="Cardano.Tools.DBSynthesizer.Types.html#NodeCredentials"><span class="hs-identifier hs-type">NodeCredentials</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-44"></span><span>    </span><span id="local-6989586621679372935"><span class="annot"><span class="annottext">adjustFilePaths :: (String -&gt; String) -&gt; NodeCredentials -&gt; NodeCredentials
-</span><a href="#local-6989586621679372935"><span class="hs-identifier hs-var hs-var hs-var hs-var">adjustFilePaths</span></a></span></span><span> </span><span id="local-6989586621679372934"><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372934"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679372933"><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-44"></span><span>    </span><span id="local-6989586621679372979"><span class="annot"><span class="annottext">adjustFilePaths :: (String -&gt; String) -&gt; NodeCredentials -&gt; NodeCredentials
+</span><a href="#local-6989586621679372979"><span class="hs-identifier hs-var hs-var hs-var hs-var">adjustFilePaths</span></a></span></span><span> </span><span id="local-6989586621679372978"><span class="annot"><span class="annottext">String -&gt; String
+</span><a href="#local-6989586621679372978"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679372977"><span class="annot"><span class="annottext">NodeCredentials
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-45"></span><span>        </span><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span><span> </span><span class="hs-special">{</span><span>
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-46"></span><span>            </span><span class="annot"><span class="annottext">credCertFile :: Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credCertFile"><span class="hs-identifier hs-var">credCertFile</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372934"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
+</span><a href="#local-6989586621679372978"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials -&gt; Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credCertFile"><span class="hs-identifier hs-var hs-var">credCertFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-47"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">credVRFFile :: Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credVRFFile"><span class="hs-identifier hs-var">credVRFFile</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372934"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
+</span><a href="#local-6989586621679372978"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials -&gt; Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credVRFFile"><span class="hs-identifier hs-var hs-var">credVRFFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-48"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">credKESFile :: Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credKESFile"><span class="hs-identifier hs-var">credKESFile</span></a></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372934"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
+</span><a href="#local-6989586621679372978"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials -&gt; Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credKESFile"><span class="hs-identifier hs-var hs-var">credKESFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-49"></span><span>          </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">credBulkFile :: Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credBulkFile"><span class="hs-identifier hs-var">credBulkFile</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
-</span><a href="#local-6989586621679372934"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
+</span><a href="#local-6989586621679372978"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; Maybe String -&gt; Maybe String
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials -&gt; Maybe String
 </span><a href="Cardano.Tools.DBSynthesizer.Types.html#credBulkFile"><span class="hs-identifier hs-var hs-var">credBulkFile</span></a></span><span> </span><span class="annot"><span class="annottext">NodeCredentials
-</span><a href="#local-6989586621679372933"><span class="hs-identifier hs-var">nc</span></a></span><span>
+</span><a href="#local-6989586621679372977"><span class="hs-identifier hs-var">nc</span></a></span><span>
 </span><span id="line-50"></span><span>          </span><span class="hs-special">}</span><span>
 </span><span id="line-51"></span><span>
 </span><span id="line-52"></span><span class="hs-comment">-- DUPLICATE: mirroring parsers from cardano-node/src/Cardano/Node/Configuration/POM.hs</span><span>
 </span><span id="line-53"></span><span>
-</span><span id="line-54"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679372926"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#NodeHardForkProtocolConfiguration"><span class="hs-identifier hs-type">NodeHardForkProtocolConfiguration</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-55"></span><span>    </span><span id="local-6989586621679372925"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeHardForkProtocolConfiguration
-</span><a href="#local-6989586621679372925"><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
+</span><span id="line-54"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679372970"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#NodeHardForkProtocolConfiguration"><span class="hs-identifier hs-type">NodeHardForkProtocolConfiguration</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-55"></span><span>    </span><span id="local-6989586621679372969"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeHardForkProtocolConfiguration
+</span><a href="#local-6989586621679372969"><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 -&gt; (Object -&gt; Parser NodeHardForkProtocolConfiguration)
 -&gt; Value
 -&gt; Parser NodeHardForkProtocolConfiguration
@@ -187,8 +187,8 @@ forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 -&gt; Value
 -&gt; Parser NodeHardForkProtocolConfiguration
 forall a b. (a -&gt; b) -&gt; a -&gt; b
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679372924"><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679372968"><span class="annot"><span class="annottext">Object
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-56"></span><span>        </span><span class="annot"><span class="annottext">Bool
 -&gt; Maybe EpochNo
 -&gt; Maybe Word
@@ -235,7 +235,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Bool)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Bool)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestEnableDevelopmentHardForkEras&quot;</span></span><span>
@@ -273,7 +273,7 @@ forall a. Parser (Maybe a) -&gt; a -&gt; Parser a
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestShelleyHardForkAtEpoch&quot;</span></span><span>
@@ -305,7 +305,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestShelleyHardForkAtVersion&quot;</span></span><span>
@@ -335,7 +335,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestAllegraHardForkAtEpoch&quot;</span></span><span>
@@ -363,7 +363,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestAllegraHardForkAtVersion&quot;</span></span><span>
@@ -389,7 +389,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestMaryHardForkAtEpoch&quot;</span></span><span>
@@ -413,7 +413,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestMaryHardForkAtVersion&quot;</span></span><span>
@@ -435,7 +435,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestAlonzoHardForkAtEpoch&quot;</span></span><span>
@@ -455,7 +455,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestAlonzoHardForkAtVersion&quot;</span></span><span>
@@ -473,7 +473,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestBabbageHardForkAtEpoch&quot;</span></span><span>
@@ -487,7 +487,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
      (Maybe EpochNo -&gt; Maybe Word -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestBabbageHardForkAtVersion&quot;</span></span><span>
@@ -497,7 +497,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 -&gt; Parser (Maybe Word -&gt; NodeHardForkProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe EpochNo)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestConwayHardForkAtEpoch&quot;</span></span><span>
@@ -505,14 +505,14 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 -&gt; Parser (Maybe Word) -&gt; Parser NodeHardForkProtocolConfiguration
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372924"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
+</span><a href="#local-6989586621679372968"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;TestConwayHardForkAtVersion&quot;</span></span><span>
 </span><span id="line-71"></span><span>
-</span><span id="line-72"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679372920"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#NodeByronProtocolConfiguration"><span class="hs-identifier hs-type">NodeByronProtocolConfiguration</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-73"></span><span>    </span><span id="local-6989586621679372919"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeByronProtocolConfiguration
-</span><a href="#local-6989586621679372919"><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
+</span><span id="line-72"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679372964"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Cardano.Node.Types.html#NodeByronProtocolConfiguration"><span class="hs-identifier hs-type">NodeByronProtocolConfiguration</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-73"></span><span>    </span><span id="local-6989586621679372963"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser NodeByronProtocolConfiguration
+</span><a href="#local-6989586621679372963"><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 -&gt; (Object -&gt; Parser NodeByronProtocolConfiguration)
 -&gt; Value
 -&gt; Parser NodeByronProtocolConfiguration
@@ -524,8 +524,8 @@ forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 -&gt; Value
 -&gt; Parser NodeByronProtocolConfiguration
 forall a b. (a -&gt; b) -&gt; a -&gt; b
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679372918"><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679372962"><span class="annot"><span class="annottext">Object
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-74"></span><span>        </span><span class="annot"><span class="annottext">GenesisFile
 -&gt; Maybe GenesisHash
 -&gt; RequiresNetworkMagic
@@ -560,7 +560,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
       -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser GenesisFile
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser GenesisFile
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ByronGenesisFile&quot;</span></span><span>
@@ -586,7 +586,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
       -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe GenesisHash)
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe GenesisHash)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ByronGenesisHash&quot;</span></span><span>
@@ -610,7 +610,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
       -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe RequiresNetworkMagic)
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe RequiresNetworkMagic)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;RequiresNetworkMagic&quot;</span></span><span>
@@ -637,7 +637,7 @@ forall a. Parser (Maybe a) -&gt; a -&gt; Parser a
       -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Double)
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Double)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;PBftSignatureThreshold&quot;</span></span><span>
@@ -666,7 +666,7 @@ forall (f :: * -&gt; *) a. Applicative f =&gt; a -&gt; f a
      (Word16 -&gt; Word16 -&gt; Word8 -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe NumSoftwareVersion)
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe NumSoftwareVersion)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser (Maybe a)
 </span><span class="hs-operator hs-var">.:?</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;ApplicationVersion&quot;</span></span><span>
@@ -681,7 +681,7 @@ forall a. Parser (Maybe a) -&gt; a -&gt; Parser a
 -&gt; Parser (Word16 -&gt; Word8 -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser Word16
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser Word16
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;LastKnownBlockVersion-Major&quot;</span></span><span>
@@ -690,7 +690,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 -&gt; Parser (Word8 -&gt; NodeByronProtocolConfiguration)
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser Word16
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser Word16
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;LastKnownBlockVersion-Minor&quot;</span></span><span>
@@ -698,7 +698,7 @@ forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 -&gt; Parser Word8 -&gt; Parser NodeByronProtocolConfiguration
 forall (f :: * -&gt; *) a b. Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Object
-</span><a href="#local-6989586621679372918"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word8)
+</span><a href="#local-6989586621679372962"><span class="hs-identifier hs-var">v</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Key -&gt; Parser (Maybe Word8)
 forall a. FromJSON a =&gt; Object -&gt; Key -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;LastKnownBlockVersion-Alt&quot;</span></span><span>
