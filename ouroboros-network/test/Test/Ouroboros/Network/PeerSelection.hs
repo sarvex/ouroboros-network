@@ -563,36 +563,54 @@ collectTraces trace =
     Set.fromList [ traceNum e | (_, GovernorEvent e) <- trace ]
 
 traceNum :: TracePeerSelection peeraddr -> Int
-traceNum TraceLocalRootPeersChanged{}    = 00
-traceNum TraceTargetsChanged{}           = 01
-traceNum TracePublicRootsRequest{}       = 02
-traceNum TracePublicRootsResults{}       = 03
-traceNum TracePublicRootsFailure{}       = 04
-traceNum TracePeerShareRequests{}        = 05
-traceNum TracePeerShareResults{}         = 06
-traceNum TracePeerShareResultsFiltered{} = 07
-traceNum TraceForgetColdPeers{}          = 08
-traceNum TracePromoteColdPeers{}         = 09
-traceNum TracePromoteColdLocalPeers{}    = 10
-traceNum TracePromoteColdFailed{}        = 11
-traceNum TracePromoteColdDone{}          = 12
-traceNum TracePromoteWarmPeers{}         = 13
-traceNum TracePromoteWarmLocalPeers{}    = 14
-traceNum TracePromoteWarmFailed{}        = 15
-traceNum TracePromoteWarmDone{}          = 16
-traceNum TraceDemoteWarmPeers{}          = 17
-traceNum TraceDemoteWarmFailed{}         = 18
-traceNum TraceDemoteWarmDone{}           = 19
-traceNum TraceDemoteHotPeers{}           = 20
-traceNum TraceDemoteLocalHotPeers{}      = 21
-traceNum TraceDemoteHotFailed{}          = 22
-traceNum TraceDemoteHotDone{}            = 23
-traceNum TraceDemoteAsynchronous{}       = 24
-traceNum TraceGovernorWakeup{}           = 25
-traceNum TraceChurnWait{}                = 26
-traceNum TraceChurnMode{}                = 27
-traceNum TracePromoteWarmAborted{}       = 28
-traceNum TraceDemoteLocalAsynchronous{}  = 29
+traceNum TraceLocalRootPeersChanged{}            = 00
+traceNum TraceTargetsChanged{}                   = 01
+traceNum TracePublicRootsRequest{}               = 02
+traceNum TracePublicRootsResults{}               = 03
+traceNum TracePublicRootsFailure{}               = 04
+traceNum TracePeerShareRequests{}                = 05
+traceNum TracePeerShareResults{}                 = 06
+traceNum TracePeerShareResultsFiltered{}         = 07
+traceNum TraceForgetColdPeers{}                  = 08
+traceNum TracePromoteColdPeers{}                 = 09
+traceNum TracePromoteColdLocalPeers{}            = 10
+traceNum TracePromoteColdFailed{}                = 11
+traceNum TracePromoteColdDone{}                  = 12
+traceNum TracePromoteWarmPeers{}                 = 13
+traceNum TracePromoteWarmLocalPeers{}            = 14
+traceNum TracePromoteWarmFailed{}                = 15
+traceNum TracePromoteWarmDone{}                  = 16
+traceNum TraceDemoteWarmPeers{}                  = 17
+traceNum TraceDemoteWarmFailed{}                 = 18
+traceNum TraceDemoteWarmDone{}                   = 19
+traceNum TraceDemoteHotPeers{}                   = 20
+traceNum TraceDemoteLocalHotPeers{}              = 21
+traceNum TraceDemoteHotFailed{}                  = 22
+traceNum TraceDemoteHotDone{}                    = 23
+traceNum TraceDemoteAsynchronous{}               = 24
+traceNum TraceGovernorWakeup{}                   = 25
+traceNum TraceChurnWait{}                        = 26
+traceNum TraceChurnMode{}                        = 27
+traceNum TracePromoteWarmAborted{}               = 28
+traceNum TraceDemoteLocalAsynchronous{}          = 29
+traceNum TraceBigLedgerPeersRequest{}            = 30
+traceNum TraceBigLedgerPeersResults{}            = 31
+traceNum TraceBigLedgerPeersFailure{}            = 32
+traceNum TraceForgetBigLedgerPeers{}             = 33
+traceNum TracePromoteColdBigLedgerPeers{}        = 34
+traceNum TracePromoteColdBigLedgerPeerFailed{}   = 35
+traceNum TracePromoteColdBigLedgerPeerDone{}     = 36
+traceNum TracePromoteWarmBigLedgerPeers{}        = 37
+traceNum TracePromoteWarmBigLedgerPeerFailed{}   = 38
+traceNum TracePromoteWarmBigLedgerPeerDone{}     = 39
+traceNum TracePromoteWarmBigLedgerPeerAborted{}  = 40
+traceNum TraceDemoteWarmBigLedgerPeers{}         = 41
+traceNum TraceDemoteWarmBigLedgerPeerFailed{}    = 42
+traceNum TraceDemoteWarmBigLedgerPeerDone{}      = 43
+traceNum TraceDemoteHotBigLedgerPeers{}          = 44
+traceNum TraceDemoteHotBigLedgerPeerFailed{}     = 45
+traceNum TraceDemoteHotBigLedgerPeerDone{}       = 46
+traceNum TraceDemoteBigLedgerPeersAsynchronous{} = 47
 
 allTraceNames :: Map Int String
 allTraceNames =
@@ -627,6 +645,24 @@ allTraceNames =
    , (27, "TraceChurnMode")
    , (28, "TracePromoteWarmAborted")
    , (29, "TraceDemoteAsynchronous")
+   , (30, "TraceBigLedgerPeersRequest")
+   , (31, "TraceBigLedgerPeersResults")
+   , (32, "TraceBigLedgerPeersFailure")
+   , (33, "TraceForgetBigLedgerPeers")
+   , (34, "TracePromoteColdBigLedgerPeers")
+   , (35, "TracePromoteColdBigLedgerPeerFailed")
+   , (36, "TracePromoteColdBigLedgerPeerDone")
+   , (37, "TracePromoteWarmBigLedgerPeers")
+   , (38, "TracePromoteWarmBigLedgerPeerFailed")
+   , (39, "TracePromoteWarmBigLedgerPeerDone")
+   , (40, "TracePromoteWarmBigLedgerPeerAborted")
+   , (41, "TraceDemoteWarmBigLedgerPeers")
+   , (42, "TraceDemoteWarmBigLedgerPeerFailed")
+   , (43, "TraceDemoteWarmBigLedgerPeerDone")
+   , (44, "TraceDemoteHotBigLedgerPeers")
+   , (45, "TraceDemoteHotBigLedgerPeerFailed")
+   , (46, "TraceDemoteHotBigLedgerPeerDone")
+   , (47, "TraceDemoteBigLedgerPeersAsynchronous")
    ]
 
 

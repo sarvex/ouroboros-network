@@ -53,6 +53,7 @@ targetPeers :: (MonadSTM m, Ord peeraddr)
             -> Guarded (STM m) (TimedDecision m peeraddr peerconn)
 targetPeers PeerSelectionActions{readPeerSelectionTargets}
             st@PeerSelectionState{
+              bigLedgerPeers,
               localRootPeers,
               targets
             } =
@@ -61,20 +62,30 @@ targetPeers PeerSelectionActions{readPeerSelectionTargets}
       check (targets' /= targets && sanePeerSelectionTargets targets')
       -- We simply ignore target updates that are not "sane".
 
-      -- We have to enforce the invariant that the number of root peers is
-      -- not more than the target number of known peers. It's unlikely in
-      -- practice so it's ok to resolve it arbitrarily using clampToLimit.
-      let localRootPeers' = LocalRootPeers.clampToLimit
+      let -- We have to enforce the invariant that the number of root peers is
+          -- not more than the target number of known peers. It's unlikely in
+          -- practice so it's ok to resolve it arbitrarily using clampToLimit.
+          --
+          -- TODO: we ought to add a warning if 'clampToLimit' modified local
+          -- root peers, even though this is unexpected in the most common
+          -- scenarios.
+          localRootPeers' = LocalRootPeers.clampToLimit
                               (targetNumberOfKnownPeers targets')
                               localRootPeers
-      --TODO: trace when the clamping kicks in, and warn operators
 
+          -- We have to enforce that local and big ledger peers are disjoint.
+          bigLedgerPeers' = bigLedgerPeers
+                            Set.\\
+                            LocalRootPeers.keysSet localRootPeers'
+
+      --TODO: trace when the clamping kicks in, and warn operators
       return $ \_now -> Decision {
         decisionTrace = [TraceTargetsChanged targets targets'],
         decisionJobs  = [],
         decisionState = st {
                           targets        = targets',
-                          localRootPeers = localRootPeers'
+                          localRootPeers = localRootPeers',
+                          bigLedgerPeers = bigLedgerPeers'
                         }
       }
 
@@ -104,6 +115,7 @@ connections PeerSelectionActions{
               peerStateActions = PeerStateActions {monitorPeerConnection}
             }
             st@PeerSelectionState {
+              bigLedgerPeers,
               localRootPeers,
               activePeers,
               establishedPeers,
@@ -167,11 +179,23 @@ connections PeerSelectionActions{
                 (\peer _ -> peer `LocalRootPeers.member` localRootPeers)
                 demotions'
 
+            publicRootDemotions     = nonLocalDemotions
+                   `Map.withoutKeys`  bigLedgerPeers
+            bigLedgerPeersDemotions = nonLocalDemotions
+                   `Map.restrictKeys` bigLedgerPeers
+
         in assert (activePeers' `Set.isSubsetOf`
                      Map.keysSet (EstablishedPeers.toMap establishedPeers'))
             Decision {
-              decisionTrace = [ TraceDemoteLocalAsynchronous localDemotions
-                              , TraceDemoteAsynchronous nonLocalDemotions],
+              decisionTrace = [ TraceDemoteLocalAsynchronous
+                                  localDemotions
+                              | not (Map.null localDemotions) ]
+                           ++ [ TraceDemoteAsynchronous
+                                  publicRootDemotions
+                              | not (Map.null publicRootDemotions) ]
+                           ++ [ TraceDemoteBigLedgerPeersAsynchronous
+                                  bigLedgerPeersDemotions
+                              | not (Map.null bigLedgerPeersDemotions) ],
               decisionJobs  = [],
               decisionState = st {
                                 activePeers       = activePeers',

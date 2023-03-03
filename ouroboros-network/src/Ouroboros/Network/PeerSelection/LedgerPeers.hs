@@ -67,16 +67,9 @@ isLedgerPeersEnabled _             = True
 -- | Identifies a peer as coming from ledger or not
 data IsLedgerPeer = IsLedgerPeer
                   -- ^ a ledger peer.
-                  | IsBigLedgerPeer
-                  -- ^ a big ledger peer belongs to the group of the
-                  -- largest 5th percentile of ledger peers.
-                  --
-                  -- The stake of a significant ledger peer is a necessary
-                  -- condition, but not sufficient one.  Being a significant
-                  -- ledger peer also means the role the peer plays among chosen
-                  -- ledger peers.
                   | IsNotLedgerPeer
   deriving (Eq, Show)
+
 
 -- | Which ledger peers to pick.
 --

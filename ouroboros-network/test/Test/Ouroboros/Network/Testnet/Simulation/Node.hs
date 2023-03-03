@@ -365,8 +365,15 @@ genNodeArgs raps minConnected genLocalRootPeers (ntnAddr, rap) = do
       , naPeerSharing           = peerSharing
       }
   where
+    -- TODO: this condition is too strong.  It prevents outbound governor to
+    -- limit number of connections, e.g. we are not testing the edge condition
+    -- when there are more active peers than the target!
     hasActive :: Int -> PeerSelectionTargets -> Bool
-    hasActive minConn (PeerSelectionTargets _ _ _ y) = y > minConn
+    hasActive minConn (PeerSelectionTargets {
+                         targetNumberOfActivePeers = y,
+                         targetNumberOfActiveBigLedgerPeers = z   
+                       }) =
+      y + z > minConn
 
 -- | Multinode Diffusion Simulator Script
 --

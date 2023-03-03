@@ -147,9 +147,43 @@ data PeerSelectionPolicy peeraddr m = PeerSelectionPolicy {
 data PeerSelectionTargets = PeerSelectionTargets {
 
        targetNumberOfRootPeers        :: !Int,
+
+       -- | The target number of all known peers.  This includes ledger,
+       -- significant ledger peers.
        targetNumberOfKnownPeers       :: !Int,
+       -- | The target number of established peers (does not include big ledger
+       -- peers).
+       --
+       -- The target includes root peers, local root peers, ledger peers and big
+       -- ledger peers.
+       --
        targetNumberOfEstablishedPeers :: !Int,
-       targetNumberOfActivePeers      :: !Int
+       -- | The target number of active peers (does not include big ledger
+       -- peers).
+       --
+       -- The 
+       targetNumberOfActivePeers      :: !Int,
+
+       -- | Target number of known big ledger peers.
+       --
+       -- This target is independent of `targetNumberOfKnownPeers`.  The total
+       -- number of known peers will be sum of the two targets.
+       --
+       targetNumberOfKnownBigLedgerPeers       :: !Int,
+       -- | Target number of established big ledger peers.
+       --
+       -- This target is independent of `targetNumberOfEstablishedPeers`.  The
+       -- total number of established peers will be sum of the two targets and
+       -- local root peers.
+       --
+       targetNumberOfEstablishedBigLedgerPeers :: !Int,
+       -- | Target number of active big ledger peers.
+       --
+       -- This target is independent of `targetNumberOfActivePeers`.  The total
+       -- number of active peers will be sum of the two targets and active local
+       -- root peers.
+       --
+       targetNumberOfActiveBigLedgerPeers      :: !Int
 
        -- Expressed as intervals rather than frequencies
 --     targetChurnIntervalKnownPeers       :: !DiffTime,
@@ -164,7 +198,10 @@ nullPeerSelectionTargets =
        targetNumberOfRootPeers        = 0,
        targetNumberOfKnownPeers       = 0,
        targetNumberOfEstablishedPeers = 0,
-       targetNumberOfActivePeers      = 0
+       targetNumberOfActivePeers      = 0,
+       targetNumberOfKnownBigLedgerPeers       = 0,
+       targetNumberOfEstablishedBigLedgerPeers = 0,
+       targetNumberOfActiveBigLedgerPeers      = 0
 --     targetChurnIntervalKnownPeers       = 0,
 --     targetChurnIntervalEstablishedPeers = 0,
 --     targetChurnIntervalActivePeers      = 0
@@ -178,9 +215,17 @@ sanePeerSelectionTargets PeerSelectionTargets{..} =
  &&      targetNumberOfRootPeers   <= targetNumberOfKnownPeers
  &&                              0 <= targetNumberOfRootPeers
 
+ &&                                       0 <= targetNumberOfActiveBigLedgerPeers
+ && targetNumberOfActiveBigLedgerPeers      <= targetNumberOfEstablishedBigLedgerPeers
+ && targetNumberOfEstablishedBigLedgerPeers <= targetNumberOfKnownBigLedgerPeers
+
  && targetNumberOfActivePeers      <= 100
  && targetNumberOfEstablishedPeers <= 1000
  && targetNumberOfKnownPeers       <= 10000
+
+ && targetNumberOfActiveBigLedgerPeers      <= 100
+ && targetNumberOfEstablishedBigLedgerPeers <= 1000
+ && targetNumberOfKnownBigLedgerPeers       <= 10000
 
 
 -- | Actions performed by the peer selection governor.
@@ -294,15 +339,19 @@ data PeerSelectionState peeraddr peerconn = PeerSelectionState {
 
        publicRootPeers          :: !(Set peeraddr),
 
-       -- |
+       -- | Set of big ledger peers.
+       --
+       bigLedgerPeers           :: !(Set peeraddr),
+
+       -- | Known peers.
        --
        knownPeers               :: !(KnownPeers peeraddr),
 
-       -- |
+       -- | Established peers.
        --
        establishedPeers         :: !(EstablishedPeers peeraddr peerconn),
 
-       -- |
+       -- | Active peers.
        --
        activePeers              :: !(Set peeraddr),
 
@@ -311,20 +360,36 @@ data PeerSelectionState peeraddr peerconn = PeerSelectionState {
        -- counts after failure, and positive for retry counts that are
        -- successful but make no progress.
        --
-       publicRootBackoffs       :: !Int,
+       publicRootBackoffs          :: !Int,
 
        -- | The earliest time we would be prepared to request more public root
        -- peers. This is used with the 'publicRootBackoffs' to manage the
        -- exponential backoff.
        --
-       publicRootRetryTime      :: !Time,
+       publicRootRetryTime         :: !Time,
 
-       inProgressPublicRootsReq :: !Bool,
-       inProgressPeerShareReqs  :: !Int,
-       inProgressPromoteCold    :: !(Set peeraddr),
-       inProgressPromoteWarm    :: !(Set peeraddr),
-       inProgressDemoteWarm     :: !(Set peeraddr),
-       inProgressDemoteHot      :: !(Set peeraddr),
+       inProgressPublicRootsReq    :: !Bool,
+
+       -- | A counter to manage the exponential backoff strategy for when to
+       -- retry querying for more public root peers. It is negative for retry
+       -- counts after failure, and positive for retry counts that are
+       -- successful but make no progress.
+       --
+       bigLedgerPeerBackoffs        :: !Int,
+
+       -- | The earliest time we would be prepared to request more significant
+       -- ledger peers. This is used with the 'significantPeerBackoffs' to
+       -- manage the exponential backoff.
+       --
+       bigLedgerPeerRetryTime      :: !Time,
+
+       inProgressBigLedgerPeersReq :: !Bool,
+
+       inProgressPeerShareReqs     :: !Int,
+       inProgressPromoteCold       :: !(Set peeraddr),
+       inProgressPromoteWarm       :: !(Set peeraddr),
+       inProgressDemoteWarm        :: !(Set peeraddr),
+       inProgressDemoteHot         :: !(Set peeraddr),
 
        -- | Rng for fuzzy delay
        fuzzRng                  :: !StdGen,
@@ -378,6 +443,8 @@ toPublicState PeerSelectionState { knownPeers
         availableToShare = availableNowWithPermission
       }
 
+-- TODO: split cold, warm & hot peers into generic & big ledger peers.
+--
 data PeerSelectionCounters = PeerSelectionCounters {
       coldPeers  :: Int,
       warmPeers  :: Int,
@@ -388,9 +455,9 @@ data PeerSelectionCounters = PeerSelectionCounters {
 peerStateToCounters :: Ord peeraddr => PeerSelectionState peeraddr peerconn -> PeerSelectionCounters
 peerStateToCounters st = PeerSelectionCounters { coldPeers, warmPeers, hotPeers, localRoots }
   where
-    knownPeersSet = KnownPeers.toSet (knownPeers st)
+    knownGenericPeersSet = KnownPeers.toSet (knownPeers st)
     establishedPeersSet = EstablishedPeers.toSet (establishedPeers st)
-    coldPeers  = Set.size $ knownPeersSet Set.\\ establishedPeersSet
+    coldPeers  = Set.size $ knownGenericPeersSet Set.\\ establishedPeersSet
     warmPeers  = Set.size $ establishedPeersSet Set.\\ activePeers st
     hotPeers   = Set.size $ activePeers st
     localRoots =
@@ -404,22 +471,26 @@ emptyPeerSelectionState :: StdGen
                         -> PeerSelectionState peeraddr peerconn
 emptyPeerSelectionState rng localRoots =
     PeerSelectionState {
-      targets              = nullPeerSelectionTargets,
-      localRootPeers       = LocalRootPeers.empty,
-      publicRootPeers      = Set.empty,
-      knownPeers           = KnownPeers.empty,
-      establishedPeers     = EstablishedPeers.empty,
-      activePeers          = Set.empty,
-      publicRootBackoffs   = 0,
-      publicRootRetryTime  = Time 0,
-      inProgressPublicRootsReq = False,
-      inProgressPeerShareReqs  = 0,
-      inProgressPromoteCold    = Set.empty,
-      inProgressPromoteWarm    = Set.empty,
-      inProgressDemoteWarm     = Set.empty,
-      inProgressDemoteHot      = Set.empty,
-      fuzzRng                  = rng,
-      countersCache            = Cache (PeerSelectionCounters 0 0 0 localRoots)
+      targets                       = nullPeerSelectionTargets,
+      localRootPeers                = LocalRootPeers.empty,
+      publicRootPeers               = Set.empty,
+      bigLedgerPeers                = Set.empty,
+      knownPeers                    = KnownPeers.empty,
+      establishedPeers              = EstablishedPeers.empty,
+      activePeers                   = Set.empty,
+      publicRootBackoffs            = 0,
+      publicRootRetryTime           = Time 0,
+      inProgressPublicRootsReq      = False,
+      bigLedgerPeerBackoffs         = 0,
+      bigLedgerPeerRetryTime        = Time 0,
+      inProgressBigLedgerPeersReq   = False,
+      inProgressPeerShareReqs       = 0,
+      inProgressPromoteCold         = Set.empty,
+      inProgressPromoteWarm         = Set.empty,
+      inProgressDemoteWarm          = Set.empty,
+      inProgressDemoteHot           = Set.empty,
+      fuzzRng                       = rng,
+      countersCache                 = Cache (PeerSelectionCounters 0 0 0 localRoots)
     }
 
 
@@ -491,6 +562,12 @@ assertPeerSelectionState PeerSelectionState{..} =
   . assert (Set.isSubsetOf inProgressDemoteWarm  warmPeersSet)
   . assert (Set.isSubsetOf inProgressDemoteHot   hotPeersSet)
   . assert (Set.null (Set.intersection inProgressPromoteWarm inProgressDemoteWarm))
+
+    -- `bigLedgerPeers` is a subset of known peers and disjoint from public and
+    -- local root peers.
+  . assert (Set.isSubsetOf bigLedgerPeers knownPeersSet)
+  . assert (Set.null (Set.intersection bigLedgerPeers publicRootPeers))
+  . assert (Set.null (Set.intersection bigLedgerPeers localRootPeersSet))
   where
     knownPeersSet       = KnownPeers.toSet knownPeers
     localRootPeersSet   = LocalRootPeers.keysSet localRootPeers
@@ -649,17 +726,28 @@ newtype Completion m peeraddr peerconn =
 data TracePeerSelection peeraddr =
        TraceLocalRootPeersChanged (LocalRootPeers peeraddr)
                                   (LocalRootPeers peeraddr)
+     -- | Peer selection targets changed: old targets, new targets.
      | TraceTargetsChanged     PeerSelectionTargets PeerSelectionTargets
+
      | TracePublicRootsRequest Int Int
      | TracePublicRootsResults (Map peeraddr PeerAdvertise) Int DiffTime
      | TracePublicRootsFailure SomeException Int DiffTime
+     -- | target known peers, actual known peers, selected peers
+     | TraceForgetColdPeers    Int Int (Set peeraddr)
+
+     | TraceBigLedgerPeersRequest Int Int
+     | TraceBigLedgerPeersResults (Set peeraddr) Int DiffTime
+     | TraceBigLedgerPeersFailure SomeException Int DiffTime
+     -- | target known significant peers, actual known significant peers,
+     -- selected peers
+     | TraceForgetBigLedgerPeers Int Int (Set peeraddr)
+
      -- | target known peers, actual known peers, peers available for
      -- peer sharing, peers selected for peer sharing
      | TracePeerShareRequests     Int Int (Set peeraddr) (Set peeraddr)
      | TracePeerShareResults         [(peeraddr, Either SomeException (PeerSharingResult peeraddr))] --TODO: classify failures
      | TracePeerShareResultsFiltered [peeraddr]
-     -- | target known peers, actual known peers, selected peer
-     | TraceForgetColdPeers    Int Int (Set peeraddr)
+
      -- | target established, actual established, selected peers
      | TracePromoteColdPeers   Int Int (Set peeraddr)
      -- | target local established, actual local established, selected peers
@@ -669,6 +757,17 @@ data TracePeerSelection peeraddr =
      | TracePromoteColdFailed  Int Int peeraddr DiffTime SomeException
      -- | target established, actual established, peer
      | TracePromoteColdDone    Int Int peeraddr
+
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, selected peers
+     | TracePromoteColdBigLedgerPeers   Int Int (Set peeraddr)
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, peer, delay until next promotion, reason
+     | TracePromoteColdBigLedgerPeerFailed  Int Int peeraddr DiffTime SomeException
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, peer
+     | TracePromoteColdBigLedgerPeerDone    Int Int peeraddr
+
      -- | target active, actual active, selected peers
      | TracePromoteWarmPeers   Int Int (Set peeraddr)
      -- | Promote local peers to warm
@@ -685,12 +784,38 @@ data TracePeerSelection peeraddr =
      --
      -- target active, actual active, peer
      | TracePromoteWarmAborted Int Int peeraddr
+
+     -- | target active big ledger peers, actual active big ledger peers,
+     -- selected peers
+     | TracePromoteWarmBigLedgerPeers   Int Int (Set peeraddr)
+     -- | target active big ledger peers, actual active big ledger peers, peer,
+     -- reason
+     | TracePromoteWarmBigLedgerPeerFailed  Int Int peeraddr SomeException
+     -- | target active big ledger peers, actual active big ledger peers, peer
+     | TracePromoteWarmBigLedgerPeerDone    Int Int peeraddr
+     -- | aborted promotion of a warm big ledger peer; likely it was
+     -- asynchronously demoted in the meantime.
+     --
+     -- target active, actual active, peer
+     | TracePromoteWarmBigLedgerPeerAborted Int Int peeraddr
+
      -- | target established, actual established, selected peers
      | TraceDemoteWarmPeers    Int Int (Set peeraddr)
      -- | target established, actual established, peer, reason
      | TraceDemoteWarmFailed   Int Int peeraddr SomeException
      -- | target established, actual established, peer
      | TraceDemoteWarmDone     Int Int peeraddr
+
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, selected peers
+     | TraceDemoteWarmBigLedgerPeers    Int Int (Set peeraddr)
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, peer, reason
+     | TraceDemoteWarmBigLedgerPeerFailed   Int Int peeraddr SomeException
+     -- | target established big ledger peers, actual established big ledger
+     -- peers, peer
+     | TraceDemoteWarmBigLedgerPeerDone     Int Int peeraddr
+
      -- | target active, actual active, selected peers
      | TraceDemoteHotPeers     Int Int (Set peeraddr)
      -- | local per-group (target active, actual active), selected peers
@@ -699,8 +824,21 @@ data TracePeerSelection peeraddr =
      | TraceDemoteHotFailed    Int Int peeraddr SomeException
      -- | target active, actual active, peer
      | TraceDemoteHotDone      Int Int peeraddr
+
+     -- | target active big ledger peers, actual active big ledger peers,
+     -- selected peers
+     | TraceDemoteHotBigLedgerPeers      Int Int (Set peeraddr)
+     -- | target active big ledger peers, actual active big ledger peers, peer,
+     -- reason
+     | TraceDemoteHotBigLedgerPeerFailed Int Int peeraddr SomeException
+     -- | target active big ledger peers, actual active big ledger peers, peer
+     | TraceDemoteHotBigLedgerPeerDone   Int Int peeraddr
+
      | TraceDemoteAsynchronous      (Map peeraddr (PeerStatus, Maybe ReconnectDelay))
      | TraceDemoteLocalAsynchronous (Map peeraddr (PeerStatus, Maybe ReconnectDelay))
+     | TraceDemoteBigLedgerPeersAsynchronous
+                                    (Map peeraddr (PeerStatus, Maybe ReconnectDelay))
+
      | TraceGovernorWakeup
      | TraceChurnWait          DiffTime
      | TraceChurnMode          ChurnMode
