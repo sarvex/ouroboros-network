@@ -47,10 +47,10 @@ import           Data.Kind (Type)
 import           Data.List.NonEmpty (NonEmpty (..))
 import           Data.Map (Map)
 import           Data.Maybe (catMaybes, maybeToList)
-import           Data.Set (Set, toList)
+import           Data.Set (Set, elemAt)
 import           Data.Typeable (Typeable)
 import           Data.Void (Void)
-import           System.Random (StdGen, newStdGen, randomR, split)
+import           System.Random (StdGen, newStdGen, split, randomRs)
 #ifdef POSIX
 import qualified System.Posix.Signals as Signals
 #endif
@@ -76,7 +76,7 @@ import           Ouroboros.Network.Socket (configureSocket,
                      configureSystemdSocket)
 
 import           Control.Monad.Class.MonadMVar (MonadMVar)
-import           Data.List (permutations)
+import           Data.List (nub)
 import           Ouroboros.Network.ConnectionHandler
 import           Ouroboros.Network.ConnectionManager.Core
 import           Ouroboros.Network.ConnectionManager.Types
@@ -1017,14 +1017,15 @@ runM Interfaces
                                             -> m [ntnAddr]
                     computePeerSharingPeers readPublicState gen amount = do
                       publicState <- atomically readPublicState
-                      let randomLists = permutations
-                                      . toList
-                                      . availableToShare
-                                      $ publicState
-                          (i, _) = randomR (0, length randomLists) gen
-                          -- permutation [] == [[]] so this won't be partial
-                          randomList = randomLists !! i
-                      return (take (fromIntegral amount) randomList)
+                      let availableToShareSet = availableToShare
+                                              $ publicState
+                          is = nub
+                             $ take (fromIntegral amount)
+                             $ randomRs (0, length availableToShareSet - 1) gen
+                          randomList = map (`elemAt` availableToShareSet) is
+                      if null availableToShareSet
+                         then return []
+                         else return randomList
 
 
                     connectionHandler
