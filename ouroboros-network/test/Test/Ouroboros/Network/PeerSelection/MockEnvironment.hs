@@ -194,6 +194,7 @@ governorAction mockEnv = do
     actions <- mockPeerSelectionActions tracerMockEnv mockEnv policy
     exploreRaces      -- explore races within the governor
     _ <- forkIO $ do  -- races with the governor should be explored
+      labelThisThread "outbound-governor"
       _ <- peerSelectionGovernor
         tracerTracePeerSelection
         tracerDebugPeerSelection
