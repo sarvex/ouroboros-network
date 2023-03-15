@@ -128,7 +128,7 @@ demo chain0 updates = withIOManager $ \iocp -> do
         initiatorApp = testProtocols1 chainSyncInitator
 
         chainSyncInitator =
-          InitiatorProtocolOnly $
+          InitiatorProtocolOnly $ const $
               MuxPeer nullTracer
                       codecChainSync
                       (ChainSync.chainSyncClientPeer

@@ -64,6 +64,7 @@ import qualified Ouroboros.Network.InboundGovernor.ControlChannel as Server
 import           Ouroboros.Network.IOManager
 import           Ouroboros.Network.Mux
 import           Ouroboros.Network.MuxMode
+import           Ouroboros.Network.PeerSelection.LedgerPeers.Type (IsBigLedgerPeer (..))
 import           Ouroboros.Network.Protocol.Handshake
 import           Ouroboros.Network.Protocol.Handshake.Codec
                      (timeLimitsHandshake)
@@ -333,7 +334,7 @@ withBidirectionalConnectionManager snocket makeBearer socket
       -> RunMiniProtocol InitiatorResponderMode ByteString m () ()
     reqRespInitiatorAndResponder protocolNum requestsVar =
       InitiatorAndResponderProtocol
-        (MuxPeer
+        (const $ MuxPeer
           (("Initiator",protocolNum,) `contramap` debugTracer) -- TraceSendRecv
           (codecReqResp @Int @Int)
           (Effect $ do
@@ -417,8 +418,8 @@ runInitiatorProtocols
         Mux.StartEagerly
         (runMuxPeer
           (case miniProtocolRun ptcl of
-            InitiatorProtocolOnly initiator           -> initiator
-            InitiatorAndResponderProtocol initiator _ -> initiator)
+            InitiatorProtocolOnly initiator           -> initiator IsNotBigLedgerPeer
+            InitiatorAndResponderProtocol initiator _ -> initiator IsNotBigLedgerPeer)
           . fromChannel)
 
 
