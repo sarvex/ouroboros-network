@@ -22,7 +22,6 @@ module Cardano.Client.Subscription
   ) where
 
 import           Control.Monad.Class.MonadST (MonadST)
-import           Control.Monad.Class.MonadSTM
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Map.Strict as Map
 import           Data.Proxy
@@ -33,7 +32,7 @@ import           Network.Mux.Trace (MuxTrace, WithMuxBearer)
 import           Ouroboros.Network.ControlMessage (ControlMessage (..))
 import           Ouroboros.Network.Magic (NetworkMagic)
 import           Ouroboros.Network.Mux (MuxMode (..), MuxPeer (..),
-                     OuroborosApplication, RunMiniProtocol (..))
+                     OuroborosApplicationWithMinimalCtx, RunMiniProtocol (..))
 import           Ouroboros.Network.NodeToClient (ClientSubscriptionParams (..),
                      ConnectionId, LocalAddress,
                      NetworkClientSubcriptionTracers,
@@ -62,8 +61,7 @@ subscribe ::
   -> ClientSubscriptionParams ()
   -> (   NodeToClientVersion
       -> ClientCodecs blk IO
-      -> ConnectionId LocalAddress
-      -> NodeToClientProtocols 'InitiatorMode BSL.ByteString IO x y)
+      -> NodeToClientProtocols 'InitiatorMode LocalAddress BSL.ByteString IO x y)
   -> IO Void
 subscribe snocket codecConfig networkMagic tracers subscriptionParams protocols = do
     networkState <- newNetworkMutableState
@@ -73,8 +71,8 @@ subscribe snocket codecConfig networkMagic tracers subscriptionParams protocols 
       networkState
       subscriptionParams
       (versionedProtocols codecConfig networkMagic
-        (\version codecs connectionId _ ->
-            protocols version codecs connectionId))
+        (\version codecs ->
+            protocols version codecs))
 
 versionedProtocols ::
      forall blk m appType bytes a b. (MonadST m, RunNode blk)
@@ -82,9 +80,7 @@ versionedProtocols ::
   -> NetworkMagic
   -> (   NodeToClientVersion
       -> ClientCodecs blk m
-      -> ConnectionId LocalAddress
-      -> STM m ControlMessage
-      -> NodeToClientProtocols appType bytes m a b)
+      -> NodeToClientProtocols appType LocalAddress bytes m a b)
      -- ^ callback which receives codecs, connection id and STM action which
      -- can be checked if the networking runtime system requests the protocols
      -- to stop.
@@ -95,17 +91,17 @@ versionedProtocols ::
   -> Versions
        NodeToClientVersion
        NodeToClientVersionData
-       (OuroborosApplication appType LocalAddress bytes m a b)
+       (OuroborosApplicationWithMinimalCtx appType LocalAddress bytes m a b)
 versionedProtocols codecConfig networkMagic callback =
     foldMapVersions applyVersion $
       Map.toList $ supportedNodeToClientVersions (Proxy @blk)
   where
-    applyVersion ::
-         (NodeToClientVersion, BlockNodeToClientVersion blk)
+    applyVersion
+      :: (NodeToClientVersion, BlockNodeToClientVersion blk)
       -> Versions
            NodeToClientVersion
            NodeToClientVersionData
-           (OuroborosApplication appType LocalAddress bytes m a b)
+           (OuroborosApplicationWithMinimalCtx appType LocalAddress bytes m a b)
     applyVersion (version, blockVersion) =
       versionedNodeToClientProtocols
         version

@@ -26,11 +26,14 @@
 --
 module Ouroboros.Network.ConnectionHandler
   ( Handle (..)
+  , HandleP2P
+  , HandleNonP2P
   , HandleError (..)
   , classifyHandleError
   , MuxConnectionHandler
   , makeConnectionHandler
   , MuxConnectionManager
+  , ConnectionManagerP2P
     -- * tracing
   , ConnectionHandlerTrace (..)
   ) where
@@ -52,6 +55,8 @@ import           Network.Mux hiding (miniProtocolNum)
 import           Ouroboros.Network.ConnectionId (ConnectionId (..))
 import           Ouroboros.Network.ConnectionManager.Types
 import           Ouroboros.Network.ControlMessage (ControlMessage (..))
+import           Ouroboros.Network.Context (ExpandedInitiatorContext,
+                     MinimalInitiatorContext, ResponderContext)
 import           Ouroboros.Network.Mux
 import           Ouroboros.Network.MuxMode
 import           Ouroboros.Network.Protocol.Handshake
@@ -95,14 +100,26 @@ sduHandshakeTimeout = 10
 -- * 'HandleError'
 --                - the multiplexer thrown 'MuxError'.
 --
-data Handle (muxMode :: MuxMode) peerAddr versionData bytes m a b =
+data Handle (muxMode :: MuxMode) initiatorCtx responderCtx versionData bytes m a b =
     Handle {
         hMux            :: !(Mux muxMode m),
-        hMuxBundle      :: !(MuxBundle muxMode bytes m a b),
+        hMuxBundle      :: !(OuroborosBundle muxMode initiatorCtx responderCtx bytes m a b),
         hControlMessage :: !(TemperatureBundle (StrictTVar m ControlMessage)),
         hVersionData    :: !versionData
       }
 
+
+-- | 'Handle' used in P2P.
+--
+type HandleP2P muxMode peerAddr versionData bytes m a b =
+     Handle    muxMode (ExpandedInitiatorContext peerAddr m)
+                       (ResponderContext peerAddr)
+                       versionData bytes m a b
+
+type HandleNonP2P muxMode peerAddr versionData bytes m a b =
+     Handle       muxMode (MinimalInitiatorContext peerAddr)
+                          (ResponderContext peerAddr)
+                          versionData bytes m a b
 
 data HandleError (muxMode :: MuxMode) versionNumber where
     HandleHandshakeClientError
@@ -145,21 +162,29 @@ classifyHandleError (HandleError _) =
 
 -- | Type of 'ConnectionHandler' implemented in this module.
 --
-type MuxConnectionHandler muxMode socket peerAddr versionNumber versionData bytes m a b =
+type MuxConnectionHandler muxMode socket initiatorCtx responderCtx peerAddr versionNumber versionData bytes m a b =
     ConnectionHandler muxMode
                       (ConnectionHandlerTrace versionNumber versionData)
                       socket
                       peerAddr
-                      (Handle muxMode peerAddr versionData bytes m a b)
+                      (Handle muxMode initiatorCtx responderCtx versionData bytes m a b)
                       (HandleError muxMode versionNumber)
                       (versionNumber, versionData)
                       m
 
 -- | Type alias for 'ConnectionManager' using 'Handle'.
 --
-type MuxConnectionManager muxMode socket peerAddr versionData versionNumber bytes m a b =
+type MuxConnectionManager muxMode socket initiatorCtx responderCtx peerAddr versionData versionNumber bytes m a b =
     ConnectionManager muxMode socket peerAddr
-                      (Handle muxMode peerAddr versionData bytes m a b)
+                      (Handle muxMode initiatorCtx responderCtx versionData bytes m a b)
+                      (HandleError muxMode versionNumber)
+                      m
+
+-- | Type alias for 'ConnectionManager' used by P2P.
+--
+type ConnectionManagerP2P muxMode socket peerAddr versionData versionNumber bytes m a b =
+    ConnectionManager muxMode socket peerAddr
+                      (Handle muxMode (ExpandedInitiatorContext peerAddr m) (ResponderContext peerAddr) versionData bytes m a b)
                       (HandleError muxMode versionNumber)
                       m
 
@@ -171,7 +196,7 @@ type MuxConnectionManager muxMode socket peerAddr versionData versionNumber byte
 -- independent.
 --
 makeConnectionHandler
-    :: forall peerAddr muxMode socket versionNumber versionData m a b.
+    :: forall initiatorCtx responderCtx peerAddr muxMode socket versionNumber versionData m a b.
        ( MonadAsync m
        , MonadFork  m
        , MonadLabelledSTM m
@@ -189,11 +214,11 @@ makeConnectionHandler
     -- evidence that we can use mux with it.
     -> HandshakeArguments (ConnectionId peerAddr) versionNumber versionData m
     -> Versions versionNumber versionData
-                (OuroborosBundle muxMode peerAddr ByteString m a b)
+                (OuroborosBundle muxMode initiatorCtx responderCtx ByteString m a b)
     -> (ThreadId m, RethrowPolicy)
     -- ^ 'ThreadId' and rethrow policy.  Rethrow policy might throw an async
     -- exception to that thread, when trying to terminate the process.
-    -> MuxConnectionHandler muxMode socket peerAddr versionNumber versionData ByteString m a b
+    -> MuxConnectionHandler muxMode socket initiatorCtx responderCtx peerAddr versionNumber versionData ByteString m a b
 makeConnectionHandler muxTracer singMuxMode
                       handshakeArguments
                       versionedApplication
@@ -238,7 +263,7 @@ makeConnectionHandler muxTracer singMuxMode
       => ConnectionHandlerFn (ConnectionHandlerTrace versionNumber versionData)
                              socket
                              peerAddr
-                             (Handle muxMode peerAddr versionData ByteString m a b)
+                             (Handle muxMode initiatorCtx responderCtx versionData ByteString m a b)
                              (HandleError muxMode versionNumber)
                              (versionNumber, versionData)
                              m
@@ -283,15 +308,10 @@ makeConnectionHandler muxTracer singMuxMode
                         <$> newTVarIO Continue
                         <*> newTVarIO Continue
                         <*> newTVarIO Continue
-                  let muxBundle
-                        = mkMuxApplicationBundle
-                            connectionId
-                            (readTVar <$> controlMessageBundle)
-                            app
-                  mux <- newMux (mkMiniProtocolBundle muxBundle)
+                  mux <- newMux (mkMiniProtocolBundle app)
                   let !handle = Handle {
                           hMux            = mux,
-                          hMuxBundle      = muxBundle,
+                          hMuxBundle      = app,
                           hControlMessage = controlMessageBundle,
                           hVersionData    = agreedOptions
                         }
@@ -306,7 +326,7 @@ makeConnectionHandler muxTracer singMuxMode
       => ConnectionHandlerFn (ConnectionHandlerTrace versionNumber versionData)
                              socket
                              peerAddr
-                             (Handle muxMode peerAddr versionData ByteString m a b)
+                             (Handle muxMode initiatorCtx responderCtx versionData ByteString m a b)
                              (HandleError muxMode versionNumber)
                              (versionNumber, versionData)
                              m
@@ -351,15 +371,10 @@ makeConnectionHandler muxTracer singMuxMode
                         <$> newTVarIO Continue
                         <*> newTVarIO Continue
                         <*> newTVarIO Continue
-                  let muxBundle
-                        = mkMuxApplicationBundle
-                            connectionId
-                            (readTVar <$> controlMessageBundle)
-                            app
-                  mux <- newMux (mkMiniProtocolBundle muxBundle)
+                  mux <- newMux (mkMiniProtocolBundle app)
                   let !handle = Handle {
                           hMux            = mux,
-                          hMuxBundle      = muxBundle,
+                          hMuxBundle      = app,
                           hControlMessage = controlMessageBundle,
                           hVersionData    = agreedOptions
                         }

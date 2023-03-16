@@ -80,7 +80,6 @@ import           Control.Monad.Class.MonadTime
 import qualified Control.Monad.STM as STM
 import qualified Data.ByteString.Lazy as BL
 import           Data.Hashable
-import           Data.Proxy (Proxy (..))
 import           Data.Typeable (Typeable)
 import           Data.Void
 import           Data.Word (Word16)
@@ -99,8 +98,7 @@ import qualified Network.Mux.Compat as Mx
 import           Network.Mux.DeltaQ.TraceTransformer
 import           Network.TypedProtocol.Codec hiding (decode, encode)
 
-import           Ouroboros.Network.ConnectionId
-import           Ouroboros.Network.ControlMessage
+import           Ouroboros.Network.Context
 import           Ouroboros.Network.Driver.Limits
 import           Ouroboros.Network.ErrorPolicy
 import           Ouroboros.Network.IOManager (IOManager)
@@ -129,7 +127,7 @@ data NetworkConnectTracers addr vNumber = NetworkConnectTracers {
       nctHandshakeTracer   :: Tracer IO (Mx.WithMuxBearer (ConnectionId addr)
                                           (TraceSendRecv (Handshake vNumber CBOR.Term)))
       -- ^ handshake protocol tracer; it is important for analysing version
-      -- negotation mismatches.
+      -- negotiation mismatches.
     }
 
 nullNetworkConnectTracers :: NetworkConnectTracers addr vNumber
@@ -279,7 +277,7 @@ connectToNode
   -> VersionDataCodec CBOR.Term vNumber vData
   -> NetworkConnectTracers addr vNumber
   -> (vData -> vData -> Accept vData)
-  -> Versions vNumber vData (OuroborosApplication appType addr BL.ByteString IO a b)
+  -> Versions vNumber vData (OuroborosApplicationWithMinimalCtx appType addr BL.ByteString IO a b)
   -- ^ application to run over the connection
   -> Maybe addr
   -- ^ local address; the created socket will bind to it
@@ -321,7 +319,7 @@ connectToNode'
   -> VersionDataCodec CBOR.Term vNumber vData
   -> NetworkConnectTracers addr vNumber
   -> (vData -> vData -> Accept vData)
-  -> Versions vNumber vData (OuroborosApplication appType addr BL.ByteString IO a b)
+  -> Versions vNumber vData (OuroborosApplicationWithMinimalCtx appType addr BL.ByteString IO a b)
   -- ^ application to run over the connection
   -> fd
   -- ^ a configured socket to use to connect to a remote service provider
@@ -360,7 +358,9 @@ connectToNode' sn makeBearer handshakeCodec handshakeTimeLimits versionDataCodec
              bearer <- Mx.getBearer makeBearer sduTimeout muxTracer sd
              Mx.muxStart
                muxTracer
-               (toApplication connectionId (continueForever (Proxy :: Proxy IO)) app)
+               (toApplication MinimalInitiatorContext { micConnectionId = connectionId }
+                              ResponderContext { rcConnectionId = connectionId }
+                              app)
                bearer
 
 
@@ -378,7 +378,7 @@ connectToNodeSocket
   -> VersionDataCodec CBOR.Term vNumber vData
   -> NetworkConnectTracers Socket.SockAddr vNumber
   -> (vData -> vData -> Accept vData)
-  -> Versions vNumber vData (OuroborosApplication appType Socket.SockAddr BL.ByteString IO a b)
+  -> Versions vNumber vData (OuroborosApplicationWithMinimalCtx appType Socket.SockAddr BL.ByteString IO a b)
   -- ^ application to run over the connection
   -> Socket.Socket
   -> IO ()
@@ -401,7 +401,7 @@ data SomeResponderApplication addr bytes m b where
      SomeResponderApplication
        :: forall appType addr bytes m a b.
           Mx.HasResponder appType ~ True
-       => (OuroborosApplication appType addr bytes m a b)
+       => (OuroborosApplicationWithMinimalCtx appType addr bytes m a b)
        -> SomeResponderApplication addr bytes m b
 
 -- |
@@ -486,7 +486,9 @@ beginConnection makeBearer muxTracer handshakeTracer handshakeCodec handshakeTim
                  bearer <- Mx.getBearer makeBearer sduTimeout muxTracer' sd
                  Mx.muxStart
                    muxTracer'
-                   (toApplication connectionId (continueForever (Proxy :: Proxy IO)) app)
+                   (toApplication MinimalInitiatorContext { micConnectionId = connectionId }
+                                  ResponderContext { rcConnectionId = connectionId }
+                                  app)
                    bearer
 
       RejectConnection st' _peerid -> pure $ Server.Reject st'
@@ -778,10 +780,10 @@ withServerNode sn makeBearer
 --
 -- TODO: we should track connections in the state and refuse connections from
 -- peers we are already connected to.  This is also the right place to ban
--- connection from peers which missbehaved.
+-- connection from peers which misbehaved.
 --
 -- The server will run handshake protocol on each incoming connection.  We
--- assume that each versin negotiation message should fit into
+-- assume that each version negotiation message should fit into
 -- @'maxTransmissionUnit'@ (~5k bytes).
 --
 -- Note: it will open a socket in the current thread and pass it to the spawned

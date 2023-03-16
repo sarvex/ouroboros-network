@@ -22,8 +22,8 @@ import           GHC.Natural (Natural)
 import           Network.Mux.Types (MuxMode)
 
 import           Ouroboros.Network.ConnectionHandler
-import           Ouroboros.Network.ConnectionId (ConnectionId (..))
 import           Ouroboros.Network.ConnectionManager.Types
+import           Ouroboros.Network.Context
 
 
 -- | Announcement message for a new connection.
@@ -55,8 +55,8 @@ instance Show peerAddr
 
 -- | A Server control channel which instantiates 'handle'.
 --
-type ServerControlChannel (muxMode :: MuxMode) peerAddr versionData bytes m a b =
-    ControlChannel peerAddr (Handle muxMode peerAddr versionData bytes m a b) m
+type ServerControlChannel (muxMode :: MuxMode) initiatorCtx peerAddr versionData bytes m a b =
+    ControlChannel peerAddr (Handle muxMode initiatorCtx (ResponderContext peerAddr) versionData bytes m a b) m
 
 -- | Control channel.  It allows to pass 'STM' transactions which will
 -- resolve to 'NewConnection'.   Server's monitoring thread is the consumer

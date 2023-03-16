@@ -51,6 +51,7 @@ import           Foreign.C.Error
 
 import           Ouroboros.Network.ConnectionHandler
 import           Ouroboros.Network.ConnectionManager.Types
+import           Ouroboros.Network.Context (ResponderContext)
 import           Ouroboros.Network.InboundGovernor
 import           Ouroboros.Network.InboundGovernor.ControlChannel
 import qualified Ouroboros.Network.InboundGovernor.ControlChannel as ControlChannel
@@ -66,7 +67,7 @@ import           Ouroboros.Network.Snocket
 
 -- | Server static configuration.
 --
-data ServerArguments (muxMode  :: MuxMode) socket peerAddr versionData versionNumber bytes m a b =
+data ServerArguments (muxMode  :: MuxMode) socket initiatorCtx peerAddr versionData versionNumber bytes m a b =
     ServerArguments {
       serverSockets               :: NonEmpty socket,
       serverSnocket               :: Snocket m socket peerAddr,
@@ -74,9 +75,8 @@ data ServerArguments (muxMode  :: MuxMode) socket peerAddr versionData versionNu
       serverTrTracer              :: Tracer m (RemoteTransitionTrace peerAddr),
       serverInboundGovernorTracer :: Tracer m (InboundGovernorTrace peerAddr),
       serverConnectionLimits      :: AcceptedConnectionsLimit,
-      serverConnectionManager     :: MuxConnectionManager muxMode socket peerAddr
-                                                          versionData versionNumber
-                                                          bytes m a b,
+      serverConnectionManager     :: MuxConnectionManager muxMode socket initiatorCtx (ResponderContext peerAddr)
+                                                          peerAddr versionData versionNumber bytes m a b,
 
       -- | Time for which all protocols need to be idle to trigger
       -- 'DemotedToCold' transition.
@@ -87,7 +87,7 @@ data ServerArguments (muxMode  :: MuxMode) socket peerAddr versionData versionNu
       -- server to run and manage responders which needs to be started on
       -- inbound connections.
       --
-      serverControlChannel        :: ServerControlChannel muxMode peerAddr versionData
+      serverControlChannel        :: ServerControlChannel muxMode initiatorCtx peerAddr versionData
                                                           bytes m a b,
 
       -- | Observable mutable state.
@@ -115,7 +115,7 @@ server_CONNABORTED_DELAY = 0.5
 -- The first one is used in data diffusion for /Node-To-Node protocol/, while the
 -- other is useful for running a server for the /Node-To-Client protocol/.
 --
-run :: forall muxMode socket peerAddr versionData versionNumber m a b.
+run :: forall muxMode socket initiatorCtx peerAddr versionData versionNumber m a b.
        ( MonadAsync    m
        , MonadCatch    m
        , MonadEvaluate m
@@ -128,7 +128,7 @@ run :: forall muxMode socket peerAddr versionData versionNumber m a b.
        , Ord      peerAddr
        , Show     peerAddr
        )
-    => ServerArguments muxMode socket peerAddr versionData versionNumber ByteString m a b
+    => ServerArguments muxMode socket initiatorCtx peerAddr versionData versionNumber ByteString m a b
     -> m Void
 run ServerArguments {
       serverSockets,

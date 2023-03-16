@@ -56,9 +56,9 @@ import qualified Network.Mux as Mux
 
 import           Ouroboros.Network.Channel (fromChannel)
 import           Ouroboros.Network.ConnectionHandler
-import           Ouroboros.Network.ConnectionId (ConnectionId (..))
 import           Ouroboros.Network.ConnectionManager.Types hiding
                      (TrUnexpectedlyFalseAssertion)
+import           Ouroboros.Network.Context
 import           Ouroboros.Network.InboundGovernor.ControlChannel
                      (ServerControlChannel)
 import qualified Ouroboros.Network.InboundGovernor.ControlChannel as ControlChannel
@@ -84,7 +84,7 @@ import           Ouroboros.Network.Server.RateLimiting
 -- The first one is used in data diffusion for /Node-To-Node protocol/, while the
 -- other is useful for running a server for the /Node-To-Client protocol/.
 --
-inboundGovernor :: forall (muxMode :: MuxMode) socket peerAddr versionData versionNumber m a b.
+inboundGovernor :: forall (muxMode :: MuxMode) socket initiatorCtx peerAddr versionData versionNumber m a b.
                    ( MonadAsync    m
                    , MonadCatch    m
                    , MonadEvaluate m
@@ -98,10 +98,9 @@ inboundGovernor :: forall (muxMode :: MuxMode) socket peerAddr versionData versi
                    )
                 => Tracer m (RemoteTransitionTrace peerAddr)
                 -> Tracer m (InboundGovernorTrace peerAddr)
-                -> ServerControlChannel muxMode peerAddr versionData ByteString m a b
+                -> ServerControlChannel muxMode initiatorCtx peerAddr versionData ByteString m a b
                 -> Maybe DiffTime -- protocol idle timeout
-                -> MuxConnectionManager muxMode socket peerAddr versionData
-                                        versionNumber ByteString m a b
+                -> MuxConnectionManager muxMode socket initiatorCtx (ResponderContext peerAddr) peerAddr versionData versionNumber ByteString m a b
                 -> StrictTVar m InboundGovernorObservableState
                 -> m Void
 inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
@@ -128,7 +127,7 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
          throwIO e
        )
   where
-    emptyState :: InboundGovernorState muxMode peerAddr m a b
+    emptyState :: InboundGovernorState muxMode initiatorCtx peerAddr m a b
     emptyState = InboundGovernorState {
             igsConnections   = Map.empty,
             igsObservableVar = observableStateVar,
@@ -139,7 +138,7 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
     -- updated as we recurse.
     --
     inboundGovernorLoop
-      :: StrictTVar m (InboundGovernorState muxMode peerAddr m a b)
+      :: StrictTVar m (InboundGovernorState muxMode initiatorCtx peerAddr m a b)
       -> m Void
     inboundGovernorLoop !st = do
       state <- readTVarIO st
@@ -162,7 +161,7 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
                    <> firstPeerDemotedToCold
                    <> firstPeerCommitRemote
 
-                   :: EventSignal muxMode peerAddr versionData m a b
+                   :: EventSignal muxMode initiatorCtx peerAddr versionData m a b
                  )
                  (igsConnections state)
             <> FirstToFinish (
@@ -179,6 +178,7 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
             (Handle csMux muxBundle _ _)) -> do
 
               traceWith tracer (TrNewConnection provenance connId)
+              let responderContext = ResponderContext { rcConnectionId = connId }
 
               igsConnections <- Map.alterF
                       (\case
@@ -186,19 +186,19 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
                         Nothing -> do
                           let csMPMHot =
                                 [ ( miniProtocolNum mpH
-                                  , MiniProtocolData mpH Hot
+                                  , MiniProtocolData mpH responderContext Hot
                                   )
                                 | mpH <- projectBundle SingHot muxBundle
                                 ]
                               csMPMWarm =
                                 [ ( miniProtocolNum mpW
-                                  , MiniProtocolData mpW Warm
+                                  , MiniProtocolData mpW responderContext Warm
                                   )
                                 | mpW <- projectBundle SingWarm muxBundle
                                 ]
                               csMPMEstablished =
                                 [ ( miniProtocolNum mpE
-                                  , MiniProtocolData mpE Established
+                                  , MiniProtocolData mpE responderContext Established
                                   )
                                 | mpE <- projectBundle SingEstablished muxBundle
                                 ]
@@ -209,9 +209,9 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
                           mCompletionMap
                             <-
                             foldM
-                              (\acc MiniProtocolData { mpdMiniProtocol } -> do
+                              (\acc mpd@MiniProtocolData { mpdMiniProtocol } -> do
                                  result <- runResponder
-                                             csMux mpdMiniProtocol
+                                             csMux mpd
                                              Mux.StartOnDemand
                                  case result of
                                    -- synchronous exceptions when starting
@@ -291,10 +291,10 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
           Terminated {
               tConnId,
               tMux,
-              tMiniProtocolData = MiniProtocolData { mpdMiniProtocol },
+              tMiniProtocolData = mpd@MiniProtocolData { mpdMiniProtocol = miniProtocol },
               tResult
             } ->
-          let num = miniProtocolNum mpdMiniProtocol in
+          let num = miniProtocolNum miniProtocol in
           case tResult of
             Left e -> do
               -- a mini-protocol errored.  In this case mux will shutdown, and
@@ -308,7 +308,7 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
 
             Right _ -> do
               result
-                <- runResponder tMux mpdMiniProtocol Mux.StartOnDemand
+                <- runResponder tMux mpd Mux.StartOnDemand
               case result of
                 Right completionAction -> do
                   traceWith tracer (TrResponderRestarted tConnId num)
@@ -468,38 +468,41 @@ inboundGovernor trTracer tracer serverControlChannel inboundIdleTimeout
 -- @'HasResponder' mode ~ True@ is used to rule out
 -- 'InitiatorProtocolOnly' case.
 --
-runResponder :: forall (mode :: MuxMode) m a b.
+runResponder :: forall (mode :: MuxMode) initiatorCtx peerAddr m a b.
                  ( HasResponder mode ~ True
                  , MonadAsync m
                  , MonadCatch m
                  , MonadThrow (STM m)
                  )
               => Mux.Mux mode m
-              -> MiniProtocol mode ByteString m a b
+              -> MiniProtocolData mode initiatorCtx peerAddr m a b
               -> Mux.StartOnDemandOrEagerly
               -> m (Either SomeException (STM m (Either SomeException b)))
 runResponder mux
-             MiniProtocol { miniProtocolNum, miniProtocolRun }
+              MiniProtocolData {
+                  mpdMiniProtocol     = miniProtocol,
+                  mpdResponderContext = responderContext
+                }
              startStrategy =
     -- do not catch asynchronous exceptions, which are non recoverable
     tryJust (\e -> case fromException e of
               Just (SomeAsyncException _) -> Nothing
               Nothing                     -> Just e) $
-      case miniProtocolRun of
+      case miniProtocolRun miniProtocol of
         ResponderProtocolOnly responder ->
           Mux.runMiniProtocol
-            mux miniProtocolNum
+            mux (miniProtocolNum miniProtocol)
             Mux.ResponderDirectionOnly
             startStrategy
             -- TODO: eliminate 'fromChannel'
-            (runMuxPeer responder . fromChannel)
+            (runMuxPeer (responder responderContext) . fromChannel)
 
         InitiatorAndResponderProtocol _ responder ->
           Mux.runMiniProtocol
-            mux miniProtocolNum
+            mux (miniProtocolNum miniProtocol)
             Mux.ResponderDirection
             startStrategy
-            (runMuxPeer responder . fromChannel)
+            (runMuxPeer (responder responderContext) . fromChannel)
 
 
 --
@@ -522,7 +525,7 @@ mkRemoteSt (RemoteIdle _) = RemoteIdleSt
 mkRemoteSt  RemoteCold    = RemoteColdSt
 
 
--- | 'Nothing' represents unitialised state.
+-- | 'Nothing' represents uninitialised state.
 --
 type RemoteTransition = Transition' (Maybe RemoteSt)
 
@@ -530,8 +533,8 @@ type RemoteTransitionTrace peerAddr = TransitionTrace' peerAddr (Maybe RemoteSt)
 
 mkRemoteTransitionTrace :: Ord peerAddr
                         => ConnectionId peerAddr
-                        -> InboundGovernorState muxMode peerAddr m a b
-                        -> InboundGovernorState muxMode peerAddr m a b
+                        -> InboundGovernorState muxMode initiatorCtx peerAddr m a b
+                        -> InboundGovernorState muxMode initiatorCtx peerAddr m a b
                         -> RemoteTransitionTrace peerAddr
 mkRemoteTransitionTrace connId fromState toState =
     TransitionTrace

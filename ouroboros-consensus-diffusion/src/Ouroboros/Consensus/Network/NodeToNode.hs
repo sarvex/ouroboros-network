@@ -58,6 +58,7 @@ import           Ouroboros.Network.BlockFetch
 import           Ouroboros.Network.BlockFetch.Client (BlockFetchClient,
                      blockFetchClient)
 import           Ouroboros.Network.Channel
+import           Ouroboros.Network.Context
 import           Ouroboros.Network.DeltaQ
 import           Ouroboros.Network.Driver
 import           Ouroboros.Network.Driver.Limits
@@ -65,7 +66,6 @@ import           Ouroboros.Network.KeepAlive
 import           Ouroboros.Network.Mux
 import           Ouroboros.Network.NodeToNode
 import           Ouroboros.Network.NodeToNode.Version (isPipeliningEnabled)
-import           Ouroboros.Network.PeerSelection.LedgerPeers.Type (IsBigLedgerPeer)
 import           Ouroboros.Network.PeerSelection.PeerMetric.Type
                      (FetchedMetricsTracer, HeaderMetricsTracer,
                      ReportPeerMetrics (..))
@@ -190,13 +190,13 @@ data Handlers m addr blk = Handlers {
     , hPeerSharingClient
         :: NodeToNodeVersion
         -> ControlMessageSTM m
-        -> addr
+        -> ConnectionId addr
         -> PeerSharingController addr m
         -> m (PeerSharingClient addr m ())
 
     , hPeerSharingServer
         :: NodeToNodeVersion
-        -> addr
+        -> ConnectionId addr
         -> PeerSharingServer addr m
     }
 
@@ -423,17 +423,15 @@ showTracers tr = Tracers {
 -------------------------------------------------------------------------------}
 
 -- | A node-to-node application
-type ClientApp m peer bytes a =
+type ClientApp m addr bytes a =
      NodeToNodeVersion
-  -> ControlMessageSTM m
-  -> peer
-  -> IsBigLedgerPeer
+  -> ExpandedInitiatorContext addr m
   -> Channel m bytes
   -> m (a, Maybe bytes)
 
-type ServerApp m peer bytes a =
+type ServerApp m addr bytes a =
      NodeToNodeVersion
-  -> peer
+  -> ResponderContext addr
   -> Channel m bytes
   -> m (a, Maybe bytes)
 
@@ -443,30 +441,30 @@ type ServerApp m peer bytes a =
 data Apps m addr bCS bBF bTX bKA bPS a b = Apps {
       -- | Start a chain sync client that communicates with the given upstream
       -- node.
-      aChainSyncClient     :: ClientApp m (ConnectionId addr) bCS a
+      aChainSyncClient     :: ClientApp m addr bCS a
 
       -- | Start a chain sync server.
-    , aChainSyncServer     :: ServerApp m (ConnectionId addr) bCS b
+    , aChainSyncServer     :: ServerApp m addr bCS b
 
       -- | Start a block fetch client that communicates with the given
       -- upstream node.
-    , aBlockFetchClient    :: ClientApp m (ConnectionId addr) bBF a
+    , aBlockFetchClient    :: ClientApp m addr bBF a
 
       -- | Start a block fetch server.
-    , aBlockFetchServer    :: ServerApp m (ConnectionId addr) bBF b
+    , aBlockFetchServer    :: ServerApp m addr bBF b
 
       -- | Start a transaction submission v2 client that communicates with the
       -- given upstream node.
-    , aTxSubmission2Client :: ClientApp m (ConnectionId addr) bTX a
+    , aTxSubmission2Client :: ClientApp m addr bTX a
 
       -- | Start a transaction submission v2 server.
-    , aTxSubmission2Server :: ServerApp m (ConnectionId addr) bTX b
+    , aTxSubmission2Server :: ServerApp m addr bTX b
 
       -- | Start a keep-alive client.
-    , aKeepAliveClient     :: ClientApp m (ConnectionId addr) bKA a
+    , aKeepAliveClient     :: ClientApp m addr bKA a
 
       -- | Start a keep-alive server.
-    , aKeepAliveServer     :: ServerApp m (ConnectionId addr) bKA b
+    , aKeepAliveServer     :: ServerApp m addr bKA b
 
       -- | Start a peer-sharing client.
     , aPeerSharingClient   :: ClientApp m addr bPS a
@@ -550,12 +548,15 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
   where
     aChainSyncClient
       :: NodeToNodeVersion
-      -> ControlMessageSTM m
-      -> ConnectionId addrNTN
-      -> IsBigLedgerPeer
+      -> ExpandedInitiatorContext addrNTN m
       -> Channel m bCS
       -> m (NodeToNodeInitiatorResult, Maybe bCS)
-    aChainSyncClient version controlMessageSTM them isBigLedgerPeer channel = do
+    aChainSyncClient version ExpandedInitiatorContext {
+                               eicConnectionId    = them,
+                               eicControlMessage  = controlMessageSTM,
+                               eicIsBigLedgerPeer = isBigLedgerPeer
+                             }
+                             channel = do
       labelThisThread "ChainSyncClient"
       -- Note that it is crucial that we sync with the fetch client "outside"
       -- of registering the state for the sync client. This is needed to
@@ -586,10 +587,10 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aChainSyncServer
       :: NodeToNodeVersion
-      -> ConnectionId addrNTN
+      -> ResponderContext addrNTN
       -> Channel m bCS
       -> m ((), Maybe bCS)
-    aChainSyncServer version them channel = do
+    aChainSyncServer version ResponderContext { rcConnectionId = them } channel = do
       labelThisThread "ChainSyncServer"
       chainSyncTimeout <- genChainSyncTimeout
       bracketWithPrivateRegistry
@@ -613,12 +614,14 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aBlockFetchClient
       :: NodeToNodeVersion
-      -> ControlMessageSTM m
-      -> ConnectionId addrNTN
-      -> IsBigLedgerPeer
+      -> ExpandedInitiatorContext addrNTN m
       -> Channel m bBF
       -> m (NodeToNodeInitiatorResult, Maybe bBF)
-    aBlockFetchClient version controlMessageSTM them _isBigledgerPeer channel = do
+    aBlockFetchClient version ExpandedInitiatorContext {
+                                eicConnectionId   = them,
+                                eicControlMessage = controlMessageSTM
+                              }
+                              channel = do
       labelThisThread "BlockFetchClient"
       bracketFetchClient (getFetchClientRegistry kernel) version
                          isPipeliningEnabled them $ \clientCtx -> do
@@ -634,10 +637,10 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aBlockFetchServer
       :: NodeToNodeVersion
-      -> ConnectionId addrNTN
+      -> ResponderContext addrNTN
       -> Channel m bBF
       -> m ((), Maybe bBF)
-    aBlockFetchServer version them channel = do
+    aBlockFetchServer version ResponderContext { rcConnectionId = them } channel = do
       labelThisThread "BlockFetchServer"
       withRegistry $ \registry ->
         runPeerWithLimits
@@ -651,12 +654,14 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aTxSubmission2Client
       :: NodeToNodeVersion
-      -> ControlMessageSTM m
-      -> ConnectionId addrNTN
-      -> IsBigLedgerPeer
+      -> ExpandedInitiatorContext addrNTN m
       -> Channel m bTX
       -> m (NodeToNodeInitiatorResult, Maybe bTX)
-    aTxSubmission2Client version controlMessageSTM them _isBigLedgerPeer channel = do
+    aTxSubmission2Client version ExpandedInitiatorContext {
+                                   eicConnectionId   = them,
+                                   eicControlMessage = controlMessageSTM
+                                 }
+                                 channel = do
       labelThisThread "TxSubmissionClient"
       ((), trailing) <- runPeerWithLimits
         (contramap (TraceLabelPeer them) tTxSubmission2Tracer)
@@ -669,10 +674,10 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aTxSubmission2Server
       :: NodeToNodeVersion
-      -> ConnectionId addrNTN
+      -> ResponderContext addrNTN
       -> Channel m bTX
       -> m ((), Maybe bTX)
-    aTxSubmission2Server version them channel = do
+    aTxSubmission2Server version ResponderContext { rcConnectionId = them } channel = do
       labelThisThread "TxSubmissionServer"
       runPipelinedPeerWithLimits
         (contramap (TraceLabelPeer them) tTxSubmission2Tracer)
@@ -684,12 +689,14 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aKeepAliveClient
       :: NodeToNodeVersion
-      -> ControlMessageSTM m
-      -> ConnectionId addrNTN
-      -> IsBigLedgerPeer
+      -> ExpandedInitiatorContext addrNTN m
       -> Channel m bKA
       -> m (NodeToNodeInitiatorResult, Maybe bKA)
-    aKeepAliveClient version controlMessageSTM them _isBigLedgerPeer channel = do
+    aKeepAliveClient version ExpandedInitiatorContext {
+                               eicConnectionId   = them,
+                               eicControlMessage = controlMessageSTM
+                             }
+                             channel = do
       labelThisThread "KeepAliveClient"
       let kacApp = \dqCtx ->
                        runPeerWithLimits
@@ -707,10 +714,10 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aKeepAliveServer
       :: NodeToNodeVersion
-      -> ConnectionId addrNTN
+      -> ResponderContext addrNTN
       -> Channel m bKA
       -> m ((), Maybe bKA)
-    aKeepAliveServer version _them channel = do
+    aKeepAliveServer version _responderCtx channel = do
       labelThisThread "KeepAliveServer"
       runPeerWithLimits
         nullTracer
@@ -724,14 +731,16 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aPeerSharingClient
       :: NodeToNodeVersion
-      -> ControlMessageSTM m
-      -> addrNTN
-      -> IsBigLedgerPeer
+      -> ExpandedInitiatorContext addrNTN m
       -> Channel m bPS
       -> m (NodeToNodeInitiatorResult, Maybe bPS)
-    aPeerSharingClient version controlMessageSTM them _isBigLedgerPeer channel = do
+    aPeerSharingClient version ExpandedInitiatorContext {
+                                 eicConnectionId   = them,
+                                 eicControlMessage = controlMessageSTM
+                               }
+                               channel = do
       labelThisThread "PeerSharingClient"
-      bracketPeerSharingClient (getPeerSharingRegistry kernel) them
+      bracketPeerSharingClient (getPeerSharingRegistry kernel) (remoteAddress them)
         $ \controller -> do
           psClient <- hPeerSharingClient version controlMessageSTM them controller
           ((), trailing) <- runPeerWithLimits
@@ -745,10 +754,10 @@ mkApps kernel Tracers {..} mkCodecs ByteLimits {..} genChainSyncTimeout ReportPe
 
     aPeerSharingServer
       :: NodeToNodeVersion
-      -> addrNTN
+      -> ResponderContext addrNTN
       -> Channel m bPS
       -> m ((), Maybe bPS)
-    aPeerSharingServer version them channel = do
+    aPeerSharingServer version ResponderContext { rcConnectionId = them } channel = do
       labelThisThread "PeerSharingServer"
       runPeerWithLimits
         nullTracer
@@ -774,32 +783,32 @@ initiator
   -> NodeToNodeVersion
   -> PSTypes.PeerSharing
   -> Apps m addr b b b b b a c
-  -> OuroborosBundle 'InitiatorMode addr b m a Void
+  -> OuroborosBundleWithExpandedCtx 'InitiatorMode addr b m a Void
 initiator miniProtocolParameters version ownPeerSharing Apps {..} =
     nodeToNodeProtocols
       miniProtocolParameters
       -- TODO: currently consensus is using 'ConnectionId' for its 'peer' type.
       -- This is currently ok, as we might accept multiple connections from the
       -- same ip address, however this will change when we will switch to
-      -- p2p-governor & connection-manager.  Then consenus can use peer's ip
+      -- p2p-governor & connection-manager.  Then consensus can use peer's ip
       -- address & port number, rather than 'ConnectionId' (which is
-      -- a quadruple uniquely determinaing a connection).
-      (\them controlMessageSTM -> NodeToNodeProtocols {
+      -- a quadruple uniquely determining a connection).
+      (NodeToNodeProtocols {
           chainSyncProtocol =
-            (InitiatorProtocolOnly (\isBigLedgerPeer -> MuxPeerRaw (aChainSyncClient version controlMessageSTM them isBigLedgerPeer))),
+            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aChainSyncClient version ctx))),
           blockFetchProtocol =
-            (InitiatorProtocolOnly (\isBigLedgerPeer -> MuxPeerRaw (aBlockFetchClient version controlMessageSTM them isBigLedgerPeer))),
+            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aBlockFetchClient version ctx))),
           txSubmissionProtocol =
-            (InitiatorProtocolOnly (\isBigLedgerPeer -> MuxPeerRaw (aTxSubmission2Client version controlMessageSTM them isBigLedgerPeer))),
+            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aTxSubmission2Client version ctx))),
           keepAliveProtocol =
-            (InitiatorProtocolOnly (\isBigLedgerPeer -> MuxPeerRaw (aKeepAliveClient version controlMessageSTM them isBigLedgerPeer))),
+            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aKeepAliveClient version ctx))),
           peerSharingProtocol =
-            (InitiatorProtocolOnly (\isBigLedgerPeer -> MuxPeerRaw (aPeerSharingClient version controlMessageSTM (remoteAddress them) isBigLedgerPeer)))
+            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aPeerSharingClient version ctx)))
         })
       version
       ownPeerSharing
 
--- | A bi-directional network applicaiton.
+-- | A bi-directional network application.
 --
 -- Implementation note: network currently doesn't enable protocols conditional
 -- on the protocol version, but it eventually may; this is why @_version@ is
@@ -809,32 +818,32 @@ initiatorAndResponder
   -> NodeToNodeVersion
   -> PSTypes.PeerSharing
   -> Apps m addr b b b b b a c
-  -> OuroborosBundle 'InitiatorResponderMode addr b m a c
+  -> OuroborosBundleWithExpandedCtx 'InitiatorResponderMode addr b m a c
 initiatorAndResponder miniProtocolParameters version ownPeerSharing Apps {..} =
     nodeToNodeProtocols
       miniProtocolParameters
-      (\them controlMessageSTM -> NodeToNodeProtocols {
+      (NodeToNodeProtocols {
           chainSyncProtocol =
             (InitiatorAndResponderProtocol
-              (\isBigLedgerPeer -> MuxPeerRaw (aChainSyncClient version controlMessageSTM them isBigLedgerPeer))
-              (MuxPeerRaw (aChainSyncServer version                   them))),
+              (\initiatorCtx -> MuxPeerRaw (aChainSyncClient version initiatorCtx))
+              (\responderCtx -> MuxPeerRaw (aChainSyncServer version responderCtx))),
           blockFetchProtocol =
             (InitiatorAndResponderProtocol
-              (\isBigLedgerPeer -> MuxPeerRaw (aBlockFetchClient version controlMessageSTM them isBigLedgerPeer))
-              (MuxPeerRaw (aBlockFetchServer version                   them))),
+              (\initiatorCtx -> MuxPeerRaw (aBlockFetchClient version initiatorCtx))
+              (\responderCtx -> MuxPeerRaw (aBlockFetchServer version responderCtx))),
           txSubmissionProtocol =
             (InitiatorAndResponderProtocol
-              (\isBigLedgerPeer -> MuxPeerRaw (aTxSubmission2Client version controlMessageSTM them isBigLedgerPeer))
-              (MuxPeerRaw (aTxSubmission2Server version                   them))),
+              (\initiatorCtx -> MuxPeerRaw (aTxSubmission2Client version initiatorCtx))
+              (\responderCtx -> MuxPeerRaw (aTxSubmission2Server version responderCtx))),
           keepAliveProtocol =
             (InitiatorAndResponderProtocol
-              (\isBigLedgerPeer -> MuxPeerRaw (aKeepAliveClient version controlMessageSTM them isBigLedgerPeer))
-              (MuxPeerRaw (aKeepAliveServer version                   them))),
+              (\initiatorCtx -> MuxPeerRaw (aKeepAliveClient version initiatorCtx))
+              (\responderCtx -> MuxPeerRaw (aKeepAliveServer version responderCtx))),
 
           peerSharingProtocol =
             (InitiatorAndResponderProtocol
-              (\isBigLedgerPeer -> MuxPeerRaw (aPeerSharingClient version controlMessageSTM (remoteAddress them) isBigLedgerPeer))
-              (MuxPeerRaw (aPeerSharingServer version                   (remoteAddress them))))
+              (\initiatorCtx -> MuxPeerRaw (aPeerSharingClient version initiatorCtx))
+              (\responderCtx -> MuxPeerRaw (aPeerSharingServer version responderCtx)))
         })
       version
       ownPeerSharing
