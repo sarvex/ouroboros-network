@@ -76,7 +76,6 @@ import           Network.TypedProtocol.ReqResp.Examples
 import           Network.TypedProtocol.ReqResp.Server
 import           Network.TypedProtocol.ReqResp.Type
 
-import           Ouroboros.Network.Channel (fromChannel)
 import           Ouroboros.Network.ConnectionHandler
 import           Ouroboros.Network.ConnectionId
 import           Ouroboros.Network.Context
@@ -413,18 +412,17 @@ withInitiatorOnlyConnectionManager name timeouts trTracer cmTracer snocket makeB
                                         ByteString m [resp] Void
     reqRespInitiator protocolNum nextRequest =
       InitiatorProtocolOnly
-        (\ExpandedInitiatorContext { eicConnectionId = connId } ->
-          MuxPeerRaw $ \channel ->
-            runPeerWithLimits
-              (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
-              -- TraceSendRecv
-              codecReqResp
-              reqRespSizeLimits
-              reqRespTimeLimits
-              channel
-              (Effect $ do
-                reqs <- atomically (nextRequest connId)
-                pure $ reqRespClientPeer (reqRespClientMap reqs)))
+        (MuxPeerRaw $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
+           runPeerWithLimits
+             (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
+             -- TraceSendRecv
+             codecReqResp
+             reqRespSizeLimits
+             reqRespTimeLimits
+             channel
+             (Effect $ do
+               reqs <- atomically (nextRequest connId)
+               pure $ reqRespClientPeer (reqRespClientMap reqs)))
 
 
 --
@@ -621,27 +619,26 @@ withBidirectionalConnectionManager name timeouts
                          ByteString m [resp] acc
     reqRespInitiatorAndResponder protocolNum accInit nextRequest =
       InitiatorAndResponderProtocol
-        (\ExpandedInitiatorContext { eicConnectionId = connId } ->
-          MuxPeerRaw $ \channel ->
-            runPeerWithLimits
-              (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
-              -- TraceSendRecv
-              codecReqResp
-              reqRespSizeLimits
-              reqRespTimeLimits
-              channel
-              (Effect $ do
-                reqs <- atomically (nextRequest connId)
-                pure $ reqRespClientPeer (reqRespClientMap reqs)))
-        (\_ctx -> MuxPeerRaw $ \channel ->
-          runPeerWithLimits
-            (WithName (name,"Responder",protocolNum) `contramap` nullTracer)
-            -- TraceSendRecv
-            codecReqResp
-            reqRespSizeLimits
-            reqRespTimeLimits
-            channel
-            (reqRespServerPeer $ reqRespServerMapAccumL' accInit))
+        (MuxPeerRaw $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
+           runPeerWithLimits
+             (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
+             -- TraceSendRecv
+             codecReqResp
+             reqRespSizeLimits
+             reqRespTimeLimits
+             channel
+             (Effect $ do
+               reqs <- atomically (nextRequest connId)
+               pure $ reqRespClientPeer (reqRespClientMap reqs)))
+        (MuxPeerRaw $ \_ctx channel ->
+           runPeerWithLimits
+             (WithName (name,"Responder",protocolNum) `contramap` nullTracer)
+             -- TraceSendRecv
+             codecReqResp
+             reqRespSizeLimits
+             reqRespTimeLimits
+             channel
+             (reqRespServerPeer $ reqRespServerMapAccumL' accInit))
 
     reqRespServerMapAccumL' :: acc -> ReqRespServer req resp m acc
     reqRespServerMapAccumL' = go
@@ -724,9 +721,9 @@ runInitiatorProtocols singMuxMode mux bundle controlBundle connId = do
           Mux.StartEagerly
           (runMuxPeer
             (case miniProtocolRun ptcl of
-              InitiatorProtocolOnly initiator           -> initiator initiatorCtx
-              InitiatorAndResponderProtocol initiator _ -> initiator initiatorCtx)
-            . fromChannel)
+              InitiatorProtocolOnly initiator           -> initiator
+              InitiatorAndResponderProtocol initiator _ -> initiator)
+            initiatorCtx)
       where
         initiatorCtx = ExpandedInitiatorContext {
             eicConnectionId    = connId,

@@ -48,7 +48,6 @@ import           Data.Typeable (Typeable, cast)
 
 import qualified Network.Mux as Mux
 
-import           Ouroboros.Network.Channel (fromChannel)
 import           Ouroboros.Network.ControlMessage (ControlMessage (..))
 import           Ouroboros.Network.Context
 import           Ouroboros.Network.ExitPolicy
@@ -1068,13 +1067,13 @@ startProtocols tok isBigLedgerPeer connHandle@PeerConnectionHandle { pchMux, pch
                 pchMux miniProtocolNum
                 Mux.InitiatorDirectionOnly
                 Mux.StartEagerly
-                (runMuxPeer (initiator context) . fromChannel)
+                (runMuxPeer initiator context)
           InitiatorAndResponderProtocol initiator _ ->
               Mux.runMiniProtocol
                 pchMux miniProtocolNum
                 Mux.InitiatorDirection
                 Mux.StartEagerly
-                (runMuxPeer (initiator context) . fromChannel)
+                (runMuxPeer initiator context)
       where
         context :: ExpandedInitiatorContext peerAddr m
         context = mkInitiatorContext tok isBigLedgerPeer connHandle

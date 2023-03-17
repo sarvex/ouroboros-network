@@ -43,6 +43,14 @@
   - `Ouroboros.Network.Socket.withServerNode`
   - inbound governor API
 
+* `MuxPeer` and `MuxPeerPipelined` constructors of `MuxPeer` type were removed.
+  Use `mkMuxPeer` and `mkMuxPeerPipelined` instead.  Note that these are not
+  inplace replacment.
+
+* `runMuxPeer` changed its type.  It receives two arguments: the context and
+  `Network.Mux.Channel.Channel` rather than `Ouroboros.Network.Channel.Channel`
+  (no need to use `Ouroboros.Network.Channel.fromChannel`)
+
 ### Non-breaking changes
 
 ## 0.1.0.0 -- YYYY-mm-dd

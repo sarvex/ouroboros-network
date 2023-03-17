@@ -795,15 +795,15 @@ initiator miniProtocolParameters version ownPeerSharing Apps {..} =
       -- a quadruple uniquely determining a connection).
       (NodeToNodeProtocols {
           chainSyncProtocol =
-            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aChainSyncClient version ctx))),
+            (InitiatorProtocolOnly (MuxPeerRaw (\ctx -> aChainSyncClient version ctx))),
           blockFetchProtocol =
-            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aBlockFetchClient version ctx))),
+            (InitiatorProtocolOnly (MuxPeerRaw (\ctx -> aBlockFetchClient version ctx))),
           txSubmissionProtocol =
-            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aTxSubmission2Client version ctx))),
+            (InitiatorProtocolOnly (MuxPeerRaw (\ctx -> aTxSubmission2Client version ctx))),
           keepAliveProtocol =
-            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aKeepAliveClient version ctx))),
+            (InitiatorProtocolOnly (MuxPeerRaw (\ctx -> aKeepAliveClient version ctx))),
           peerSharingProtocol =
-            (InitiatorProtocolOnly (\ctx -> MuxPeerRaw (aPeerSharingClient version ctx)))
+            (InitiatorProtocolOnly (MuxPeerRaw (\ctx -> aPeerSharingClient version ctx)))
         })
       version
       ownPeerSharing
@@ -825,25 +825,25 @@ initiatorAndResponder miniProtocolParameters version ownPeerSharing Apps {..} =
       (NodeToNodeProtocols {
           chainSyncProtocol =
             (InitiatorAndResponderProtocol
-              (\initiatorCtx -> MuxPeerRaw (aChainSyncClient version initiatorCtx))
-              (\responderCtx -> MuxPeerRaw (aChainSyncServer version responderCtx))),
+              (MuxPeerRaw (\initiatorCtx -> aChainSyncClient version initiatorCtx))
+              (MuxPeerRaw (\responderCtx -> aChainSyncServer version responderCtx))),
           blockFetchProtocol =
             (InitiatorAndResponderProtocol
-              (\initiatorCtx -> MuxPeerRaw (aBlockFetchClient version initiatorCtx))
-              (\responderCtx -> MuxPeerRaw (aBlockFetchServer version responderCtx))),
+              (MuxPeerRaw (\initiatorCtx -> aBlockFetchClient version initiatorCtx))
+              (MuxPeerRaw (\responderCtx -> aBlockFetchServer version responderCtx))),
           txSubmissionProtocol =
             (InitiatorAndResponderProtocol
-              (\initiatorCtx -> MuxPeerRaw (aTxSubmission2Client version initiatorCtx))
-              (\responderCtx -> MuxPeerRaw (aTxSubmission2Server version responderCtx))),
+              (MuxPeerRaw (\initiatorCtx -> aTxSubmission2Client version initiatorCtx))
+              (MuxPeerRaw (\responderCtx -> aTxSubmission2Server version responderCtx))),
           keepAliveProtocol =
             (InitiatorAndResponderProtocol
-              (\initiatorCtx -> MuxPeerRaw (aKeepAliveClient version initiatorCtx))
-              (\responderCtx -> MuxPeerRaw (aKeepAliveServer version responderCtx))),
+              (MuxPeerRaw (\initiatorCtx -> aKeepAliveClient version initiatorCtx))
+              (MuxPeerRaw (\responderCtx -> aKeepAliveServer version responderCtx))),
 
           peerSharingProtocol =
             (InitiatorAndResponderProtocol
-              (\initiatorCtx -> MuxPeerRaw (aPeerSharingClient version initiatorCtx))
-              (\responderCtx -> MuxPeerRaw (aPeerSharingServer version responderCtx)))
+              (MuxPeerRaw (\initiatorCtx -> aPeerSharingClient version initiatorCtx))
+              (MuxPeerRaw (\responderCtx -> aPeerSharingServer version responderCtx)))
         })
       version
       ownPeerSharing

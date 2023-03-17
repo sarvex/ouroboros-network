@@ -215,11 +215,11 @@ prop_socket_send_recv initiatorAddr responderAddr configureSock f xs =
         responderApp = testProtocols2 reqRespResponder
 
         reqRespResponder =
-          ResponderProtocolOnly $ \_ctx ->
+          ResponderProtocolOnly $
           -- TODO: For the moment this needs MuxPeerRaw because it has to
           -- do something with the result after the protocol is run.
           -- This should be replaced with use of the handles.
-          MuxPeerRaw $ \channel -> do
+          MuxPeerRaw $ \_ctx channel -> do
             (r, trailing) <- runPeer nullTracer
                          ReqResp.codecReqResp
                          channel
@@ -234,11 +234,11 @@ prop_socket_send_recv initiatorAddr responderAddr configureSock f xs =
         initiatorApp = testProtocols2 reqRespInitiator
 
         reqRespInitiator =
-          InitiatorProtocolOnly $ const $
+          InitiatorProtocolOnly $
           -- TODO: For the moment this needs MuxPeerRaw because it has to
           -- do something with the result after the protocol is run.
           -- This should be replaced with use of the handles.
-          MuxPeerRaw $ \channel -> do
+          MuxPeerRaw $ \_ctx channel -> do
             (r, trailing) <- runPeer nullTracer
                          ReqResp.codecReqResp
                          channel
@@ -318,11 +318,11 @@ prop_socket_recv_error f rerr =
         app = testProtocols2 reqRespResponder
 
         reqRespResponder =
-          ResponderProtocolOnly $ \_ctx ->
+          ResponderProtocolOnly $
           -- TODO: For the moment this needs MuxPeerRaw because it has to
           -- do something with the result after the protocol is run.
           -- This should be replaced with use of the handles.
-          MuxPeerRaw $ \channel -> do
+          MuxPeerRaw $ \_ctx channel -> do
             (r, trailing) <- runPeer nullTracer
                          ReqResp.codecReqResp
                          channel
@@ -500,11 +500,11 @@ prop_socket_client_connect_error _ xs =
         app = testProtocols2 reqRespInitiator
 
         reqRespInitiator =
-          InitiatorProtocolOnly $ const $
+          InitiatorProtocolOnly $
           -- TODO: For the moment this needs MuxPeerRaw because it has to
           -- do something with the result after the protocol is run.
           -- This should be replaced with use of the handles.
-          MuxPeerRaw $ \channel -> do
+          MuxPeerRaw $ \_ctx channel -> do
             (_, trailing) <- runPeer nullTracer
                     ReqResp.codecReqResp
                     channel

@@ -164,14 +164,15 @@ demo chain0 updates = do
             consumerApp = demoProtocols chainSyncInitator
 
             chainSyncInitator =
-              InitiatorProtocolOnly $ const $
-                MuxPeer nullTracer
-                        (ChainSync.codecChainSync encode             decode
-                                                  encode             decode
-                                                  (encodeTip encode) (decodeTip decode))
-                        (ChainSync.chainSyncClientPeer
-                          (ChainSync.chainSyncClientExample consumerVar
-                          (consumerClient done target consumerVar)))
+              InitiatorProtocolOnly $
+                mkMuxPeer $ \_ctx -> ( nullTracer
+                                     , ChainSync.codecChainSync encode             decode
+                                                                encode             decode
+                                                     (encodeTip encode) (decodeTip decode)
+                                     , ChainSync.chainSyncClientPeer
+                                          (ChainSync.chainSyncClientExample consumerVar
+                                            (consumerClient done target consumerVar))
+                                     )
 
             server :: ChainSyncServer block (Point block) (Tip block) IO ()
             server = ChainSync.chainSyncServerExample () producerVar
@@ -181,12 +182,13 @@ demo chain0 updates = do
             producerApp = demoProtocols chainSyncResponder
 
             chainSyncResponder =
-              ResponderProtocolOnly $ \_ctx ->
-                MuxPeer nullTracer
-                        (ChainSync.codecChainSync encode             decode
-                                                  encode             decode
-                                                  (encodeTip encode) (decodeTip decode))
-                        (ChainSync.chainSyncServerPeer server)
+              ResponderProtocolOnly $
+                mkMuxPeer $ \_ctx -> ( nullTracer
+                                     , ChainSync.codecChainSync encode             decode
+                                                                encode             decode
+                                                     (encodeTip encode) (decodeTip decode)
+                                     , ChainSync.chainSyncServerPeer server
+                                     )
 
         clientBearer <- Mx.getBearer Mx.makePipeChannelBearer (-1) activeTracer chan1
         serverBearer <- Mx.getBearer Mx.makePipeChannelBearer (-1) activeTracer chan2
