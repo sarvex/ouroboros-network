@@ -165,7 +165,7 @@ demo chain0 updates = do
 
             chainSyncInitator =
               InitiatorProtocolOnly $
-                mkMuxPeer $ \_ctx -> ( nullTracer
+                mkMiniProtocolCbFromPeer $ \_ctx -> ( nullTracer
                                      , ChainSync.codecChainSync encode             decode
                                                                 encode             decode
                                                      (encodeTip encode) (decodeTip decode)
@@ -183,7 +183,7 @@ demo chain0 updates = do
 
             chainSyncResponder =
               ResponderProtocolOnly $
-                mkMuxPeer $ \_ctx -> ( nullTracer
+                mkMiniProtocolCbFromPeer $ \_ctx -> ( nullTracer
                                      , ChainSync.codecChainSync encode             decode
                                                                 encode             decode
                                                      (encodeTip encode) (decodeTip decode)

@@ -177,7 +177,7 @@ clientChainSync sockPaths = withIOManager $ \iocp ->
 
     chainSync =
       InitiatorProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         (contramap show stdoutTracer
         , codecChainSync
         , ChainSync.chainSyncClientPeer chainSyncClient
@@ -215,7 +215,7 @@ serverChainSync sockAddr = withIOManager $ \iocp -> do
 
     chainSync =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap show stdoutTracer
         , codecChainSync
         , ChainSync.chainSyncServerPeer (chainSyncServer prng)
@@ -275,7 +275,7 @@ clientBlockFetch sockAddrs = withIOManager $ \iocp -> do
                        InitiatorMode LocalAddress LBS.ByteString IO () Void
         chainSync =
           InitiatorProtocolOnly $
-            MuxPeerRaw $ \MinimalInitiatorContext { micConnectionId = connId } channel ->
+            MiniProtocolCb $ \MinimalInitiatorContext { micConnectionId = connId } channel ->
               let register = atomically $ do
                              chainvar <- newTVar genesisAnchoredFragment
                              modifyTVar' candidateChainsVar
@@ -296,7 +296,7 @@ clientBlockFetch sockAddrs = withIOManager $ \iocp -> do
                         InitiatorMode LocalAddress LBS.ByteString IO () Void
         blockFetch =
           InitiatorProtocolOnly $
-            MuxPeerRaw $ \MinimalInitiatorContext { micConnectionId = connId } channel ->
+            MiniProtocolCb $ \MinimalInitiatorContext { micConnectionId = connId } channel ->
               bracketFetchClient registry maxBound isPipeliningEnabled connId $ \clientCtx ->
                 runPipelinedPeer
                   nullTracer -- (contramap (show . TraceLabelPeer connId) stdoutTracer)
@@ -456,7 +456,7 @@ serverBlockFetch sockAddr = withIOManager $ \iocp -> do
                    ResponderMode LocalAddress LBS.ByteString IO Void ()
     chainSync =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap show stdoutTracer
         , codecChainSync
         , ChainSync.chainSyncServerPeer (chainSyncServer prng)
@@ -466,7 +466,7 @@ serverBlockFetch sockAddr = withIOManager $ \iocp -> do
                     ResponderMode LocalAddress LBS.ByteString IO Void ()
     blockFetch =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap show stdoutTracer
         , codecBlockFetch
         , BlockFetch.blockFetchServerPeer (blockFetchServer prng)

@@ -1067,13 +1067,13 @@ startProtocols tok isBigLedgerPeer connHandle@PeerConnectionHandle { pchMux, pch
                 pchMux miniProtocolNum
                 Mux.InitiatorDirectionOnly
                 Mux.StartEagerly
-                (runMuxPeer initiator context)
+                (runMiniProtocolCb initiator context)
           InitiatorAndResponderProtocol initiator _ ->
               Mux.runMiniProtocol
                 pchMux miniProtocolNum
                 Mux.InitiatorDirection
                 Mux.StartEagerly
-                (runMuxPeer initiator context)
+                (runMiniProtocolCb initiator context)
       where
         context :: ExpandedInitiatorContext peerAddr m
         context = mkInitiatorContext tok isBigLedgerPeer connHandle

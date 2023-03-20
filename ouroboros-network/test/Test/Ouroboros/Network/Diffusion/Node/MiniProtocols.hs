@@ -335,9 +335,9 @@ applications debugTracer nodeKernel
     localResponderApp = OuroborosApplication []
 
     chainSyncInitiator
-      :: MuxPeer (ExpandedInitiatorContext NtNAddr m) ByteString m ()
+      :: MiniProtocolCb (ExpandedInitiatorContext NtNAddr m) ByteString m ()
     chainSyncInitiator  =
-      MuxPeerRaw $
+      MiniProtocolCb $
       \  ExpandedInitiatorContext {
            eicConnectionId   = connId,
            eicControlMessage = controlMessageSTM
@@ -362,8 +362,8 @@ applications debugTracer nodeKernel
                       )
 
     chainSyncResponder
-      :: MuxPeer (ResponderContext NtNAddr) ByteString m ()
-    chainSyncResponder = MuxPeerRaw $ \_ctx channel -> do
+      :: MiniProtocolCb (ResponderContext NtNAddr) ByteString m ()
+    chainSyncResponder = MiniProtocolCb $ \_ctx channel -> do
       labelThisThread "ChainSyncServer"
       runPeerWithLimits
         nullTracer
@@ -376,9 +376,9 @@ applications debugTracer nodeKernel
             () (nkChainProducerState nodeKernel)))
 
     blockFetchInitiator
-      :: MuxPeer (ExpandedInitiatorContext NtNAddr m) ByteString m ()
+      :: MiniProtocolCb (ExpandedInitiatorContext NtNAddr m) ByteString m ()
     blockFetchInitiator  =
-      MuxPeerRaw $
+      MiniProtocolCb $
       \  ExpandedInitiatorContext {
            eicConnectionId   = ConnectionId { remoteAddress },
            eicControlMessage = controlMessageSTM
@@ -401,9 +401,9 @@ applications debugTracer nodeKernel
                                      nullTracer clientCtx)
 
     blockFetchResponder
-      :: MuxPeer (ResponderContext NtNAddr) ByteString m ()
+      :: MiniProtocolCb (ResponderContext NtNAddr) ByteString m ()
     blockFetchResponder =
-      MuxPeerRaw $ \_ctx channel -> do
+      MiniProtocolCb $ \_ctx channel -> do
         labelThisThread "BlockFetchServer"
         runPeerWithLimits
           nullTracer
@@ -424,9 +424,9 @@ applications debugTracer nodeKernel
           )
 
     keepAliveInitiator
-      :: MuxPeer (ExpandedInitiatorContext NtNAddr m) ByteString m ()
+      :: MiniProtocolCb (ExpandedInitiatorContext NtNAddr m) ByteString m ()
     keepAliveInitiator  =
-      MuxPeerRaw $
+      MiniProtocolCb $
       \  ExpandedInitiatorContext {
            eicConnectionId   = connId@ConnectionId { remoteAddress },
            eicControlMessage = controlMessageSTM
@@ -453,8 +453,8 @@ applications debugTracer nodeKernel
                                    kacApp
 
     keepAliveResponder
-      :: MuxPeer (ResponderContext NtNAddr) ByteString m ()
-    keepAliveResponder = MuxPeerRaw $ \_ctx channel -> do
+      :: MiniProtocolCb (ResponderContext NtNAddr) ByteString m ()
+    keepAliveResponder = MiniProtocolCb $ \_ctx channel -> do
       labelThisThread "KeepAliveServer"
       runPeerWithLimits
         nullTracer
@@ -465,9 +465,9 @@ applications debugTracer nodeKernel
         (keepAliveServerPeer keepAliveServer)
 
     pingPongInitiator
-      :: MuxPeer (ExpandedInitiatorContext NtNAddr m) ByteString m ()
+      :: MiniProtocolCb (ExpandedInitiatorContext NtNAddr m) ByteString m ()
     pingPongInitiator  =
-        MuxPeerRaw $
+        MiniProtocolCb $
         \  ExpandedInitiatorContext {
              eicConnectionId   = connId,
              eicControlMessage = controlMessageSTM
@@ -508,8 +508,8 @@ applications debugTracer nodeKernel
                (pingPongClientPeer pingPongClient)
 
     pingPongResponder
-      :: MuxPeer (ResponderContext NtNAddr) ByteString m ()
-    pingPongResponder  = MuxPeerRaw $
+      :: MiniProtocolCb (ResponderContext NtNAddr) ByteString m ()
+    pingPongResponder  = MiniProtocolCb $
       \ResponderContext { rcConnectionId = connId } channel ->
       runPeerWithLimits
         ((show . (connId,)) `contramap` debugTracer)
@@ -521,9 +521,9 @@ applications debugTracer nodeKernel
 
 
     peerSharingInitiator
-      :: MuxPeer (ExpandedInitiatorContext NtNAddr m) ByteString m ()
+      :: MiniProtocolCb (ExpandedInitiatorContext NtNAddr m) ByteString m ()
     peerSharingInitiator  =
-      MuxPeerRaw $
+      MiniProtocolCb $
        \  ExpandedInitiatorContext {
             eicConnectionId   = ConnectionId { remoteAddress = them },
             eicControlMessage = controlMessageSTM
@@ -543,8 +543,8 @@ applications debugTracer nodeKernel
 
     peerSharingResponder
       :: (PeerSharingAmount -> m [NtNAddr])
-      -> MuxPeer (ResponderContext NtNAddr) ByteString m ()
-    peerSharingResponder f = MuxPeerRaw $ \_ctx channel -> do
+      -> MiniProtocolCb (ResponderContext NtNAddr) ByteString m ()
+    peerSharingResponder f = MiniProtocolCb $ \_ctx channel -> do
       labelThisThread "PeerSharingServer"
       runPeerWithLimits
         nullTracer

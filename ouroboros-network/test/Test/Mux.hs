@@ -113,7 +113,7 @@ demo chain0 updates delay = do
 
         chainSyncInitator =
           InitiatorProtocolOnly $
-          mkMuxPeer $ \_ctx ->
+          mkMiniProtocolCbFromPeer $ \_ctx ->
             ( nullTracer
             , ChainSync.codecChainSync
                  encode             decode
@@ -131,8 +131,7 @@ demo chain0 updates delay = do
         producerApp = testProtocols chainSyncResponder
 
         chainSyncResponder =
-          ResponderProtocolOnly $
-          mkMuxPeer $ \_ctx ->
+          ResponderProtocolOnly $ mkMiniProtocolCbFromPeer $ \_ctx ->
             ( nullTracer
             , ChainSync.codecChainSync
                  encode             decode

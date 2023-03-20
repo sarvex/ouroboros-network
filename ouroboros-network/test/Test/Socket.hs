@@ -128,13 +128,13 @@ demo chain0 updates = withIOManager $ \iocp -> do
         initiatorApp = testProtocols1 chainSyncInitator
 
         chainSyncInitator =
-          InitiatorProtocolOnly $ 
-            mkMuxPeer (\_ctx -> ( nullTracer
-                                , codecChainSync
-                                , ChainSync.chainSyncClientPeer
-                                    (ChainSync.chainSyncClientExample consumerVar
-                                      (consumerClient done target consumerVar))
-                                ))
+          InitiatorProtocolOnly $ mkMiniProtocolCbFromPeer $ \_ctx ->
+            ( nullTracer
+            , codecChainSync
+            , ChainSync.chainSyncClientPeer
+                (ChainSync.chainSyncClientExample consumerVar
+                   (consumerClient done target consumerVar))
+            )
 
         server :: ChainSync.ChainSyncServer block (Point block) (Tip block) IO ()
         server = ChainSync.chainSyncServerExample () producerVar
@@ -145,11 +145,11 @@ demo chain0 updates = withIOManager $ \iocp -> do
         responderApp = testProtocols1 chainSyncResponder
 
         chainSyncResponder =
-          ResponderProtocolOnly $
-            mkMuxPeer (\_ctx -> ( nullTracer
-                                , codecChainSync
-                                , ChainSync.chainSyncServerPeer server
-                                ))
+          ResponderProtocolOnly $ mkMiniProtocolCbFromPeer $ \_ctx ->
+            ( nullTracer
+            , codecChainSync
+            , ChainSync.chainSyncServerPeer server
+            )
 
         codecChainSync = ChainSync.codecChainSync encode             decode
                                                   encode             decode

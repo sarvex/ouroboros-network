@@ -125,7 +125,7 @@ clientPingPong pipelined =
 
     pingPongInitiator | pipelined =
       InitiatorProtocolOnly $
-      mkMuxPeerPipelined $ \_ctx ->
+      mkMiniProtocolCbFromPeerPipelined $ \_ctx ->
         (contramap show stdoutTracer
         , codecPingPong
         , pingPongClientPeerPipelined (pingPongClientPipelinedMax 5)
@@ -133,7 +133,7 @@ clientPingPong pipelined =
 
       | otherwise =
       InitiatorProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap show stdoutTracer
         , codecPingPong
         , pingPongClientPeer (pingPongClientCount 5)
@@ -172,7 +172,7 @@ serverPingPong =
 
     pingPongResponder =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap show stdoutTracer
         , codecPingPong
         , pingPongServerPeer pingPongServerStandard
@@ -232,7 +232,7 @@ clientPingPong2 =
 
     pingpong =
       InitiatorProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap (show . (,) (1 :: Int)) stdoutTracer
         , codecPingPong
         , pingPongClientPeer (pingPongClientCount 5)
@@ -240,7 +240,7 @@ clientPingPong2 =
 
     pingpong'=
       InitiatorProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap (show . (,) (2 :: Int)) stdoutTracer
         , codecPingPong
         , pingPongClientPeer (pingPongClientCount 5)
@@ -292,7 +292,7 @@ serverPingPong2 =
 
     pingpong =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap (show . (,) (1 :: Int)) stdoutTracer
         , codecPingPong
         , pingPongServerPeer pingPongServerStandard
@@ -300,7 +300,7 @@ serverPingPong2 =
 
     pingpong' =
       ResponderProtocolOnly $
-      mkMuxPeer $ \_ctx ->
+      mkMiniProtocolCbFromPeer $ \_ctx ->
         ( contramap (show . (,) (2 :: Int)) stdoutTracer
         , codecPingPong
         , pingPongServerPeer pingPongServerStandard

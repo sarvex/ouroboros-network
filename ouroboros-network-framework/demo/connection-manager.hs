@@ -332,7 +332,7 @@ withBidirectionalConnectionManager snocket makeBearer socket
            InitiatorResponderMode peerAddr ByteString m () ()
     reqRespInitiatorAndResponder protocolNum requestsVar =
       InitiatorAndResponderProtocol
-        (mkMuxPeer
+        (mkMiniProtocolCbFromPeer
           (\_ctx -> ( ("Initiator",protocolNum,) `contramap` debugTracer -- TraceSendRecv
                     , codecReqResp @Int @Int
                     , Effect $ do
@@ -346,7 +346,7 @@ withBidirectionalConnectionManager snocket makeBearer socket
                         pure $ reqRespClientPeer (reqRespClient reqs)
                     )
           ))
-        (mkMuxPeer
+        (mkMiniProtocolCbFromPeer
           (\_ctx -> ( ("Responder",protocolNum,) `contramap` debugTracer -- TraceSendRecv
                     , codecReqResp @Int @Int
                     , Effect $ reqRespServerPeer <$> reqRespServerId
@@ -420,7 +420,7 @@ runInitiatorProtocols
             SingInitiatorMode          -> Mux.InitiatorDirectionOnly
             SingInitiatorResponderMode -> Mux.InitiatorDirection)
           Mux.StartEagerly
-          (runMuxPeer
+          (runMiniProtocolCb
             (case miniProtocolRun ptcl of
               InitiatorProtocolOnly initiator           -> initiator
               InitiatorAndResponderProtocol initiator _ -> initiator)

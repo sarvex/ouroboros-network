@@ -412,7 +412,7 @@ withInitiatorOnlyConnectionManager name timeouts trTracer cmTracer snocket makeB
                                         ByteString m [resp] Void
     reqRespInitiator protocolNum nextRequest =
       InitiatorProtocolOnly
-        (MuxPeerRaw $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
+        (MiniProtocolCb $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
            runPeerWithLimits
              (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
              -- TraceSendRecv
@@ -619,7 +619,7 @@ withBidirectionalConnectionManager name timeouts
                          ByteString m [resp] acc
     reqRespInitiatorAndResponder protocolNum accInit nextRequest =
       InitiatorAndResponderProtocol
-        (MuxPeerRaw $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
+        (MiniProtocolCb $ \ExpandedInitiatorContext { eicConnectionId = connId } channel ->
            runPeerWithLimits
              (WithName (name,"Initiator",protocolNum) `contramap` nullTracer)
              -- TraceSendRecv
@@ -630,7 +630,7 @@ withBidirectionalConnectionManager name timeouts
              (Effect $ do
                reqs <- atomically (nextRequest connId)
                pure $ reqRespClientPeer (reqRespClientMap reqs)))
-        (MuxPeerRaw $ \_ctx channel ->
+        (MiniProtocolCb $ \_ctx channel ->
            runPeerWithLimits
              (WithName (name,"Responder",protocolNum) `contramap` nullTracer)
              -- TraceSendRecv
@@ -719,7 +719,7 @@ runInitiatorProtocols singMuxMode mux bundle controlBundle connId = do
             SingInitiatorMode          -> Mux.InitiatorDirectionOnly
             SingInitiatorResponderMode -> Mux.InitiatorDirection)
           Mux.StartEagerly
-          (runMuxPeer
+          (runMiniProtocolCb
             (case miniProtocolRun ptcl of
               InitiatorProtocolOnly initiator           -> initiator
               InitiatorAndResponderProtocol initiator _ -> initiator)

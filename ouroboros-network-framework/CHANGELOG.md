@@ -43,13 +43,20 @@
   - `Ouroboros.Network.Socket.withServerNode`
   - inbound governor API
 
-* `MuxPeer` and `MuxPeerPipelined` constructors of `MuxPeer` type were removed.
-  Use `mkMuxPeer` and `mkMuxPeerPipelined` instead.  Note that these are not
-  inplace replacment.
+* `MuxPeer` changed it's kind and it was renamed to `MiniProtocolCb`, the old
+  type is still provided but deprecated.  The `MuxPeerRaw` constructor was
+  renamed to `MiniProtocolCb` (the old one is still provided but deprecated).
+  `MuxPeer` and `MuxPeerPipelined` constructors also changed its type and are
+  now deprecated.  Use `mkMiniProtocolCbFromPeer` and
+  `mkMiniProtocolCbFromPeerPipelined` instead.
 
-* `runMuxPeer` changed its type.  It receives two arguments: the context and
-  `Network.Mux.Channel.Channel` rather than `Ouroboros.Network.Channel.Channel`
-  (no need to use `Ouroboros.Network.Channel.fromChannel`)
+  Also note that even the deprecated constructors have changed their types.
+
+* `runMuxPeer` change its type but also is now deprecated in favour of `runMiniProtocolCb`.  The latter
+  receives two arguments: the context and `Network.Mux.Channel.Channel` rather
+  than `Ouroboros.Network.Channel.Channel` (no need to use
+  `Ouroboros.Network.Channel.fromChannel`).  `runMuxPeer` accepts the context (added argument) and
+  `Ouroboros.Network.Channel.Channel`.
 
 ### Non-breaking changes
 

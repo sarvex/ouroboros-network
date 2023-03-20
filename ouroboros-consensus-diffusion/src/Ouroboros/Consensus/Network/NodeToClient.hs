@@ -469,12 +469,16 @@ responder version Apps {..} =
     nodeToClientProtocols
       (NodeToClientProtocols {
           localChainSyncProtocol =
-            ResponderProtocolOnly $ MuxPeerRaw $ \ctx -> aChainSyncServer (rcConnectionId ctx),
+            ResponderProtocolOnly $ MiniProtocolCb $ \ctx ->
+              aChainSyncServer (rcConnectionId ctx),
           localTxSubmissionProtocol =
-            ResponderProtocolOnly $ MuxPeerRaw $ \ctx -> aTxSubmissionServer (rcConnectionId ctx),
+            ResponderProtocolOnly $ MiniProtocolCb $ \ctx ->
+              aTxSubmissionServer (rcConnectionId ctx),
           localStateQueryProtocol =
-            ResponderProtocolOnly $ MuxPeerRaw $ \ctx -> aStateQueryServer (rcConnectionId ctx),
+            ResponderProtocolOnly $ MiniProtocolCb $ \ctx ->
+              aStateQueryServer (rcConnectionId ctx),
           localTxMonitorProtocol =
-            ResponderProtocolOnly $ MuxPeerRaw $ \ctx -> aTxMonitorServer (rcConnectionId ctx)
+            ResponderProtocolOnly $ MiniProtocolCb $ \ctx ->
+              aTxMonitorServer (rcConnectionId ctx)
         })
       version

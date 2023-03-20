@@ -493,14 +493,14 @@ runResponder mux
             mux (miniProtocolNum miniProtocol)
             Mux.ResponderDirectionOnly
             startStrategy
-            (runMuxPeer responder responderContext)
+            (runMiniProtocolCb responder responderContext)
 
         InitiatorAndResponderProtocol _ responder ->
           Mux.runMiniProtocol
             mux (miniProtocolNum miniProtocol)
             Mux.ResponderDirection
             startStrategy
-            (runMuxPeer responder responderContext)
+            (runMiniProtocolCb responder responderContext)
 
 
 --
