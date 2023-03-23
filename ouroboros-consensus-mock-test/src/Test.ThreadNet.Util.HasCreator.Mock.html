@@ -5,24 +5,21 @@
 </span><span id="line-5"></span><span>
 </span><span id="line-6"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Cardano.Crypto.DSIGN</span></span><span>
 </span><span id="line-7"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Data.Word</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Word64</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-8"></span><span>
-</span><span id="line-9"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.NodeId</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">CoreNodeId</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
-</span><span id="line-10"></span><span>
-</span><span id="line-11"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier">Ouroboros.Consensus.Mock.Ledger</span></a></span><span>
-</span><span id="line-12"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier">Ouroboros.Consensus.Mock.Protocol.Praos</span></a></span><span>
-</span><span id="line-13"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Protocol.BFT</span></a></span><span>
-</span><span id="line-14"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Protocol.PBFT</span></a></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier">Ouroboros.Consensus.Mock.Ledger</span></a></span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier">Ouroboros.Consensus.Mock.Protocol.Praos</span></a></span><span>
+</span><span id="line-10"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.NodeId</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">CoreNodeId</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-11"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Protocol.BFT</span></a></span><span>
+</span><span id="line-12"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Protocol.PBFT</span></a></span><span>
+</span><span id="line-13"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier">Test.ThreadNet.Util.HasCreator</span></a></span><span>
+</span><span id="line-14"></span><span>
 </span><span id="line-15"></span><span>
-</span><span id="line-16"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier">Test.ThreadNet.Util.HasCreator</span></a></span><span>
-</span><span id="line-17"></span><span>
-</span><span id="line-18"></span><span>
-</span><span id="line-19"></span><span id="local-6989586621679145902"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimpleBftBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145902"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">BftMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-20"></span><span>    </span><span id="local-6989586621679145899"><span class="annot"><span class="annottext">getCreator :: SimpleBftBlock c BftMockCrypto -&gt; CoreNodeId
+</span><span id="line-16"></span><span id="local-6989586621679145890"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimpleBftBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145890"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">BftMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-17"></span><span>    </span><span id="local-6989586621679145887"><span class="annot"><span class="annottext">getCreator :: SimpleBftBlock c BftMockCrypto -&gt; CoreNodeId
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">SignedDSIGN MockDSIGN (SignedSimpleBft c BftMockCrypto)
 -&gt; CoreNodeId
 forall a. SignedDSIGN MockDSIGN a -&gt; CoreNodeId
-</span><a href="#local-6989586621679145897"><span class="hs-identifier hs-var">coreNodeId</span></a></span><span>
-</span><span id="line-21"></span><span>               </span><span class="annot"><span class="annottext">(SignedDSIGN MockDSIGN (SignedSimpleBft c BftMockCrypto)
+</span><a href="#local-6989586621679145885"><span class="hs-identifier hs-var">coreNodeId</span></a></span><span>
+</span><span id="line-18"></span><span>               </span><span class="annot"><span class="annottext">(SignedDSIGN MockDSIGN (SignedSimpleBft c BftMockCrypto)
  -&gt; CoreNodeId)
 -&gt; (SimpleBftBlock c BftMockCrypto
     -&gt; SignedDSIGN MockDSIGN (SignedSimpleBft c BftMockCrypto))
@@ -34,7 +31,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c toSign.
 BftFields c toSign -&gt; SignedDSIGN (BftDSIGN c) toSign
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var">bftSignature</span></a></span><span>
-</span><span id="line-22"></span><span>               </span><span class="annot"><span class="annottext">(BftFields BftMockCrypto (SignedSimpleBft c BftMockCrypto)
+</span><span id="line-19"></span><span>               </span><span class="annot"><span class="annottext">(BftFields BftMockCrypto (SignedSimpleBft c BftMockCrypto)
  -&gt; SignedDSIGN MockDSIGN (SignedSimpleBft c BftMockCrypto))
 -&gt; (SimpleBftBlock c BftMockCrypto
     -&gt; BftFields BftMockCrypto (SignedSimpleBft c BftMockCrypto))
@@ -46,7 +43,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c c'.
 SimpleBftExt c c' -&gt; BftFields c' (SignedSimpleBft c c')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleBftExt</span></a></span><span>
-</span><span id="line-23"></span><span>               </span><span class="annot"><span class="annottext">(SimpleBftExt c BftMockCrypto
+</span><span id="line-20"></span><span>               </span><span class="annot"><span class="annottext">(SimpleBftExt c BftMockCrypto
  -&gt; BftFields BftMockCrypto (SignedSimpleBft c BftMockCrypto))
 -&gt; (SimpleBftBlock c BftMockCrypto -&gt; SimpleBftExt c BftMockCrypto)
 -&gt; SimpleBftBlock c BftMockCrypto
@@ -56,7 +53,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 -&gt; SimpleBftExt c BftMockCrypto
 forall c ext ext'. Header (SimpleBlock' c ext ext') -&gt; ext'
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeaderExt</span></a></span><span>
-</span><span id="line-24"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimpleBftBlock c BftMockCrypto)
+</span><span id="line-21"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimpleBftBlock c BftMockCrypto)
  -&gt; SimpleBftExt c BftMockCrypto)
 -&gt; (SimpleBftBlock c BftMockCrypto
     -&gt; Header (SimpleBftBlock c BftMockCrypto))
@@ -68,10 +65,10 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c ext ext'.
 SimpleBlock' c ext ext' -&gt; Header (SimpleBlock' c ext ext')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeader</span></a></span><span>
-</span><span id="line-25"></span><span>      </span><span class="hs-keyword">where</span><span>
-</span><span id="line-26"></span><span>        </span><span id="local-6989586621679145952"><span class="annot"><a href="#local-6989586621679145897"><span class="hs-identifier hs-type">coreNodeId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145952"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">CoreNodeId</span></a></span></span><span>
-</span><span id="line-27"></span><span>        </span><span id="local-6989586621679145897"><span class="annot"><span class="annottext">coreNodeId :: SignedDSIGN MockDSIGN a -&gt; CoreNodeId
-</span><a href="#local-6989586621679145897"><span class="hs-identifier hs-var hs-var">coreNodeId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64 -&gt; CoreNodeId
+</span><span id="line-22"></span><span>      </span><span class="hs-keyword">where</span><span>
+</span><span id="line-23"></span><span>        </span><span id="local-6989586621679145940"><span class="annot"><a href="#local-6989586621679145885"><span class="hs-identifier hs-type">coreNodeId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145940"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">CoreNodeId</span></a></span></span><span>
+</span><span id="line-24"></span><span>        </span><span id="local-6989586621679145885"><span class="annot"><span class="annottext">coreNodeId :: SignedDSIGN MockDSIGN a -&gt; CoreNodeId
+</span><a href="#local-6989586621679145885"><span class="hs-identifier hs-var hs-var">coreNodeId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64 -&gt; CoreNodeId
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">CoreNodeId</span></a></span><span> </span><span class="annot"><span class="annottext">(Word64 -&gt; CoreNodeId)
 -&gt; (SignedDSIGN MockDSIGN a -&gt; Word64)
 -&gt; SignedDSIGN MockDSIGN a
@@ -80,14 +77,14 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">SignedDSIGN MockDSIGN a -&gt; Word64
 forall a. SignedDSIGN MockDSIGN a -&gt; Word64
 </span><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-var">verKeyIdFromSigned</span></a></span></span><span>
-</span><span id="line-28"></span><span>
-</span><span id="line-29"></span><span id="local-6989586621679145889"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePBftBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145889"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">PBftMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-30"></span><span>    </span><span id="local-6989586621679145887"><span class="annot"><span class="annottext">getCreator :: SimplePBftBlock c PBftMockCrypto -&gt; CoreNodeId
-</span><a href="#local-6989586621679145887"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto)
+</span><span id="line-25"></span><span>
+</span><span id="line-26"></span><span id="local-6989586621679145877"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePBftBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145877"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">PBftMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-27"></span><span>    </span><span id="local-6989586621679145875"><span class="annot"><span class="annottext">getCreator :: SimplePBftBlock c PBftMockCrypto -&gt; CoreNodeId
+</span><a href="#local-6989586621679145875"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto)
 -&gt; CoreNodeId
 forall a. SignedDSIGN MockDSIGN a -&gt; CoreNodeId
-</span><a href="#local-6989586621679145886"><span class="hs-identifier hs-var">coreNodeId</span></a></span><span>
-</span><span id="line-31"></span><span>               </span><span class="annot"><span class="annottext">(SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto)
+</span><a href="#local-6989586621679145874"><span class="hs-identifier hs-var">coreNodeId</span></a></span><span>
+</span><span id="line-28"></span><span>               </span><span class="annot"><span class="annottext">(SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto)
  -&gt; CoreNodeId)
 -&gt; (SimplePBftBlock c PBftMockCrypto
     -&gt; SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto))
@@ -99,7 +96,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c toSign.
 PBftFields c toSign -&gt; SignedDSIGN (PBftDSIGN c) toSign
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var">pbftSignature</span></a></span><span>
-</span><span id="line-32"></span><span>               </span><span class="annot"><span class="annottext">(PBftFields PBftMockCrypto (SignedSimplePBft c PBftMockCrypto)
+</span><span id="line-29"></span><span>               </span><span class="annot"><span class="annottext">(PBftFields PBftMockCrypto (SignedSimplePBft c PBftMockCrypto)
  -&gt; SignedDSIGN MockDSIGN (SignedSimplePBft c PBftMockCrypto))
 -&gt; (SimplePBftBlock c PBftMockCrypto
     -&gt; PBftFields PBftMockCrypto (SignedSimplePBft c PBftMockCrypto))
@@ -111,7 +108,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c c'.
 SimplePBftExt c c' -&gt; PBftFields c' (SignedSimplePBft c c')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simplePBftExt</span></a></span><span>
-</span><span id="line-33"></span><span>               </span><span class="annot"><span class="annottext">(SimplePBftExt c PBftMockCrypto
+</span><span id="line-30"></span><span>               </span><span class="annot"><span class="annottext">(SimplePBftExt c PBftMockCrypto
  -&gt; PBftFields PBftMockCrypto (SignedSimplePBft c PBftMockCrypto))
 -&gt; (SimplePBftBlock c PBftMockCrypto
     -&gt; SimplePBftExt c PBftMockCrypto)
@@ -122,7 +119,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 -&gt; SimplePBftExt c PBftMockCrypto
 forall c ext ext'. Header (SimpleBlock' c ext ext') -&gt; ext'
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeaderExt</span></a></span><span>
-</span><span id="line-34"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePBftBlock c PBftMockCrypto)
+</span><span id="line-31"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePBftBlock c PBftMockCrypto)
  -&gt; SimplePBftExt c PBftMockCrypto)
 -&gt; (SimplePBftBlock c PBftMockCrypto
     -&gt; Header (SimplePBftBlock c PBftMockCrypto))
@@ -134,10 +131,10 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c ext ext'.
 SimpleBlock' c ext ext' -&gt; Header (SimpleBlock' c ext ext')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeader</span></a></span><span>
-</span><span id="line-35"></span><span>      </span><span class="hs-keyword">where</span><span>
-</span><span id="line-36"></span><span>        </span><span id="local-6989586621679145883"><span class="annot"><a href="#local-6989586621679145886"><span class="hs-identifier hs-type">coreNodeId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145883"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">CoreNodeId</span></a></span></span><span>
-</span><span id="line-37"></span><span>        </span><span id="local-6989586621679145886"><span class="annot"><span class="annottext">coreNodeId :: SignedDSIGN MockDSIGN a -&gt; CoreNodeId
-</span><a href="#local-6989586621679145886"><span class="hs-identifier hs-var hs-var">coreNodeId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64 -&gt; CoreNodeId
+</span><span id="line-32"></span><span>      </span><span class="hs-keyword">where</span><span>
+</span><span id="line-33"></span><span>        </span><span id="local-6989586621679145871"><span class="annot"><a href="#local-6989586621679145874"><span class="hs-identifier hs-type">coreNodeId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145871"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">CoreNodeId</span></a></span></span><span>
+</span><span id="line-34"></span><span>        </span><span id="local-6989586621679145874"><span class="annot"><span class="annottext">coreNodeId :: SignedDSIGN MockDSIGN a -&gt; CoreNodeId
+</span><a href="#local-6989586621679145874"><span class="hs-identifier hs-var hs-var">coreNodeId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64 -&gt; CoreNodeId
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">CoreNodeId</span></a></span><span> </span><span class="annot"><span class="annottext">(Word64 -&gt; CoreNodeId)
 -&gt; (SignedDSIGN MockDSIGN a -&gt; Word64)
 -&gt; SignedDSIGN MockDSIGN a
@@ -146,13 +143,13 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">SignedDSIGN MockDSIGN a -&gt; Word64
 forall a. SignedDSIGN MockDSIGN a -&gt; Word64
 </span><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-var">verKeyIdFromSigned</span></a></span></span><span>
-</span><span id="line-38"></span><span>
-</span><span id="line-39"></span><span id="local-6989586621679145882"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePraosBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145882"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">PraosMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-40"></span><span>    </span><span id="local-6989586621679145880"><span class="annot"><span class="annottext">getCreator :: SimplePraosBlock c PraosMockCrypto -&gt; CoreNodeId
-</span><a href="#local-6989586621679145880"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PraosExtraFields PraosMockCrypto -&gt; CoreNodeId
+</span><span id="line-35"></span><span>
+</span><span id="line-36"></span><span id="local-6989586621679145870"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePraosBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145870"><span class="hs-identifier hs-type">c</span></a></span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">PraosMockCrypto</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-37"></span><span>    </span><span id="local-6989586621679145868"><span class="annot"><span class="annottext">getCreator :: SimplePraosBlock c PraosMockCrypto -&gt; CoreNodeId
+</span><a href="#local-6989586621679145868"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PraosExtraFields PraosMockCrypto -&gt; CoreNodeId
 forall c. PraosExtraFields c -&gt; CoreNodeId
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">praosCreator</span></a></span><span>
-</span><span id="line-41"></span><span>               </span><span class="annot"><span class="annottext">(PraosExtraFields PraosMockCrypto -&gt; CoreNodeId)
+</span><span id="line-38"></span><span>               </span><span class="annot"><span class="annottext">(PraosExtraFields PraosMockCrypto -&gt; CoreNodeId)
 -&gt; (SimplePraosBlock c PraosMockCrypto
     -&gt; PraosExtraFields PraosMockCrypto)
 -&gt; SimplePraosBlock c PraosMockCrypto
@@ -163,7 +160,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall crypto typeBeingSigned.
 PraosFields crypto typeBeingSigned -&gt; PraosExtraFields crypto
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">praosExtraFields</span></a></span><span>
-</span><span id="line-42"></span><span>               </span><span class="annot"><span class="annottext">(PraosFields PraosMockCrypto (SignedSimplePraos c PraosMockCrypto)
+</span><span id="line-39"></span><span>               </span><span class="annot"><span class="annottext">(PraosFields PraosMockCrypto (SignedSimplePraos c PraosMockCrypto)
  -&gt; PraosExtraFields PraosMockCrypto)
 -&gt; (SimplePraosBlock c PraosMockCrypto
     -&gt; PraosFields
@@ -177,7 +174,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c c'.
 SimplePraosExt c c' -&gt; PraosFields c' (SignedSimplePraos c c')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simplePraosExt</span></a></span><span>
-</span><span id="line-43"></span><span>               </span><span class="annot"><span class="annottext">(SimplePraosExt c PraosMockCrypto
+</span><span id="line-40"></span><span>               </span><span class="annot"><span class="annottext">(SimplePraosExt c PraosMockCrypto
  -&gt; PraosFields
       PraosMockCrypto (SignedSimplePraos c PraosMockCrypto))
 -&gt; (SimplePraosBlock c PraosMockCrypto
@@ -190,7 +187,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 -&gt; SimplePraosExt c PraosMockCrypto
 forall c ext ext'. Header (SimpleBlock' c ext ext') -&gt; ext'
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeaderExt</span></a></span><span>
-</span><span id="line-44"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePraosBlock c PraosMockCrypto)
+</span><span id="line-41"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePraosBlock c PraosMockCrypto)
  -&gt; SimplePraosExt c PraosMockCrypto)
 -&gt; (SimplePraosBlock c PraosMockCrypto
     -&gt; Header (SimplePraosBlock c PraosMockCrypto))
@@ -202,12 +199,12 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c ext ext'.
 SimpleBlock' c ext ext' -&gt; Header (SimpleBlock' c ext ext')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeader</span></a></span></span><span>
-</span><span id="line-45"></span><span>
-</span><span id="line-46"></span><span id="local-6989586621679145876"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePraosRuleBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145876"><span class="hs-identifier hs-type">c</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-47"></span><span>    </span><span id="local-6989586621679145874"><span class="annot"><span class="annottext">getCreator :: SimplePraosRuleBlock c -&gt; CoreNodeId
-</span><a href="#local-6989586621679145874"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">SimplePraosRuleExt -&gt; CoreNodeId
+</span><span id="line-42"></span><span>
+</span><span id="line-43"></span><span id="local-6989586621679145864"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-test-0.3.1.0/noopt/doc/html/ouroboros-consensus-test/src"><span class="hs-identifier hs-type">HasCreator</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-type">SimplePraosRuleBlock</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679145864"><span class="hs-identifier hs-type">c</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-44"></span><span>    </span><span id="local-6989586621679145862"><span class="annot"><span class="annottext">getCreator :: SimplePraosRuleBlock c -&gt; CoreNodeId
+</span><a href="#local-6989586621679145862"><span class="hs-identifier hs-var hs-var hs-var hs-var">getCreator</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">SimplePraosRuleExt -&gt; CoreNodeId
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simplePraosRuleExt</span></a></span><span>
-</span><span id="line-48"></span><span>               </span><span class="annot"><span class="annottext">(SimplePraosRuleExt -&gt; CoreNodeId)
+</span><span id="line-45"></span><span>               </span><span class="annot"><span class="annottext">(SimplePraosRuleExt -&gt; CoreNodeId)
 -&gt; (SimplePraosRuleBlock c -&gt; SimplePraosRuleExt)
 -&gt; SimplePraosRuleBlock c
 -&gt; CoreNodeId
@@ -215,7 +212,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">Header (SimplePraosRuleBlock c) -&gt; SimplePraosRuleExt
 forall c ext ext'. Header (SimpleBlock' c ext ext') -&gt; ext'
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeaderExt</span></a></span><span>
-</span><span id="line-49"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePraosRuleBlock c) -&gt; SimplePraosRuleExt)
+</span><span id="line-46"></span><span>               </span><span class="annot"><span class="annottext">(Header (SimplePraosRuleBlock c) -&gt; SimplePraosRuleExt)
 -&gt; (SimplePraosRuleBlock c -&gt; Header (SimplePraosRuleBlock c))
 -&gt; SimplePraosRuleBlock c
 -&gt; SimplePraosRuleExt
@@ -224,10 +221,10 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall c ext ext'.
 SimpleBlock' c ext ext' -&gt; Header (SimpleBlock' c ext ext')
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-mock-0.3.1.0/noopt/doc/html/ouroboros-consensus-mock/src"><span class="hs-identifier hs-var hs-var">simpleHeader</span></a></span></span><span>
-</span><span id="line-50"></span><span>
-</span><span id="line-51"></span><span class="hs-comment">-- | Get the id of the signer from a signature. Used for testing.</span><span>
-</span><span id="line-52"></span><span id="local-6989586621679145932"><span class="annot"><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-type">verKeyIdFromSigned</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145932"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word64</span></a></span></span><span>
-</span><span id="line-53"></span><span id="verKeyIdFromSigned"><span class="annot"><span class="annottext">verKeyIdFromSigned :: SignedDSIGN MockDSIGN a -&gt; Word64
-</span><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-var hs-var">verKeyIdFromSigned</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">SigMockDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679145870"><span class="annot"><a href="#local-6989586621679145870"><span class="hs-identifier hs-var">i</span></a></span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64
-</span><a href="#local-6989586621679145870"><span class="hs-identifier hs-var">i</span></a></span><span>
-</span><span id="line-54"></span></pre></body></html>
+</span><span id="line-47"></span><span>
+</span><span id="line-48"></span><span class="hs-comment">-- | Get the id of the signer from a signature. Used for testing.</span><span>
+</span><span id="line-49"></span><span id="local-6989586621679145920"><span class="annot"><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-type">verKeyIdFromSigned</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">MockDSIGN</span></span><span> </span><span class="annot"><a href="#local-6989586621679145920"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word64</span></a></span></span><span>
+</span><span id="line-50"></span><span id="verKeyIdFromSigned"><span class="annot"><span class="annottext">verKeyIdFromSigned :: SignedDSIGN MockDSIGN a -&gt; Word64
+</span><a href="Test.ThreadNet.Util.HasCreator.Mock.html#verKeyIdFromSigned"><span class="hs-identifier hs-var hs-var">verKeyIdFromSigned</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">SignedDSIGN</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">SigMockDSIGN</span></span><span> </span><span class="annot"><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679145858"><span class="annot"><a href="#local-6989586621679145858"><span class="hs-identifier hs-var">i</span></a></span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word64
+</span><a href="#local-6989586621679145858"><span class="hs-identifier hs-var">i</span></a></span><span>
+</span><span id="line-51"></span></pre></body></html>
