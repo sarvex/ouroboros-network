@@ -70,13 +70,13 @@
 </span><span id="line-59"></span><span class="hs-comment">-- then the third value returned by 'showData' will correspond to 'totalTime'.</span><span>
 </span><span id="line-60"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showHeaders"><span class="hs-identifier hs-type">showHeaders</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Builder</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Builder</span></span><span>
 </span><span id="line-61"></span><span id="showHeaders"><span class="annot"><span class="annottext">showHeaders :: Builder -&gt; Builder
-</span><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showHeaders"><span class="hs-identifier hs-var hs-var">showHeaders</span></a></span></span><span> </span><span id="local-6989586621679408543"><span class="annot"><span class="annottext">Builder
-</span><a href="#local-6989586621679408543"><span class="hs-identifier hs-var">sep</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Builder -&gt; [Builder] -&gt; Builder
+</span><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showHeaders"><span class="hs-identifier hs-var hs-var">showHeaders</span></a></span></span><span> </span><span id="local-6989586621679408550"><span class="annot"><span class="annottext">Builder
+</span><a href="#local-6989586621679408550"><span class="hs-identifier hs-var">sep</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Builder -&gt; [Builder] -&gt; Builder
 forall (foldable :: * -&gt; *).
 Foldable foldable =&gt;
 Builder -&gt; foldable Builder -&gt; Builder
 </span><span class="hs-identifier hs-var">intercalate</span></span><span> </span><span class="annot"><span class="annottext">Builder
-</span><a href="#local-6989586621679408543"><span class="hs-identifier hs-var">sep</span></a></span><span> </span><span class="annot"><span class="annottext">([Builder] -&gt; Builder) -&gt; [Builder] -&gt; Builder
+</span><a href="#local-6989586621679408550"><span class="hs-identifier hs-var">sep</span></a></span><span> </span><span class="annot"><span class="annottext">([Builder] -&gt; Builder) -&gt; [Builder] -&gt; Builder
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">((Builder, SlotDataPoint -&gt; Builder) -&gt; Builder)
 -&gt; [(Builder, SlotDataPoint -&gt; Builder)] -&gt; [Builder]
@@ -88,14 +88,14 @@ forall a b. (a, b) -&gt; a
 </span><span id="line-62"></span><span>
 </span><span id="line-63"></span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showData"><span class="hs-identifier hs-type">showData</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#SlotDataPoint"><span class="hs-identifier hs-type">SlotDataPoint</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Builder</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Builder</span></span><span>
 </span><span id="line-64"></span><span id="showData"><span class="annot"><span class="annottext">showData :: SlotDataPoint -&gt; Builder -&gt; Builder
-</span><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showData"><span class="hs-identifier hs-var hs-var">showData</span></a></span></span><span> </span><span id="local-6989586621679408541"><span class="annot"><span class="annottext">SlotDataPoint
-</span><a href="#local-6989586621679408541"><span class="hs-identifier hs-var">dp</span></a></span></span><span> </span><span id="local-6989586621679408540"><span class="annot"><span class="annottext">Builder
-</span><a href="#local-6989586621679408540"><span class="hs-identifier hs-var">sep</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Builder -&gt; [Builder] -&gt; Builder
+</span><a href="Cardano.Tools.DBAnalyser.Analysis.BenchmarkLedgerOps.SlotDataPoint.html#showData"><span class="hs-identifier hs-var hs-var">showData</span></a></span></span><span> </span><span id="local-6989586621679408548"><span class="annot"><span class="annottext">SlotDataPoint
+</span><a href="#local-6989586621679408548"><span class="hs-identifier hs-var">dp</span></a></span></span><span> </span><span id="local-6989586621679408547"><span class="annot"><span class="annottext">Builder
+</span><a href="#local-6989586621679408547"><span class="hs-identifier hs-var">sep</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Builder -&gt; [Builder] -&gt; Builder
 forall (foldable :: * -&gt; *).
 Foldable foldable =&gt;
 Builder -&gt; foldable Builder -&gt; Builder
 </span><span class="hs-identifier hs-var">intercalate</span></span><span> </span><span class="annot"><span class="annottext">Builder
-</span><a href="#local-6989586621679408540"><span class="hs-identifier hs-var">sep</span></a></span><span> </span><span class="annot"><span class="annottext">([Builder] -&gt; Builder) -&gt; [Builder] -&gt; Builder
+</span><a href="#local-6989586621679408547"><span class="hs-identifier hs-var">sep</span></a></span><span> </span><span class="annot"><span class="annottext">([Builder] -&gt; Builder) -&gt; [Builder] -&gt; Builder
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">((Builder, SlotDataPoint -&gt; Builder) -&gt; Builder)
 -&gt; [(Builder, SlotDataPoint -&gt; Builder)] -&gt; [Builder]
@@ -103,7 +103,7 @@ forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fmap</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">(SlotDataPoint -&gt; Builder) -&gt; SlotDataPoint -&gt; Builder
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">SlotDataPoint
-</span><a href="#local-6989586621679408541"><span class="hs-identifier hs-var">dp</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">((SlotDataPoint -&gt; Builder) -&gt; Builder)
+</span><a href="#local-6989586621679408548"><span class="hs-identifier hs-var">dp</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">((SlotDataPoint -&gt; Builder) -&gt; Builder)
 -&gt; ((Builder, SlotDataPoint -&gt; Builder)
     -&gt; SlotDataPoint -&gt; Builder)
 -&gt; (Builder, SlotDataPoint -&gt; Builder)
