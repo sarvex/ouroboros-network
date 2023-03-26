@@ -27,14 +27,14 @@
 </span><span id="line-27"></span><span id="mkConsensusProtocol"><span class="annot"><span class="annottext">mkConsensusProtocol :: NodeProtocolConfiguration
 -&gt; Maybe ProtocolFilepaths
 -&gt; ExceptT ProtocolInstantiationError IO SomeConsensusProtocol
-</span><a href="Cardano.Node.Protocol.html#mkConsensusProtocol"><span class="hs-identifier hs-var hs-var">mkConsensusProtocol</span></a></span></span><span> </span><span id="local-6989586621679408518"><span class="annot"><span class="annottext">NodeProtocolConfiguration
-</span><a href="#local-6989586621679408518"><span class="hs-identifier hs-var">ncProtocolConfig</span></a></span></span><span> </span><span id="local-6989586621679408517"><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679408517"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Cardano.Node.Protocol.html#mkConsensusProtocol"><span class="hs-identifier hs-var hs-var">mkConsensusProtocol</span></a></span></span><span> </span><span id="local-6989586621679408584"><span class="annot"><span class="annottext">NodeProtocolConfiguration
+</span><a href="#local-6989586621679408584"><span class="hs-identifier hs-var">ncProtocolConfig</span></a></span></span><span> </span><span id="local-6989586621679408583"><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
+</span><a href="#local-6989586621679408583"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-28"></span><span>    </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">NodeProtocolConfiguration
-</span><a href="#local-6989586621679408518"><span class="hs-identifier hs-var">ncProtocolConfig</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679408584"><span class="hs-identifier hs-var">ncProtocolConfig</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-29"></span><span>
-</span><span id="line-30"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationByron"><span class="hs-identifier hs-type">NodeProtocolConfigurationByron</span></a></span><span> </span><span id="local-6989586621679408515"><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
-</span><a href="#local-6989586621679408515"><span class="hs-identifier hs-var">config</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-30"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationByron"><span class="hs-identifier hs-type">NodeProtocolConfigurationByron</span></a></span><span> </span><span id="local-6989586621679408581"><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
+</span><a href="#local-6989586621679408581"><span class="hs-identifier hs-var">config</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-31"></span><span>        </span><span class="annot"><span class="annottext">(ByronProtocolInstantiationError -&gt; ProtocolInstantiationError)
 -&gt; ExceptT ByronProtocolInstantiationError IO SomeConsensusProtocol
 -&gt; ExceptT ProtocolInstantiationError IO SomeConsensusProtocol
@@ -52,11 +52,11 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; Maybe ProtocolFilepaths
 -&gt; ExceptT ByronProtocolInstantiationError IO SomeConsensusProtocol
 </span><a href="Cardano.Node.Protocol.Byron.html#mkSomeConsensusProtocolByron"><span class="hs-identifier hs-var">mkSomeConsensusProtocolByron</span></a></span><span> </span><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
-</span><a href="#local-6989586621679408515"><span class="hs-identifier hs-var">config</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679408517"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
+</span><a href="#local-6989586621679408581"><span class="hs-identifier hs-var">config</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
+</span><a href="#local-6989586621679408583"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
 </span><span id="line-33"></span><span>
-</span><span id="line-34"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationShelley"><span class="hs-identifier hs-type">NodeProtocolConfigurationShelley</span></a></span><span> </span><span id="local-6989586621679408511"><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
-</span><a href="#local-6989586621679408511"><span class="hs-identifier hs-var">config</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-34"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationShelley"><span class="hs-identifier hs-type">NodeProtocolConfigurationShelley</span></a></span><span> </span><span id="local-6989586621679408577"><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
+</span><a href="#local-6989586621679408577"><span class="hs-identifier hs-var">config</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-35"></span><span>        </span><span class="annot"><span class="annottext">(ShelleyProtocolInstantiationError -&gt; ProtocolInstantiationError)
 -&gt; ExceptT
      ShelleyProtocolInstantiationError IO SomeConsensusProtocol
@@ -77,19 +77,19 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; ExceptT
      ShelleyProtocolInstantiationError IO SomeConsensusProtocol
 </span><a href="Cardano.Node.Protocol.Shelley.html#mkSomeConsensusProtocolShelley"><span class="hs-identifier hs-var">mkSomeConsensusProtocolShelley</span></a></span><span> </span><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
-</span><a href="#local-6989586621679408511"><span class="hs-identifier hs-var">config</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679408517"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
+</span><a href="#local-6989586621679408577"><span class="hs-identifier hs-var">config</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
+</span><a href="#local-6989586621679408583"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
 </span><span id="line-37"></span><span>
-</span><span id="line-38"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationCardano"><span class="hs-identifier hs-type">NodeProtocolConfigurationCardano</span></a></span><span> </span><span id="local-6989586621679408507"><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
-</span><a href="#local-6989586621679408507"><span class="hs-identifier hs-var">byronConfig</span></a></span></span><span>
-</span><span id="line-39"></span><span>                                       </span><span id="local-6989586621679408506"><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
-</span><a href="#local-6989586621679408506"><span class="hs-identifier hs-var">shelleyConfig</span></a></span></span><span>
-</span><span id="line-40"></span><span>                                       </span><span id="local-6989586621679408505"><span class="annot"><span class="annottext">NodeAlonzoProtocolConfiguration
-</span><a href="#local-6989586621679408505"><span class="hs-identifier hs-var">alonzoConfig</span></a></span></span><span>
-</span><span id="line-41"></span><span>                                       </span><span id="local-6989586621679408504"><span class="annot"><span class="annottext">NodeConwayProtocolConfiguration
-</span><a href="#local-6989586621679408504"><span class="hs-identifier hs-var">conwayConfig</span></a></span></span><span>
-</span><span id="line-42"></span><span>                                       </span><span id="local-6989586621679408503"><span class="annot"><span class="annottext">NodeHardForkProtocolConfiguration
-</span><a href="#local-6989586621679408503"><span class="hs-identifier hs-var">hardForkConfig</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-38"></span><span>      </span><span class="annot"><a href="Cardano.Node.Types.html#NodeProtocolConfigurationCardano"><span class="hs-identifier hs-type">NodeProtocolConfigurationCardano</span></a></span><span> </span><span id="local-6989586621679408573"><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
+</span><a href="#local-6989586621679408573"><span class="hs-identifier hs-var">byronConfig</span></a></span></span><span>
+</span><span id="line-39"></span><span>                                       </span><span id="local-6989586621679408572"><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
+</span><a href="#local-6989586621679408572"><span class="hs-identifier hs-var">shelleyConfig</span></a></span></span><span>
+</span><span id="line-40"></span><span>                                       </span><span id="local-6989586621679408571"><span class="annot"><span class="annottext">NodeAlonzoProtocolConfiguration
+</span><a href="#local-6989586621679408571"><span class="hs-identifier hs-var">alonzoConfig</span></a></span></span><span>
+</span><span id="line-41"></span><span>                                       </span><span id="local-6989586621679408570"><span class="annot"><span class="annottext">NodeConwayProtocolConfiguration
+</span><a href="#local-6989586621679408570"><span class="hs-identifier hs-var">conwayConfig</span></a></span></span><span>
+</span><span id="line-42"></span><span>                                       </span><span id="local-6989586621679408569"><span class="annot"><span class="annottext">NodeHardForkProtocolConfiguration
+</span><a href="#local-6989586621679408569"><span class="hs-identifier hs-var">hardForkConfig</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-43"></span><span>        </span><span class="annot"><span class="annottext">(CardanoProtocolInstantiationError -&gt; ProtocolInstantiationError)
 -&gt; ExceptT
      CardanoProtocolInstantiationError IO SomeConsensusProtocol
@@ -115,17 +115,17 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
      CardanoProtocolInstantiationError IO SomeConsensusProtocol
 </span><a href="Cardano.Node.Protocol.Cardano.html#mkSomeConsensusProtocolCardano"><span class="hs-identifier hs-var">mkSomeConsensusProtocolCardano</span></a></span><span>
 </span><span id="line-45"></span><span>            </span><span class="annot"><span class="annottext">NodeByronProtocolConfiguration
-</span><a href="#local-6989586621679408507"><span class="hs-identifier hs-var">byronConfig</span></a></span><span>
+</span><a href="#local-6989586621679408573"><span class="hs-identifier hs-var">byronConfig</span></a></span><span>
 </span><span id="line-46"></span><span>            </span><span class="annot"><span class="annottext">NodeShelleyProtocolConfiguration
-</span><a href="#local-6989586621679408506"><span class="hs-identifier hs-var">shelleyConfig</span></a></span><span>
+</span><a href="#local-6989586621679408572"><span class="hs-identifier hs-var">shelleyConfig</span></a></span><span>
 </span><span id="line-47"></span><span>            </span><span class="annot"><span class="annottext">NodeAlonzoProtocolConfiguration
-</span><a href="#local-6989586621679408505"><span class="hs-identifier hs-var">alonzoConfig</span></a></span><span>
+</span><a href="#local-6989586621679408571"><span class="hs-identifier hs-var">alonzoConfig</span></a></span><span>
 </span><span id="line-48"></span><span>            </span><span class="annot"><span class="annottext">NodeConwayProtocolConfiguration
-</span><a href="#local-6989586621679408504"><span class="hs-identifier hs-var">conwayConfig</span></a></span><span>
+</span><a href="#local-6989586621679408570"><span class="hs-identifier hs-var">conwayConfig</span></a></span><span>
 </span><span id="line-49"></span><span>            </span><span class="annot"><span class="annottext">NodeHardForkProtocolConfiguration
-</span><a href="#local-6989586621679408503"><span class="hs-identifier hs-var">hardForkConfig</span></a></span><span>
+</span><a href="#local-6989586621679408569"><span class="hs-identifier hs-var">hardForkConfig</span></a></span><span>
 </span><span id="line-50"></span><span>            </span><span class="annot"><span class="annottext">Maybe ProtocolFilepaths
-</span><a href="#local-6989586621679408517"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
+</span><a href="#local-6989586621679408583"><span class="hs-identifier hs-var">mProtocolFiles</span></a></span><span>
 </span><span id="line-51"></span><span>
 </span><span id="line-52"></span><span class="hs-comment">------------------------------------------------------------------------------</span><span>
 </span><span id="line-53"></span><span class="hs-comment">-- Errors</span><span>
@@ -135,7 +135,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-57"></span><span>    </span><span id="ByronProtocolInstantiationError"><span class="annot"><a href="Cardano.Node.Protocol.html#ByronProtocolInstantiationError"><span class="hs-identifier hs-var">ByronProtocolInstantiationError</span></a></span></span><span>   </span><span class="annot"><a href="Cardano.Node.Protocol.Byron.html#ByronProtocolInstantiationError"><span class="hs-identifier hs-type">ByronProtocolInstantiationError</span></a></span><span>
 </span><span id="line-58"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="ShelleyProtocolInstantiationError"><span class="annot"><a href="Cardano.Node.Protocol.html#ShelleyProtocolInstantiationError"><span class="hs-identifier hs-var">ShelleyProtocolInstantiationError</span></a></span></span><span> </span><span class="annot"><a href="Cardano.Node.Protocol.Shelley.html#ShelleyProtocolInstantiationError"><span class="hs-identifier hs-type">ShelleyProtocolInstantiationError</span></a></span><span>
 </span><span id="line-59"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="CardanoProtocolInstantiationError"><span class="annot"><a href="Cardano.Node.Protocol.html#CardanoProtocolInstantiationError"><span class="hs-identifier hs-var">CardanoProtocolInstantiationError</span></a></span></span><span> </span><span class="annot"><a href="Cardano.Node.Protocol.Cardano.html#CardanoProtocolInstantiationError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationError</span></a></span><span>
-</span><span id="line-60"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679408495"><span id="local-6989586621679408497"><span id="local-6989586621679408499"><span class="annot"><span class="annottext">Int -&gt; ProtocolInstantiationError -&gt; ShowS
+</span><span id="line-60"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679408561"><span id="local-6989586621679408563"><span id="local-6989586621679408565"><span class="annot"><span class="annottext">Int -&gt; ProtocolInstantiationError -&gt; ShowS
 [ProtocolInstantiationError] -&gt; ShowS
 ProtocolInstantiationError -&gt; String
 (Int -&gt; ProtocolInstantiationError -&gt; ShowS)
@@ -154,20 +154,20 @@ $cshowsPrec :: Int -&gt; ProtocolInstantiationError -&gt; ShowS
 </span><span id="line-61"></span><span>
 </span><span id="line-62"></span><span>
 </span><span id="line-63"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="Cardano.Api.Any.html#Error"><span class="hs-identifier hs-type">Error</span></a></span><span> </span><span class="annot"><a href="Cardano.Node.Protocol.html#ProtocolInstantiationError"><span class="hs-identifier hs-type">ProtocolInstantiationError</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-64"></span><span>  </span><span id="local-6989586621679408490"><span class="annot"><span class="annottext">displayError :: ProtocolInstantiationError -&gt; String
-</span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var hs-var hs-var hs-var">displayError</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#ByronProtocolInstantiationError"><span class="hs-identifier hs-type">ByronProtocolInstantiationError</span></a></span><span>   </span><span id="local-6989586621679408488"><span class="annot"><span class="annottext">ByronProtocolInstantiationError
-</span><a href="#local-6989586621679408488"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByronProtocolInstantiationError -&gt; String
+</span><span id="line-64"></span><span>  </span><span id="local-6989586621679408556"><span class="annot"><span class="annottext">displayError :: ProtocolInstantiationError -&gt; String
+</span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var hs-var hs-var hs-var">displayError</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#ByronProtocolInstantiationError"><span class="hs-identifier hs-type">ByronProtocolInstantiationError</span></a></span><span>   </span><span id="local-6989586621679408554"><span class="annot"><span class="annottext">ByronProtocolInstantiationError
+</span><a href="#local-6989586621679408554"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByronProtocolInstantiationError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">ByronProtocolInstantiationError
-</span><a href="#local-6989586621679408488"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-65"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#ShelleyProtocolInstantiationError"><span class="hs-identifier hs-type">ShelleyProtocolInstantiationError</span></a></span><span> </span><span id="local-6989586621679408487"><span class="annot"><span class="annottext">ShelleyProtocolInstantiationError
-</span><a href="#local-6989586621679408487"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolInstantiationError -&gt; String
+</span><a href="#local-6989586621679408554"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-65"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#ShelleyProtocolInstantiationError"><span class="hs-identifier hs-type">ShelleyProtocolInstantiationError</span></a></span><span> </span><span id="local-6989586621679408553"><span class="annot"><span class="annottext">ShelleyProtocolInstantiationError
+</span><a href="#local-6989586621679408553"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolInstantiationError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">ShelleyProtocolInstantiationError
-</span><a href="#local-6989586621679408487"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-66"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#CardanoProtocolInstantiationError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationError</span></a></span><span> </span><span id="local-6989586621679408486"><span class="annot"><span class="annottext">CardanoProtocolInstantiationError
-</span><a href="#local-6989586621679408486"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">CardanoProtocolInstantiationError -&gt; String
+</span><a href="#local-6989586621679408553"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-66"></span><span>  </span><span class="annot"><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Cardano.Node.Protocol.html#CardanoProtocolInstantiationError"><span class="hs-identifier hs-type">CardanoProtocolInstantiationError</span></a></span><span> </span><span id="local-6989586621679408552"><span class="annot"><span class="annottext">CardanoProtocolInstantiationError
+</span><a href="#local-6989586621679408552"><span class="hs-identifier hs-var">err</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">CardanoProtocolInstantiationError -&gt; String
 forall e. Error e =&gt; e -&gt; String
 </span><a href="Cardano.Api.Any.html#displayError"><span class="hs-identifier hs-var">displayError</span></a></span><span> </span><span class="annot"><span class="annottext">CardanoProtocolInstantiationError
-</span><a href="#local-6989586621679408486"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><a href="#local-6989586621679408552"><span class="hs-identifier hs-var">err</span></a></span><span>
 </span><span id="line-67"></span></pre></body></html>
