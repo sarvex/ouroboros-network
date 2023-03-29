@@ -65,6 +65,7 @@ import           Test.Util.LedgerStateOnlyTables
 import           Test.Util.Orphans.Arbitrary ()
 import           Test.Util.Orphans.IOLike ()
 import           Test.Util.Orphans.ToExpr ()
+import Debug.Trace
 
 {-------------------------------------------------------------------------------
   Main test tree
@@ -117,7 +118,7 @@ testWithIOSim acts = monadicSim $ do
 testWithIO::
      IO (BSEnv IO K V D)
   -> Actions (Lockstep T) -> Property
-testWithIO mkBSEnv = runActionsBracket pT mkBSEnv bsCleanup runner
+testWithIO mkBSEnv acts = traceShow acts $ runActionsBracket pT mkBSEnv bsCleanup runner acts
 
 runner ::
      RealMonad m ks vs d a
