@@ -24,11 +24,14 @@ module Ouroboros.Consensus.Storage.LedgerDB.BackingStore.LMDB (
     -- * Exported for `ledger-db-backends-checker`
   , DbState (..)
   , LMDBMK (..)
+    -- * Temporary
+  , Status (..)
   ) where
 
 import           Cardano.Slotting.Slot (SlotNo, WithOrigin (At))
 import qualified Codec.Serialise as S (Serialise (..))
 import qualified Control.Concurrent.Class.MonadSTM.TVar as IOLike
+import           Control.Exception (assert)
 import           Control.Monad (unless, void, when)
 import qualified Control.Monad.Class.MonadSTM as IOLike
 import           Control.Monad.IO.Class (MonadIO (liftIO))
@@ -51,7 +54,7 @@ import qualified Ouroboros.Consensus.Storage.LedgerDB.BackingStore as HD
 import qualified Ouroboros.Consensus.Storage.LedgerDB.BackingStore.LMDB.Bridge as Bridge
 import           Ouroboros.Consensus.Util (foldlM', unComp2, (:..:) (..))
 import           Ouroboros.Consensus.Util.IOLike (Exception (..), IOLike,
-                     MonadCatch (..), MonadThrow (..), bracket)
+                     MonadCatch (..), MonadThrow (..), bracket, bracket_)
 import qualified System.FS.API as FS
 import qualified System.FS.API.Types as FS
 
@@ -88,8 +91,10 @@ data Db m l = Db {
   , dbBackingTables :: !(LedgerTables l LMDBMK)
   , dbFilePath      :: !FilePath
   , dbTracer        :: !(Trace.Tracer m TraceLMDB)
-  , dbClosed        :: !(IOLike.TVar m Bool)
+    -- | TODO: rename
+  , dbClosed        :: !(IOLike.TVar m Status)
   , dbOpenHandles   :: !(IOLike.TVar m (Map Int (LMDBValueHandle l m)))
+    -- | The next ID used for a new backing store value handle.
   , dbNextId        :: !(IOLike.TVar m Int)
   }
 
@@ -295,6 +300,101 @@ guardDbDirWithRetry gdd shfs@(FS.SomeHasFS fs) path =
         guardDbDir DirMustNotExist shfs path
       _ -> throwIO e
 
+{-------------------------------------------------------------------------------
+  Open/Closed status
+-------------------------------------------------------------------------------}
+
+-- | Records the status of the LMDB backing store.
+--
+-- The LMDB @C@ library and its Haskell bindings can be used concurrently:
+-- multiple read-only transactions and at most one read-write transaction can
+-- coexist freely. To ensure predictable LMDB behaviour, closing of the LMDB
+-- environment should not occur when transactions are still ongoing.
+--
+-- Similarly, to ensure predictable LMDB /backing store/ behaviour, closing of
+-- the LMDB backing store should not occur when other @BS@ operations are still
+-- ongoing.
+--
+-- Note on terminology: by @BS@ operations we mean any of the members of
+-- 'BackingStore' and 'BackingStoreValueHandle' records.
+data Status =
+    -- | @'Open' n@ declares that the backing store is open with possibly
+    -- unfinished @BS@ operations. @n@ records the number of operations that are
+    -- ongoing, but can not include a 'bsClose' operation.
+    Open !Int
+    -- | @'WaitClosing' n @ declares that the backing store is going to be
+    -- closed, and that it is waiting for all ongoing @BS@ operations to finish.
+    -- All /new/ @BS@ operations should fail immediately.
+  | WaitClosing !Int
+    -- | The backing store is in the process of closing, and there are no
+    -- unfinished @BS@ operations. All /new/ @BS@ operations should fail
+    -- immediately.
+  | Closing
+  -- | The backing store is closed. All @BS@ operations should fail immediately.
+  | Closed
+
+-- | TODO: rename
+--
+-- TODO: make TVar checked strictly non-negative
+withOpen :: IOLike m => IOLike.TVar m Status -> m a -> m a
+withOpen tv = bracket_ acquire release
+  where
+    acquire = IOLike.atomically $ do
+      status <- IOLike.readTVar tv
+      case status of
+        Open n -> IOLike.writeTVar tv (Open $ n + 1)
+        _      -> IOLike.throwSTM DbErrClosed
+
+    release = IOLike.atomically $ do
+      status <- IOLike.readTVar tv
+      case status of
+        Open n -> assert (n > 0) $ IOLike.writeTVar tv (Open $ n - 1)
+        WaitClosing n -> assert (n > 0) $ IOLike.writeTVar tv (WaitClosing $ n - 1)
+        _      -> error "impossible"
+
+withOpenOrWaitClosing :: IOLike m => IOLike.TVar m Status -> m a -> m a
+withOpenOrWaitClosing tv = bracket_ acquire release
+  where
+    acquire = IOLike.atomically $ do
+      status <- IOLike.readTVar tv
+      case status of
+        Open n        -> IOLike.writeTVar tv (Open $ n + 1)
+        WaitClosing n -> IOLike.writeTVar tv (WaitClosing $ n + 1)
+        _             -> IOLike.throwSTM DbErrClosed
+
+    release = IOLike.atomically $ do
+      status <- IOLike.readTVar tv
+      case status of
+        Open n -> assert (n > 0) $ IOLike.writeTVar tv (Open $ n - 1)
+        WaitClosing n -> assert (n > 0) $ IOLike.writeTVar tv (WaitClosing $ n - 1)
+        _      -> error "impossible"
+
+
+withOpenToClose :: IOLike m => IOLike.TVar m Status -> m a -> m a
+withOpenToClose tv act = do
+  IOLike.atomically $ do
+    status <- IOLike.readTVar tv
+    case status of
+      Open n -> IOLike.writeTVar tv (WaitClosing n)
+      _      -> IOLike.throwSTM DbErrClosed
+
+  IOLike.atomically $ do
+    status <- IOLike.readTVar tv
+    case status of
+      WaitClosing n | n == 0    -> IOLike.writeTVar tv Closing
+                    | otherwise -> IOLike.retry
+      _             -> error "impossible"
+
+  x <- act
+
+  IOLike.atomically $ do
+    status <- IOLike.readTVar tv
+    case status of
+      Closing -> IOLike.writeTVar tv Closed
+      _       -> error "impossible"
+
+  pure x
+
 guardDbClosed :: IOLike m => IOLike.TVar m Bool -> m ()
 guardDbClosed tb = do
   b <- IOLike.readTVarIO tb
@@ -404,7 +504,7 @@ newLMDBBackingStoreInitialiser dbTracer limits sfs initFrom = do
    createOrGetDB = do
 
      dbOpenHandles <- IOLike.newTVarIO Map.empty
-     dbClosed      <- IOLike.newTVarIO False
+     dbClosed      <- IOLike.newTVarIO (Open 0)
 
      let path = FS.mkFsPath ["tables"]
 
@@ -453,27 +553,22 @@ newLMDBBackingStoreInitialiser dbTracer limits sfs initFrom = do
    mkBackingStore :: Db m l -> LMDBBackingStore l m
    mkBackingStore db =
        let bsClose :: m ()
-           bsClose = do
-             guardDbClosed dbClosed
+           bsClose = withOpenToClose dbClosed $ do
              Trace.traceWith dbTracer $ TDBClosing dbFilePath
              openHandles <- IOLike.readTVarIO dbOpenHandles
              for_ openHandles HD.bsvhClose
-             IOLike.atomically $ IOLike.modifyTVar dbClosed (const True)
              liftIO $ LMDB.closeEnvironment dbEnv
              Trace.traceWith dbTracer $ TDBClosed dbFilePath
 
-           bsCopy shfs (HD.BackingStorePath to0) = do
-             guardDbClosed dbClosed
+           bsCopy shfs (HD.BackingStorePath to0) = withOpen dbClosed $ do
              to <- guardDbDir DirMustNotExist shfs to0
              lmdbCopy dbTracer dbEnv to
 
-           bsValueHandle =
-             guardDbClosed dbClosed >>
+           bsValueHandle = withOpen dbClosed $
              mkLMDBBackingStoreValueHandle db
 
            bsWrite :: SlotNo -> LedgerTables l DiffMK -> m ()
-           bsWrite slot diffs = do
-             guardDbClosed dbClosed
+           bsWrite slot diffs = withOpen dbClosed $ do
              oldSlot <- liftIO $ LMDB.readWriteTransaction dbEnv $ withDbStateRW dbState $ \s@DbState{dbsSeq} -> do
                unless (dbsSeq <= At slot) $ liftIO . throwIO $ DbErrNonMonotonicSeq (At slot) dbsSeq
                void $ zipLedgerTables3A writeLMDBTable dbBackingTables codecLedgerTables diffs
@@ -523,18 +618,16 @@ mkLMDBBackingStoreValueHandle db = do
 
   let
     bsvhClose :: m ()
-    bsvhClose = do
+    bsvhClose = withOpenOrWaitClosing dbClosed $ do
       Trace.traceWith tracer TVHClosing
-      guardDbClosed dbClosed
       guardBsvhClosed vhId dbOpenHandles
       liftIO $ TrH.commit trh
       IOLike.atomically $ IOLike.modifyTVar' dbOpenHandles (Map.delete vhId)
       Trace.traceWith tracer TVHClosed
 
     bsvhRead :: LedgerTables l KeysMK -> m (LedgerTables l ValuesMK)
-    bsvhRead keys = do
+    bsvhRead keys = withOpen dbClosed $ do
       Trace.traceWith tracer TVHReadStarted
-      guardDbClosed dbClosed
       guardBsvhClosed vhId dbOpenHandles
       res <- liftIO $ TrH.submitReadOnly trh (zipLedgerTables3A readLMDBTable dbBackingTables codecLedgerTables keys)
       Trace.traceWith tracer TVHReadEnded
@@ -543,7 +636,7 @@ mkLMDBBackingStoreValueHandle db = do
     bsvhRangeRead ::
          HD.RangeQuery (LedgerTables l KeysMK)
       -> m (LedgerTables l ValuesMK)
-    bsvhRangeRead rq = do
+    bsvhRangeRead rq = withOpen dbClosed $ do
       Trace.traceWith tracer TVHRangeReadStarted
 
       let
@@ -560,7 +653,6 @@ mkLMDBBackingStoreValueHandle db = do
             codecLedgerTables
             (outsideIn rqPrev)
 
-      guardDbClosed dbClosed
       guardBsvhClosed vhId dbOpenHandles
       res <- liftIO $ TrH.submitReadOnly trh transaction
       Trace.traceWith tracer TVHRangeReadEnded
