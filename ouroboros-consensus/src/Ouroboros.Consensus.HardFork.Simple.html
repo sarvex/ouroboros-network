@@ -9,7 +9,7 @@
 </span><span id="line-9"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">NoThunks.Class</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">NoThunks</span></span><span class="hs-special">)</span><span>
 </span><span id="line-10"></span><span>
 </span><span id="line-11"></span><span class="hs-comment">-- | The trigger condition that will cause the hard fork transition.</span><span>
-</span><span id="line-12"></span><span id="local-6989586621680013038"><span id="local-6989586621680013039"></span></span><span class="hs-keyword">data</span><span> </span><span id="TriggerHardFork"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardFork"><span class="hs-identifier hs-var">TriggerHardFork</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-12"></span><span id="local-6989586621680014617"><span id="local-6989586621680014618"></span></span><span class="hs-keyword">data</span><span> </span><span id="TriggerHardFork"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardFork"><span class="hs-identifier hs-var">TriggerHardFork</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-13"></span><span>    </span><span class="hs-comment">-- | Trigger the transition when the on-chain protocol major version (from</span><span>
 </span><span id="line-14"></span><span>    </span><span class="hs-comment">-- the ledger state) reaches this number.</span><span>
 </span><span id="line-15"></span><span>    </span><span class="hs-comment">--</span><span>
@@ -21,7 +21,7 @@
 </span><span id="line-21"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkAtEpoch"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkAtEpoch"><span class="hs-identifier hs-var">TriggerHardForkAtEpoch</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">EpochNo</span></span><span>
 </span><span id="line-22"></span><span>    </span><span class="hs-comment">-- | Never trigger a hard fork</span><span>
 </span><span id="line-23"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="TriggerHardForkNever"><span class="annot"><a href="Ouroboros.Consensus.HardFork.Simple.html#TriggerHardForkNever"><span class="hs-identifier hs-var">TriggerHardForkNever</span></a></span></span><span>
-</span><span id="line-24"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621680013029"><span id="local-6989586621680013031"><span id="local-6989586621680013033"><span class="annot"><span class="annottext">Int -&gt; TriggerHardFork -&gt; ShowS
+</span><span id="line-24"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621680014608"><span id="local-6989586621680014610"><span id="local-6989586621680014612"><span class="annot"><span class="annottext">Int -&gt; TriggerHardFork -&gt; ShowS
 [TriggerHardFork] -&gt; ShowS
 TriggerHardFork -&gt; String
 (Int -&gt; TriggerHardFork -&gt; ShowS)
@@ -45,7 +45,7 @@ forall a.
 (forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
 $cto :: forall x. Rep TriggerHardFork x -&gt; TriggerHardFork
 $cfrom :: forall x. TriggerHardFork -&gt; Rep TriggerHardFork x
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621680013019"><span id="local-6989586621680013021"><span id="local-6989586621680013023"><span class="annot"><span class="annottext">Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo)
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621680014598"><span id="local-6989586621680014600"><span id="local-6989586621680014602"><span class="annot"><span class="annottext">Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo)
 Proxy TriggerHardFork -&gt; String
 (Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; TriggerHardFork -&gt; IO (Maybe ThunkInfo))

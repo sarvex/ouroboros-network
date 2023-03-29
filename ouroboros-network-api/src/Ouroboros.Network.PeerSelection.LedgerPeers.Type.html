@@ -13,7 +13,7 @@
 </span><span id="line-13"></span><span class="hs-comment">--</span><span>
 </span><span id="line-14"></span><span class="hs-keyword">newtype</span><span> </span><span id="PoolStake"><span class="annot"><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#PoolStake"><span class="hs-identifier hs-var">PoolStake</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PoolStake"><span class="annot"><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#PoolStake"><span class="hs-identifier hs-var">PoolStake</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="unPoolStake"><span class="annot"><span class="annottext">PoolStake -&gt; Rational
 </span><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#unPoolStake"><span class="hs-identifier hs-var hs-var">unPoolStake</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Rational</span></a></span><span> </span><span class="hs-special">}</span><span>
-</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679195229"><span id="local-6989586621679195231"><span class="annot"><span class="annottext">PoolStake -&gt; PoolStake -&gt; Bool
+</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196412"><span id="local-6989586621679196414"><span class="annot"><span class="annottext">PoolStake -&gt; PoolStake -&gt; Bool
 (PoolStake -&gt; PoolStake -&gt; Bool)
 -&gt; (PoolStake -&gt; PoolStake -&gt; Bool) -&gt; Eq PoolStake
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -21,7 +21,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: PoolStake -&gt; PoolStake -&gt; Bool
 == :: PoolStake -&gt; PoolStake -&gt; Bool
 $c== :: PoolStake -&gt; PoolStake -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195221"><span id="local-6989586621679195223"><span id="local-6989586621679195225"><span class="annot"><span class="annottext">Num PoolStake
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196404"><span id="local-6989586621679196406"><span id="local-6989586621679196408"><span class="annot"><span class="annottext">Num PoolStake
 Num PoolStake
 -&gt; (PoolStake -&gt; PoolStake -&gt; PoolStake)
 -&gt; (PoolStake -&gt; PoolStake)
@@ -40,7 +40,7 @@ $crecip :: PoolStake -&gt; PoolStake
 / :: PoolStake -&gt; PoolStake -&gt; PoolStake
 $c/ :: PoolStake -&gt; PoolStake -&gt; PoolStake
 $cp1Fractional :: Num PoolStake
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Fractional</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195206"><span id="local-6989586621679195208"><span id="local-6989586621679195210"><span id="local-6989586621679195212"><span id="local-6989586621679195214"><span id="local-6989586621679195216"><span id="local-6989586621679195218"><span class="annot"><span class="annottext">Integer -&gt; PoolStake
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Fractional</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196389"><span id="local-6989586621679196391"><span id="local-6989586621679196393"><span id="local-6989586621679196395"><span id="local-6989586621679196397"><span id="local-6989586621679196399"><span id="local-6989586621679196401"><span class="annot"><span class="annottext">Integer -&gt; PoolStake
 PoolStake -&gt; PoolStake
 PoolStake -&gt; PoolStake -&gt; PoolStake
 (PoolStake -&gt; PoolStake -&gt; PoolStake)
@@ -74,7 +74,7 @@ $c* :: PoolStake -&gt; PoolStake -&gt; PoolStake
 $c- :: PoolStake -&gt; PoolStake -&gt; PoolStake
 + :: PoolStake -&gt; PoolStake -&gt; PoolStake
 $c+ :: PoolStake -&gt; PoolStake -&gt; PoolStake
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195190"><span id="local-6989586621679195192"><span id="local-6989586621679195194"><span id="local-6989586621679195196"><span id="local-6989586621679195198"><span id="local-6989586621679195200"><span id="local-6989586621679195202"><span class="annot"><span class="annottext">Eq PoolStake
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196373"><span id="local-6989586621679196375"><span id="local-6989586621679196377"><span id="local-6989586621679196379"><span id="local-6989586621679196381"><span id="local-6989586621679196383"><span id="local-6989586621679196385"><span class="annot"><span class="annottext">Eq PoolStake
 Eq PoolStake
 -&gt; (PoolStake -&gt; PoolStake -&gt; Ordering)
 -&gt; (PoolStake -&gt; PoolStake -&gt; Bool)
@@ -112,7 +112,7 @@ $c&lt; :: PoolStake -&gt; PoolStake -&gt; Bool
 compare :: PoolStake -&gt; PoolStake -&gt; Ordering
 $ccompare :: PoolStake -&gt; PoolStake -&gt; Ordering
 $cp1Ord :: Eq PoolStake
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195183"><span id="local-6989586621679195185"><span id="local-6989586621679195187"><span class="annot"><span class="annottext">Int -&gt; PoolStake -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196366"><span id="local-6989586621679196368"><span id="local-6989586621679196370"><span class="annot"><span class="annottext">Int -&gt; PoolStake -&gt; ShowS
 [PoolStake] -&gt; ShowS
 PoolStake -&gt; String
 (Int -&gt; PoolStake -&gt; ShowS)
@@ -128,7 +128,7 @@ $cshow :: PoolStake -&gt; String
 showsPrec :: Int -&gt; PoolStake -&gt; ShowS
 $cshowsPrec :: Int -&gt; PoolStake -&gt; ShowS
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-16"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span> </span><span id="local-6989586621679195180"><span class="annot"><span class="annottext">PoolStake -&gt; ()
+</span><span id="line-16"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span> </span><span id="local-6989586621679196363"><span class="annot"><span class="annottext">PoolStake -&gt; ()
 (PoolStake -&gt; ()) -&gt; NFData PoolStake
 forall a. (a -&gt; ()) -&gt; NFData a
 rnf :: PoolStake -&gt; ()
@@ -141,7 +141,7 @@ $crnf :: PoolStake -&gt; ()
 </span><span id="line-21"></span><span class="hs-comment">--</span><span>
 </span><span id="line-22"></span><span class="hs-keyword">newtype</span><span> </span><span id="AccPoolStake"><span class="annot"><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#AccPoolStake"><span class="hs-identifier hs-var">AccPoolStake</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AccPoolStake"><span class="annot"><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#AccPoolStake"><span class="hs-identifier hs-var">AccPoolStake</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="unAccPoolStake"><span class="annot"><span class="annottext">AccPoolStake -&gt; Rational
 </span><a href="Ouroboros.Network.PeerSelection.LedgerPeers.Type.html#unAccPoolStake"><span class="hs-identifier hs-var hs-var">unAccPoolStake</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Rational</span></a></span><span> </span><span class="hs-special">}</span><span>
-</span><span id="line-23"></span><span>    </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679195173"><span id="local-6989586621679195175"><span class="annot"><span class="annottext">AccPoolStake -&gt; AccPoolStake -&gt; Bool
+</span><span id="line-23"></span><span>    </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196356"><span id="local-6989586621679196358"><span class="annot"><span class="annottext">AccPoolStake -&gt; AccPoolStake -&gt; Bool
 (AccPoolStake -&gt; AccPoolStake -&gt; Bool)
 -&gt; (AccPoolStake -&gt; AccPoolStake -&gt; Bool) -&gt; Eq AccPoolStake
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -149,7 +149,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: AccPoolStake -&gt; AccPoolStake -&gt; Bool
 == :: AccPoolStake -&gt; AccPoolStake -&gt; Bool
 $c== :: AccPoolStake -&gt; AccPoolStake -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195159"><span id="local-6989586621679195161"><span id="local-6989586621679195163"><span id="local-6989586621679195165"><span id="local-6989586621679195167"><span id="local-6989586621679195169"><span id="local-6989586621679195171"><span class="annot"><span class="annottext">Integer -&gt; AccPoolStake
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196342"><span id="local-6989586621679196344"><span id="local-6989586621679196346"><span id="local-6989586621679196348"><span id="local-6989586621679196350"><span id="local-6989586621679196352"><span id="local-6989586621679196354"><span class="annot"><span class="annottext">Integer -&gt; AccPoolStake
 AccPoolStake -&gt; AccPoolStake
 AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake
 (AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake)
@@ -183,7 +183,7 @@ $c* :: AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake
 $c- :: AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake
 + :: AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake
 $c+ :: AccPoolStake -&gt; AccPoolStake -&gt; AccPoolStake
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195144"><span id="local-6989586621679195146"><span id="local-6989586621679195148"><span id="local-6989586621679195150"><span id="local-6989586621679195152"><span id="local-6989586621679195154"><span id="local-6989586621679195156"><span class="annot"><span class="annottext">Eq AccPoolStake
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196327"><span id="local-6989586621679196329"><span id="local-6989586621679196331"><span id="local-6989586621679196333"><span id="local-6989586621679196335"><span id="local-6989586621679196337"><span id="local-6989586621679196339"><span class="annot"><span class="annottext">Eq AccPoolStake
 Eq AccPoolStake
 -&gt; (AccPoolStake -&gt; AccPoolStake -&gt; Ordering)
 -&gt; (AccPoolStake -&gt; AccPoolStake -&gt; Bool)
