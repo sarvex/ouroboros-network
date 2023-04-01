@@ -27,7 +27,7 @@
 </span><span id="line-27"></span><span>      </span><span id="unByronSpecGenTx"><span class="annot"><span class="annottext">GenTx ByronSpecBlock -&gt; ByronSpecGenTx
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#unByronSpecGenTx"><span class="hs-identifier hs-var hs-var">unByronSpecGenTx</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.GenTx.html#ByronSpecGenTx"><span class="hs-identifier hs-type">ByronSpecGenTx</span></a></span><span>
 </span><span id="line-28"></span><span>    </span><span class="hs-special">}</span><span>
-</span><span id="line-29"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227068"><span id="local-6989586621679227070"><span id="local-6989586621679227072"><span class="annot"><span class="annottext">Int -&gt; GenTx ByronSpecBlock -&gt; ShowS
+</span><span id="line-29"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227727"><span id="local-6989586621679227729"><span id="local-6989586621679227731"><span class="annot"><span class="annottext">Int -&gt; GenTx ByronSpecBlock -&gt; ShowS
 [GenTx ByronSpecBlock] -&gt; ShowS
 GenTx ByronSpecBlock -&gt; String
 (Int -&gt; GenTx ByronSpecBlock -&gt; ShowS)
@@ -52,7 +52,7 @@ forall a.
 $cto :: forall x. Rep (GenTx ByronSpecBlock) x -&gt; GenTx ByronSpecBlock
 $cfrom :: forall x. GenTx ByronSpecBlock -&gt; Rep (GenTx ByronSpecBlock) x
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-30"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227056"><span id="local-6989586621679227058"><span id="local-6989586621679227060"><span id="local-6989586621679227062"><span class="annot"><span class="annottext">[GenTx ByronSpecBlock] -&gt; Encoding
+</span><span id="line-30"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227715"><span id="local-6989586621679227717"><span id="local-6989586621679227719"><span id="local-6989586621679227721"><span class="annot"><span class="annottext">[GenTx ByronSpecBlock] -&gt; Encoding
 GenTx ByronSpecBlock -&gt; Encoding
 (GenTx ByronSpecBlock -&gt; Encoding)
 -&gt; (forall s. Decoder s (GenTx ByronSpecBlock))
@@ -76,7 +76,7 @@ $cdecode :: forall s. Decoder s (GenTx ByronSpecBlock)
 encode :: GenTx ByronSpecBlock -&gt; Encoding
 $cencode :: GenTx ByronSpecBlock -&gt; Encoding
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Serialise</span></span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-31"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679227049"><span id="local-6989586621679227051"><span id="local-6989586621679227053"><span class="annot"><span class="annottext">Context -&gt; GenTx ByronSpecBlock -&gt; IO (Maybe ThunkInfo)
+</span><span id="line-31"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679227708"><span id="local-6989586621679227710"><span id="local-6989586621679227712"><span class="annot"><span class="annottext">Context -&gt; GenTx ByronSpecBlock -&gt; IO (Maybe ThunkInfo)
 Proxy (GenTx ByronSpecBlock) -&gt; String
 (Context -&gt; GenTx ByronSpecBlock -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; GenTx ByronSpecBlock -&gt; IO (Maybe ThunkInfo))
@@ -99,7 +99,7 @@ $cnoThunks :: Context -&gt; GenTx ByronSpecBlock -&gt; IO (Maybe ThunkInfo)
 </span><span id="line-34"></span><span>      </span><span id="forgetValidatedByronSpecGenTx"><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#forgetValidatedByronSpecGenTx"><span class="hs-identifier hs-var hs-var">forgetValidatedByronSpecGenTx</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">GenTx</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Block.html#ByronSpecBlock"><span class="hs-identifier hs-type">ByronSpecBlock</span></a></span><span>
 </span><span id="line-35"></span><span>    </span><span class="hs-special">}</span><span>
-</span><span id="line-36"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227038"><span id="local-6989586621679227040"><span id="local-6989586621679227042"><span class="annot"><span class="annottext">Int -&gt; Validated (GenTx ByronSpecBlock) -&gt; ShowS
+</span><span id="line-36"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679227697"><span id="local-6989586621679227699"><span id="local-6989586621679227701"><span class="annot"><span class="annottext">Int -&gt; Validated (GenTx ByronSpecBlock) -&gt; ShowS
 [Validated (GenTx ByronSpecBlock)] -&gt; ShowS
 Validated (GenTx ByronSpecBlock) -&gt; String
 (Int -&gt; Validated (GenTx ByronSpecBlock) -&gt; ShowS)
@@ -136,7 +136,7 @@ $cfrom :: forall x.
 Validated (GenTx ByronSpecBlock)
 -&gt; Rep (Validated (GenTx ByronSpecBlock)) x
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-37"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span id="local-6989586621679227030"><span id="local-6989586621679227032"><span id="local-6989586621679227034"><span class="annot"><span class="annottext">Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo)
+</span><span id="line-37"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span id="local-6989586621679227689"><span id="local-6989586621679227691"><span id="local-6989586621679227693"><span class="annot"><span class="annottext">Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo)
 Proxy (Validated (GenTx ByronSpecBlock)) -&gt; String
 (Context
  -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo))
@@ -155,12 +155,12 @@ wNoThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe Thun
 $cwNoThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo)
 noThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo)
 $cnoThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe ThunkInfo)
-</span><a href="#local-6989586621679227030"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span>
+</span><a href="#local-6989586621679227689"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span>
 </span><span id="line-38"></span><span>
 </span><span id="line-39"></span><span class="hs-keyword">type</span><span> </span><span class="hs-keyword">instance</span><span> </span><span id="ApplyTxErr"><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">ApplyTxErr</span></a></span></span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Block.html#ByronSpecBlock"><span class="hs-identifier hs-type">ByronSpecBlock</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.GenTx.html#ByronSpecGenTxErr"><span class="hs-identifier hs-type">ByronSpecGenTxErr</span></a></span><span>
 </span><span id="line-40"></span><span>
-</span><span id="line-41"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679227021"><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">LedgerSupportsMempool</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Block.html#ByronSpecBlock"><span class="hs-identifier hs-type">ByronSpecBlock</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-42"></span><span>  </span><span id="local-6989586621679227014"><span class="annot"><span class="annottext">applyTx :: LedgerConfig ByronSpecBlock
+</span><span id="line-41"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679227680"><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">LedgerSupportsMempool</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Block.html#ByronSpecBlock"><span class="hs-identifier hs-type">ByronSpecBlock</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-42"></span><span>  </span><span id="local-6989586621679227673"><span class="annot"><span class="annottext">applyTx :: LedgerConfig ByronSpecBlock
 -&gt; WhetherToIntervene
 -&gt; SlotNo
 -&gt; GenTx ByronSpecBlock
@@ -169,11 +169,11 @@ $cnoThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe Thu
      (ApplyTxErr ByronSpecBlock)
      (Ticked (LedgerState ByronSpecBlock),
       Validated (GenTx ByronSpecBlock))
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">applyTx</span></a></span></span><span> </span><span id="local-6989586621679227012"><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
-</span><a href="#local-6989586621679227012"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span id="local-6989586621679227011"><span class="annot"><span class="annottext">WhetherToIntervene
-</span><a href="#local-6989586621679227011"><span class="hs-identifier hs-var">_wti</span></a></span></span><span> </span><span id="local-6989586621679227010"><span class="annot"><span class="annottext">SlotNo
-</span><a href="#local-6989586621679227010"><span class="hs-identifier hs-var">_slot</span></a></span></span><span> </span><span id="local-6989586621679227009"><span class="annot"><span class="annottext">GenTx ByronSpecBlock
-</span><a href="#local-6989586621679227009"><span class="hs-identifier hs-var">tx</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Ledger.html#TickedByronSpecLedgerState"><span class="hs-identifier hs-type">TickedByronSpecLedgerState</span></a></span><span> </span><span id="local-6989586621679227007"><span class="annot"><a href="#local-6989586621679227007"><span class="hs-identifier hs-var">tip</span></a></span></span><span> </span><span id="local-6989586621679227006"><span class="annot"><a href="#local-6989586621679227006"><span class="hs-identifier hs-var">st</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">applyTx</span></a></span></span><span> </span><span id="local-6989586621679227671"><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
+</span><a href="#local-6989586621679227671"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span id="local-6989586621679227670"><span class="annot"><span class="annottext">WhetherToIntervene
+</span><a href="#local-6989586621679227670"><span class="hs-identifier hs-var">_wti</span></a></span></span><span> </span><span id="local-6989586621679227669"><span class="annot"><span class="annottext">SlotNo
+</span><a href="#local-6989586621679227669"><span class="hs-identifier hs-var">_slot</span></a></span></span><span> </span><span id="local-6989586621679227668"><span class="annot"><span class="annottext">GenTx ByronSpecBlock
+</span><a href="#local-6989586621679227668"><span class="hs-identifier hs-var">tx</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Ouroboros.Consensus.ByronSpec.Ledger.Ledger.html#TickedByronSpecLedgerState"><span class="hs-identifier hs-type">TickedByronSpecLedgerState</span></a></span><span> </span><span id="local-6989586621679227666"><span class="annot"><a href="#local-6989586621679227666"><span class="hs-identifier hs-var">tip</span></a></span></span><span> </span><span id="local-6989586621679227665"><span class="annot"><a href="#local-6989586621679227665"><span class="hs-identifier hs-var">st</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-43"></span><span>        </span><span class="annot"><span class="annottext">((Slot, Seq VKeyGenesis, Hash, UTxOState, DIState, UPIState)
  -&gt; (Ticked (LedgerState ByronSpecBlock),
      Validated (GenTx ByronSpecBlock)))
@@ -187,16 +187,16 @@ $cnoThunks :: Context -&gt; Validated (GenTx ByronSpecBlock) -&gt; IO (Maybe Thu
      (Ticked (LedgerState ByronSpecBlock),
       Validated (GenTx ByronSpecBlock))
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fmap</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span id="local-6989586621679227005"><span class="annot"><span class="annottext">(Slot, Seq VKeyGenesis, Hash, UTxOState, DIState, UPIState)
-</span><a href="#local-6989586621679227005"><span class="hs-identifier hs-var">st'</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fmap</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span id="local-6989586621679227664"><span class="annot"><span class="annottext">(Slot, Seq VKeyGenesis, Hash, UTxOState, DIState, UPIState)
+</span><a href="#local-6989586621679227664"><span class="hs-identifier hs-var">st'</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-44"></span><span>               </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">Maybe SlotNo -&gt; State CHAIN -&gt; Ticked (LedgerState ByronSpecBlock)
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Ledger.html#TickedByronSpecLedgerState"><span class="hs-identifier hs-var">TickedByronSpecLedgerState</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe SlotNo
-</span><a href="#local-6989586621679227007"><span class="hs-identifier hs-var">tip</span></a></span><span> </span><span class="annot"><span class="annottext">(Slot, Seq VKeyGenesis, Hash, UTxOState, DIState, UPIState)
+</span><a href="#local-6989586621679227666"><span class="hs-identifier hs-var">tip</span></a></span><span> </span><span class="annot"><span class="annottext">(Slot, Seq VKeyGenesis, Hash, UTxOState, DIState, UPIState)
 State CHAIN
-</span><a href="#local-6989586621679227005"><span class="hs-identifier hs-var">st'</span></a></span><span>
+</span><a href="#local-6989586621679227664"><span class="hs-identifier hs-var">st'</span></a></span><span>
 </span><span id="line-45"></span><span>               </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">GenTx ByronSpecBlock -&gt; Validated (GenTx ByronSpecBlock)
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#ValidatedByronSpecGenTx"><span class="hs-identifier hs-var">ValidatedByronSpecGenTx</span></a></span><span> </span><span class="annot"><span class="annottext">GenTx ByronSpecBlock
-</span><a href="#local-6989586621679227009"><span class="hs-identifier hs-var">tx</span></a></span><span>
+</span><a href="#local-6989586621679227668"><span class="hs-identifier hs-var">tx</span></a></span><span>
 </span><span id="line-46"></span><span>               </span><span class="hs-special">)</span><span>
 </span><span id="line-47"></span><span>             </span><span class="hs-special">)</span><span>
 </span><span id="line-48"></span><span>      </span><span class="annot"><span class="annottext">(ExceptT
@@ -224,23 +224,23 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; Except ByronSpecGenTxErr (State CHAIN)
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.GenTx.html#apply"><span class="hs-identifier hs-var">GenTx.apply</span></a></span><span> </span><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
 ByronSpecGenesis
-</span><a href="#local-6989586621679227012"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">GenTx ByronSpecBlock -&gt; ByronSpecGenTx
+</span><a href="#local-6989586621679227671"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">GenTx ByronSpecBlock -&gt; ByronSpecGenTx
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#unByronSpecGenTx"><span class="hs-identifier hs-var hs-var">unByronSpecGenTx</span></a></span><span> </span><span class="annot"><span class="annottext">GenTx ByronSpecBlock
-</span><a href="#local-6989586621679227009"><span class="hs-identifier hs-var">tx</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">State CHAIN
-</span><a href="#local-6989586621679227006"><span class="hs-identifier hs-var">st</span></a></span><span>
+</span><a href="#local-6989586621679227668"><span class="hs-identifier hs-var">tx</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">State CHAIN
+</span><a href="#local-6989586621679227665"><span class="hs-identifier hs-var">st</span></a></span><span>
 </span><span id="line-49"></span><span>
 </span><span id="line-50"></span><span>  </span><span class="hs-comment">-- Byron spec doesn't have multiple validation modes</span><span>
-</span><span id="line-51"></span><span>  </span><span id="local-6989586621679227003"><span class="annot"><span class="annottext">reapplyTx :: LedgerConfig ByronSpecBlock
+</span><span id="line-51"></span><span>  </span><span id="local-6989586621679227662"><span class="annot"><span class="annottext">reapplyTx :: LedgerConfig ByronSpecBlock
 -&gt; SlotNo
 -&gt; Validated (GenTx ByronSpecBlock)
 -&gt; Ticked (LedgerState ByronSpecBlock)
 -&gt; Except
      (ApplyTxErr ByronSpecBlock) (Ticked (LedgerState ByronSpecBlock))
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">reapplyTx</span></a></span></span><span> </span><span id="local-6989586621679227001"><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
-</span><a href="#local-6989586621679227001"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span id="local-6989586621679227000"><span class="annot"><span class="annottext">SlotNo
-</span><a href="#local-6989586621679227000"><span class="hs-identifier hs-var">slot</span></a></span></span><span> </span><span id="local-6989586621679226999"><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock)
-</span><a href="#local-6989586621679226999"><span class="hs-identifier hs-var">vtx</span></a></span></span><span> </span><span id="local-6989586621679226998"><span class="annot"><span class="annottext">Ticked (LedgerState ByronSpecBlock)
-</span><a href="#local-6989586621679226998"><span class="hs-identifier hs-var">st</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">reapplyTx</span></a></span></span><span> </span><span id="local-6989586621679227660"><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
+</span><a href="#local-6989586621679227660"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span id="local-6989586621679227659"><span class="annot"><span class="annottext">SlotNo
+</span><a href="#local-6989586621679227659"><span class="hs-identifier hs-var">slot</span></a></span></span><span> </span><span id="local-6989586621679227658"><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock)
+</span><a href="#local-6989586621679227658"><span class="hs-identifier hs-var">vtx</span></a></span></span><span> </span><span id="local-6989586621679227657"><span class="annot"><span class="annottext">Ticked (LedgerState ByronSpecBlock)
+</span><a href="#local-6989586621679227657"><span class="hs-identifier hs-var">st</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-52"></span><span>        </span><span class="annot"><span class="annottext">((Ticked (LedgerState ByronSpecBlock),
   Validated (GenTx ByronSpecBlock))
  -&gt; Ticked (LedgerState ByronSpecBlock))
@@ -291,27 +291,27 @@ LedgerConfig blk
 -&gt; Except
      (ApplyTxErr blk) (Ticked (LedgerState blk), Validated (GenTx blk))
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">applyTx</span></a></span><span> </span><span class="annot"><span class="annottext">LedgerConfig ByronSpecBlock
-</span><a href="#local-6989586621679227001"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="annot"><span class="annottext">WhetherToIntervene
+</span><a href="#local-6989586621679227660"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="annot"><span class="annottext">WhetherToIntervene
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">DoNotIntervene</span></a></span><span> </span><span class="annot"><span class="annottext">SlotNo
-</span><a href="#local-6989586621679227000"><span class="hs-identifier hs-var">slot</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
+</span><a href="#local-6989586621679227659"><span class="hs-identifier hs-var">slot</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#forgetValidatedByronSpecGenTx"><span class="hs-identifier hs-var hs-var">forgetValidatedByronSpecGenTx</span></a></span><span> </span><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock)
-</span><a href="#local-6989586621679226999"><span class="hs-identifier hs-var">vtx</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Ticked (LedgerState ByronSpecBlock)
-</span><a href="#local-6989586621679226998"><span class="hs-identifier hs-var">st</span></a></span><span>
+</span><a href="#local-6989586621679227658"><span class="hs-identifier hs-var">vtx</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Ticked (LedgerState ByronSpecBlock)
+</span><a href="#local-6989586621679227657"><span class="hs-identifier hs-var">st</span></a></span><span>
 </span><span id="line-54"></span><span>
 </span><span id="line-55"></span><span>  </span><span class="hs-comment">-- Dummy values, as these are not used in practice.</span><span>
-</span><span id="line-56"></span><span>  </span><span id="local-6989586621679226996"><span class="annot"><span class="annottext">txsMaxBytes :: Ticked (LedgerState ByronSpecBlock) -&gt; Word32
+</span><span id="line-56"></span><span>  </span><span id="local-6989586621679227655"><span class="annot"><span class="annottext">txsMaxBytes :: Ticked (LedgerState ByronSpecBlock) -&gt; Word32
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">txsMaxBytes</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word32 -&gt; Ticked (LedgerState ByronSpecBlock) -&gt; Word32
 forall a b. a -&gt; b -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">const</span></a></span><span> </span><span class="annot"><span class="annottext">Word32
 forall a. Bounded a =&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">maxBound</span></a></span><span>
-</span><span id="line-57"></span><span>  </span><span id="local-6989586621679226992"><span class="annot"><span class="annottext">txInBlockSize :: GenTx ByronSpecBlock -&gt; Word32
+</span><span id="line-57"></span><span>  </span><span id="local-6989586621679227651"><span class="annot"><span class="annottext">txInBlockSize :: GenTx ByronSpecBlock -&gt; Word32
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">txInBlockSize</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Word32 -&gt; GenTx ByronSpecBlock -&gt; Word32
 forall a b. a -&gt; b -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">const</span></a></span><span> </span><span class="annot"><span class="annottext">Word32
 </span><span class="hs-number">0</span></span><span>
 </span><span id="line-58"></span><span>
-</span><span id="line-59"></span><span>  </span><span id="local-6989586621679226990"><span class="annot"><span class="annottext">txForgetValidated :: Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
+</span><span id="line-59"></span><span>  </span><span id="local-6989586621679227649"><span class="annot"><span class="annottext">txForgetValidated :: Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
 </span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.3.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">txForgetValidated</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Validated (GenTx ByronSpecBlock) -&gt; GenTx ByronSpecBlock
 </span><a href="Ouroboros.Consensus.ByronSpec.Ledger.Mempool.html#forgetValidatedByronSpecGenTx"><span class="hs-identifier hs-var hs-var">forgetValidatedByronSpecGenTx</span></a></span><span>
 </span><span id="line-60"></span></pre></body></html>

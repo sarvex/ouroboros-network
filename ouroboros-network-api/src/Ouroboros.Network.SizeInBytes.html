@@ -8,7 +8,7 @@
 </span><span id="line-8"></span><span>
 </span><span id="line-9"></span><span class="hs-keyword">newtype</span><span> </span><span id="SizeInBytes"><span class="annot"><a href="Ouroboros.Network.SizeInBytes.html#SizeInBytes"><span class="hs-identifier hs-var">SizeInBytes</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="SizeInBytes"><span class="annot"><a href="Ouroboros.Network.SizeInBytes.html#SizeInBytes"><span class="hs-identifier hs-var">SizeInBytes</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="getSizeInBytes"><span class="annot"><span class="annottext">SizeInBytes -&gt; Word32
 </span><a href="Ouroboros.Network.SizeInBytes.html#getSizeInBytes"><span class="hs-identifier hs-var hs-var">getSizeInBytes</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word32</span></a></span><span> </span><span class="hs-special">}</span><span>
-</span><span id="line-10"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679197025"><span id="local-6989586621679197027"><span id="local-6989586621679197029"><span class="annot"><span class="annottext">Int -&gt; SizeInBytes -&gt; ShowS
+</span><span id="line-10"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679197119"><span id="local-6989586621679197121"><span id="local-6989586621679197123"><span class="annot"><span class="annottext">Int -&gt; SizeInBytes -&gt; ShowS
 [SizeInBytes] -&gt; ShowS
 SizeInBytes -&gt; String
 (Int -&gt; SizeInBytes -&gt; ShowS)
@@ -23,7 +23,7 @@ show :: SizeInBytes -&gt; String
 $cshow :: SizeInBytes -&gt; String
 showsPrec :: Int -&gt; SizeInBytes -&gt; ShowS
 $cshowsPrec :: Int -&gt; SizeInBytes -&gt; ShowS
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679197020"><span id="local-6989586621679197022"><span class="annot"><span class="annottext">SizeInBytes -&gt; SizeInBytes -&gt; Bool
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679197114"><span id="local-6989586621679197116"><span class="annot"><span class="annottext">SizeInBytes -&gt; SizeInBytes -&gt; Bool
 (SizeInBytes -&gt; SizeInBytes -&gt; Bool)
 -&gt; (SizeInBytes -&gt; SizeInBytes -&gt; Bool) -&gt; Eq SizeInBytes
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -31,7 +31,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: SizeInBytes -&gt; SizeInBytes -&gt; Bool
 == :: SizeInBytes -&gt; SizeInBytes -&gt; Bool
 $c== :: SizeInBytes -&gt; SizeInBytes -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679197004"><span id="local-6989586621679197006"><span id="local-6989586621679197008"><span id="local-6989586621679197010"><span id="local-6989586621679197012"><span id="local-6989586621679197014"><span id="local-6989586621679197016"><span class="annot"><span class="annottext">Eq SizeInBytes
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679197098"><span id="local-6989586621679197100"><span id="local-6989586621679197102"><span id="local-6989586621679197104"><span id="local-6989586621679197106"><span id="local-6989586621679197108"><span id="local-6989586621679197110"><span class="annot"><span class="annottext">Eq SizeInBytes
 Eq SizeInBytes
 -&gt; (SizeInBytes -&gt; SizeInBytes -&gt; Ordering)
 -&gt; (SizeInBytes -&gt; SizeInBytes -&gt; Bool)
@@ -70,7 +70,7 @@ compare :: SizeInBytes -&gt; SizeInBytes -&gt; Ordering
 $ccompare :: SizeInBytes -&gt; SizeInBytes -&gt; Ordering
 $cp1Ord :: Eq SizeInBytes
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-11"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679196987"><span id="local-6989586621679196989"><span id="local-6989586621679196991"><span id="local-6989586621679196993"><span id="local-6989586621679196995"><span id="local-6989586621679196997"><span id="local-6989586621679196999"><span id="local-6989586621679197001"><span class="annot"><span class="annottext">Int -&gt; SizeInBytes
+</span><span id="line-11"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679197081"><span id="local-6989586621679197083"><span id="local-6989586621679197085"><span id="local-6989586621679197087"><span id="local-6989586621679197089"><span id="local-6989586621679197091"><span id="local-6989586621679197093"><span id="local-6989586621679197095"><span class="annot"><span class="annottext">Int -&gt; SizeInBytes
 SizeInBytes -&gt; Int
 SizeInBytes -&gt; [SizeInBytes]
 SizeInBytes -&gt; SizeInBytes
@@ -112,7 +112,7 @@ $cpred :: SizeInBytes -&gt; SizeInBytes
 succ :: SizeInBytes -&gt; SizeInBytes
 $csucc :: SizeInBytes -&gt; SizeInBytes
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></a></span></span></span></span></span></span></span></span></span><span>     </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word32</span></a></span><span>
-</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679196972"><span id="local-6989586621679196974"><span id="local-6989586621679196976"><span id="local-6989586621679196978"><span id="local-6989586621679196980"><span id="local-6989586621679196982"><span id="local-6989586621679196984"><span class="annot"><span class="annottext">Integer -&gt; SizeInBytes
+</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679197066"><span id="local-6989586621679197068"><span id="local-6989586621679197070"><span id="local-6989586621679197072"><span id="local-6989586621679197074"><span id="local-6989586621679197076"><span id="local-6989586621679197078"><span class="annot"><span class="annottext">Integer -&gt; SizeInBytes
 SizeInBytes -&gt; SizeInBytes
 SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes
 (SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes)
@@ -147,7 +147,7 @@ $c- :: SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes
 + :: SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes
 $c+ :: SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Num</span></a></span></span></span></span></span></span></span></span><span>      </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word32</span></a></span><span>
-</span><span id="line-13"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679196967"><span class="annot"><span class="annottext">Num SizeInBytes
+</span><span id="line-13"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679197061"><span class="annot"><span class="annottext">Num SizeInBytes
 Ord SizeInBytes
 Num SizeInBytes
 -&gt; Ord SizeInBytes -&gt; (SizeInBytes -&gt; Rational) -&gt; Real SizeInBytes
@@ -158,7 +158,7 @@ $ctoRational :: SizeInBytes -&gt; Rational
 $cp2Real :: Ord SizeInBytes
 $cp1Real :: Num SizeInBytes
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Real</span></a></span></span><span>     </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word32</span></a></span><span>
-</span><span id="line-14"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679196950"><span id="local-6989586621679196952"><span id="local-6989586621679196954"><span id="local-6989586621679196956"><span id="local-6989586621679196958"><span id="local-6989586621679196960"><span id="local-6989586621679196962"><span class="annot"><span class="annottext">Enum SizeInBytes
+</span><span id="line-14"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679197044"><span id="local-6989586621679197046"><span id="local-6989586621679197048"><span id="local-6989586621679197050"><span id="local-6989586621679197052"><span id="local-6989586621679197054"><span id="local-6989586621679197056"><span class="annot"><span class="annottext">Enum SizeInBytes
 Real SizeInBytes
 Real SizeInBytes
 -&gt; Enum SizeInBytes
@@ -201,7 +201,7 @@ $cquot :: SizeInBytes -&gt; SizeInBytes -&gt; SizeInBytes
 $cp2Integral :: Enum SizeInBytes
 $cp1Integral :: Real SizeInBytes
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Integral</span></a></span></span></span></span></span></span></span></span><span> </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Word32</span></a></span><span>
-</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679196943"><span id="local-6989586621679196945"><span id="local-6989586621679196947"><span class="annot"><span class="annottext">Context -&gt; SizeInBytes -&gt; IO (Maybe ThunkInfo)
+</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679197037"><span id="local-6989586621679197039"><span id="local-6989586621679197041"><span class="annot"><span class="annottext">Context -&gt; SizeInBytes -&gt; IO (Maybe ThunkInfo)
 Proxy SizeInBytes -&gt; String
 (Context -&gt; SizeInBytes -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; SizeInBytes -&gt; IO (Maybe ThunkInfo))
