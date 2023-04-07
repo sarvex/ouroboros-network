@@ -48,10 +48,6 @@ instance NFData (MempoolWithMockedLedgerItf m blk) where
   -- benchmarks, maybe this definition is enough.
   rnf MempoolWithMockedLedgerItf {} = ()
 
--- TODO
--- * Three types of diffs: empty, no-op, full
--- * Three types of backing stores: in-memory, LMDB, mocked (remove maybe?)
--- * Transaction generation: consumed what is produced, consume what is on disk/changelog, {- consume something that does not exist? -}
 openMempoolWithMockedLedgerItf ::
      ( Ledger.LedgerSupportsMempool blk
      , Ledger.HasTxId (Ledger.GenTx blk)

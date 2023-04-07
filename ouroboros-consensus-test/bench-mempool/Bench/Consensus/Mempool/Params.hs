@@ -4,6 +4,8 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use camelCase" #-}
 
+-- | Functions related to initial parameters for the mempool benchmarks. See
+-- 'InitialMempoolAndModelParams'.
 module Bench.Consensus.Mempool.Params (
     -- * Types
     InitialMempoolAndModelParams (..)
@@ -18,16 +20,11 @@ module Bench.Consensus.Mempool.Params (
   , sampleLedgerDbCfg
     -- * Construction of initial state
   , ledgerStateFromTokens
-  , mkSimpleGenTx
-  , mkSimpleGenesisGenTx
-  , mkSimpleGenesisTx
-  , mkSimpleTx
   , testBlocksFromTxs
   ) where
 
-import           Bench.Consensus.Mempool.TestBlock (GenTx (TestBlockGenTx),
-                     PayloadDependentState (..), TestBlock, Token (..), Tx)
-import qualified Bench.Consensus.Mempool.TestBlock as Mempool.TestBlock
+import           Bench.Consensus.Mempool.TestBlock (PayloadDependentState (..),
+                     TestBlock, Token (..), Tx)
 import qualified Cardano.Slotting.Time as Time
 import           Control.Monad.IO.Class
 import qualified Data.Map.Strict as Map
@@ -78,7 +75,6 @@ data InitialMempoolAndModelParams m blk = MempoolAndModelParams {
     , immpBackingStoreSelector :: !(BackingStoreSelector m)
     }
 
--- | Smart constructor
 mkParams ::
      LedgerState blk ValuesMK
   -> [blk]
@@ -124,24 +120,25 @@ sampleLedgerConfig secparam =
 sampleLedgerDbCfg :: SecurityParam -> LedgerDbCfg (LedgerState TestBlock)
 sampleLedgerDbCfg secparam = LedgerDbCfg {
     ledgerDbCfgSecParam = secparam
-  ,  ledgerDbCfg        = sampleLedgerConfig secparam
+  , ledgerDbCfg        = sampleLedgerConfig secparam
   }
 
 {-------------------------------------------------------------------------------
   Construction of initial state
 -------------------------------------------------------------------------------}
 
--- | @'ledgerStateFromTokens' tks@ creates a ledger state from the given tokens
--- @tks@.
 ledgerStateFromTokens :: [Token] -> LedgerState TestBlock ValuesMK
 ledgerStateFromTokens tks = TestLedger {
       lastAppliedPoint      = Block.GenesisPoint
     , payloadDependentState = TestPLDS $ ValuesMK $
-                                Map.fromList (map (,()) tks)
+                                Map.fromList $ map (,()) tks
     }
 
 -- | @'testBlocksFromTxs' txs@ creates a list of successive 'TestBlock's, where
 -- each block corresponds to one of the 'Tx's in @txs@.
+--
+-- POSTCONDITION: The @i@-th result block contains only transaction @txs !! i@.
+-- The length of the resulting list is equal to the length of @txs@.
 testBlocksFromTxs :: [Tx] -> [TestBlock]
 testBlocksFromTxs []         = []
 testBlocksFromTxs (tx0:txs0) = go [firstBlk] txs0
@@ -167,14 +164,3 @@ testBlocksFromTxs (tx0:txs0) = go [firstBlk] txs0
           (Block.blockHash prevBlk)
           (Block.blockSlot prevBlk)
 
-mkSimpleGenesisTx :: Int -> Tx
-mkSimpleGenesisTx x = Mempool.TestBlock.mkTx [] [Token x]
-
-mkSimpleGenesisGenTx :: Int -> GenTx TestBlock
-mkSimpleGenesisGenTx = TestBlockGenTx . mkSimpleGenesisTx
-
-mkSimpleTx :: Int -> Int -> Tx
-mkSimpleTx x y = Mempool.TestBlock.mkTx [Token x] [Token y]
-
-mkSimpleGenTx :: Int -> Int -> GenTx TestBlock
-mkSimpleGenTx x y = TestBlockGenTx $ mkSimpleTx x y

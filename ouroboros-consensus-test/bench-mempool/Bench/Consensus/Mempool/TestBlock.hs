@@ -18,7 +18,8 @@ module Bench.Consensus.Mempool.TestBlock (
     -- * Transactions
   , Token (Token)
   , Tx (Tx)
-  , mkGenTx
+  , mkSimpleGenesisTx
+  , mkSimpleTx
   , mkTx
   , txSize
   ) where
@@ -66,8 +67,27 @@ data Tx = Tx {
 
 newtype Token = Token { unToken :: Int  }
   deriving stock (Show, Eq, Ord, Generic)
-  deriving newtype (ToCBOR, FromCBOR)
+  deriving newtype (ToCBOR, FromCBOR, Num)
   deriving anyclass (NoThunks, ToExpr, Serialise, NFData)
+
+mkTx ::
+     [Token]
+     -- ^ Consumed
+  -> [Token]
+     -- ^ Produced
+  -> Tx
+mkTx cons prod = Tx {
+    consumed = Set.fromList cons
+  , produced = Set.fromList prod
+  }
+
+-- | Create a 'Tx' that consumes and produces exactly one 'Token'.
+mkSimpleTx :: Token -> Token -> Tx
+mkSimpleTx x y = mkTx [x] [y]
+
+-- | Create a 'Tx' that consumes nothing, and produces only the given 'Token'.
+mkSimpleGenesisTx :: Token -> Tx
+mkSimpleGenesisTx y = mkTx [] [y]
 
 {-------------------------------------------------------------------------------
   Payload semantics
@@ -95,7 +115,7 @@ instance PayloadSemantics Tx where
         else Left  $ TxApplicationError notFound
     where
       TestPLDS toks@(ValuesMK tokMap) = plds
-      Tx {consumed, produced}                = tx
+      Tx {consumed, produced}         = tx
 
       consumedDiff, producedDiff :: Diff Token ()
       consumedDiff = Diff.fromListDeletes [(t, ()) | t <- Set.toList consumed]
@@ -193,25 +213,6 @@ newtype instance Ledger.GenTx TestBlock = TestBlockGenTx { unGenTx :: Tx }
 -- the actual size of the transaction in bytes.
 txSize :: Ledger.GenTx TestBlock -> Mempool.TxSizeInBytes
 txSize (TestBlockGenTx tx) = fromIntegral $ 1 + length (consumed tx) + length (produced tx)
-
-mkTx ::
-     [Token]
-     -- ^ Consumed
-  -> [Token]
-     -- ^ Produced
-  -> Tx
-mkTx cons prod = Tx {
-    consumed = Set.fromList cons
-  , produced = Set.fromList prod
-  }
-
-mkGenTx ::
-     [Token]
-     -- ^ Consumed
-  -> [Token]
-     -- ^ Produced
-  -> Ledger.GenTx TestBlock
-mkGenTx cons prod = TestBlockGenTx $ mkTx cons prod
 
 instance Ledger.LedgerSupportsMempool TestBlock where
   applyTx _cfg _shouldIntervene _slot (TestBlockGenTx tx) tickedSt =
