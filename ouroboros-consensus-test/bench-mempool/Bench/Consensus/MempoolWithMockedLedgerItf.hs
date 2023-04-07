@@ -23,7 +23,10 @@ import qualified Ouroboros.Consensus.Ledger.Tables as Ledger
 import qualified Ouroboros.Consensus.Ledger.Tables.Utils as Ledger
 import           Ouroboros.Consensus.Mempool (Mempool)
 import qualified Ouroboros.Consensus.Mempool as Mempool
+import           Ouroboros.Consensus.Storage.LedgerDB (LedgerDB)
 import qualified Ouroboros.Consensus.Storage.LedgerDB as LedgerDB
+import           Ouroboros.Consensus.Storage.LedgerDB.BackingStore
+                     (LedgerBackingStore)
 import qualified Ouroboros.Consensus.Storage.LedgerDB.ReadsKeySets as LedgerDB
 import qualified Ouroboros.Consensus.Storage.LedgerDB.Update as LedgerDB
 import           System.Directory (getTemporaryDirectory)
@@ -33,8 +36,10 @@ import           System.FS.IO (ioHasFS)
 import           System.IO.Temp (createTempDirectory)
 
 data MempoolWithMockedLedgerItf m blk = MempoolWithMockedLedgerItf {
-      getLedgerInterface :: !(Mempool.LedgerInterface m blk)
-    , getMempool         :: !(Mempool m blk)
+      getLedgerInterface    :: !(Mempool.LedgerInterface m blk)
+    , getLedgerDB           :: !(LedgerDB (LedgerState blk))
+    , getLedgerBackingStore :: !(LedgerBackingStore m (LedgerState blk))
+    , getMempool            :: !(Mempool m blk)
     }
 
 instance NFData (MempoolWithMockedLedgerItf m blk) where
@@ -95,8 +100,10 @@ openMempoolWithMockedLedgerItf capacityOverride tracer txSizeImpl params = do
                    tracer
                    txSizeImpl
     pure MempoolWithMockedLedgerItf {
-        getLedgerInterface = ledgerItf
-      , getMempool         = mempool
+        getLedgerInterface    = ledgerItf
+      , getLedgerDB           = ldb
+      , getLedgerBackingStore = lbs
+      , getMempool            = mempool
     }
   where
     MempoolAndModelParams {

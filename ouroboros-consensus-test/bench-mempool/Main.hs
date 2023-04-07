@@ -1,31 +1,31 @@
-{-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE NumericUnderscores  #-}
-{-# LANGUAGE OverloadedLists     #-}
-{-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TupleSections       #-}
+{-# LANGUAGE FlexibleContexts   #-}
+{-# LANGUAGE NumericUnderscores #-}
+{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE TupleSections      #-}
+{-# LANGUAGE ViewPatterns       #-}
 
 module Main (main) where
 
 import           Bench.Consensus.Mempool
+import           Bench.Consensus.Mempool.Options
 import           Bench.Consensus.Mempool.Params
+import           Bench.Consensus.Mempool.Scenario
 import           Bench.Consensus.Mempool.TestBlock (TestBlock)
 import qualified Bench.Consensus.Mempool.TestBlock as TestBlock
 import           Bench.Consensus.MempoolWithMockedLedgerItf
 import           Control.Arrow (first)
-import           Control.Monad (unless)
+import           Control.Monad
 import qualified Control.Tracer as Tracer
 import           Data.Aeson
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Csv as Csv
 import           Data.Maybe (fromMaybe)
-import           Data.Set ()
 import qualified Data.Text as Text
 import qualified Data.Text.Read as Text.Read
 import qualified Ouroboros.Consensus.Mempool.Capacity as Mempool
 import           System.Exit (die, exitFailure)
-import           Test.Tasty.Bench (CsvPath (CsvPath), bench, benchIngredients,
-                     bgroup, env, nfIO)
+import           Test.Tasty (askOption)
+import           Test.Tasty.Bench (CsvPath (CsvPath), bench, bgroup, env, nfIO)
 import           Test.Tasty.HUnit (testCase, (@?=))
 import           Test.Tasty.Options (changeOption)
 import           Test.Tasty.Runners (parseOptions, tryIngredients)
@@ -38,47 +38,95 @@ main = do
     convertCsvRowsToJsonObjects rawValues "mempool-benchmarks.json"
   where
     runBenchmarks csvFilePath = do
-        opts <- parseOptions benchIngredients benchmarkJustAddingTransactions
+        opts <- parseOptions customBenchIngredients benchmarkJustAddingTransactions
         let opts' = changeOption (Just . fromMaybe (CsvPath csvFilePath)) opts
-        case tryIngredients benchIngredients opts' benchmarkJustAddingTransactions of
+        case tryIngredients customBenchIngredients opts' benchmarkJustAddingTransactions of
           Nothing               -> exitFailure
           Just    runIngredient -> do
             success <- runIngredient
             unless success exitFailure
       where
         benchmarkJustAddingTransactions =
-            -- TODO: run with LMDB
-            let ns = [10_000, 20_000, 30_000] in
+            askOption $ \(fromOptionBSS -> bss) ->
+            askOption $ \(getNs -> ns) ->
             bgroup "Just adding" [
                 bgroup "scenario1" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario1 n
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                              mTxs <- linkedTxs Nothing n
+                              finishScenario [] [] mTxs
+                            )
                   ]
               , bgroup "scenario2 2160" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario2 n 2160
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                              clTxs <- linkedTxs Nothing 2_160
+                              mTxs <- linkedTxs (Just $ last clTxs) n
+                              finishScenario [] clTxs mTxs
+                            )
                   ]
               , bgroup "scenario3" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario3 n
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                                mTxs <- replicateM n gtx1
+                                finishScenario [] [] mTxs
+                            )
                   ]
               , bgroup "scenario4" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario4 n
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                                bsTxs <- replicateM n gtx1
+                                mTxs <- mapM stx1 bsTxs
+                                finishScenario bsTxs [] mTxs
+                            )
                   ]
               , bgroup "scenario5" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario5 n
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                                clTxs <- replicateM n gtx1
+                                mTxs <- mapM stx1 clTxs
+                                finishScenario [] clTxs mTxs
+                            )
                   ]
               , bgroup "scenario6" [
                     benchAddNTxs params txs n
                   | n <- ns
-                  , let (params, txs) = scenario6 n
+                  , let (params, txs) =
+                          fromScenario
+                            defaultLedgerDbCfg
+                            bss
+                            (build $ do
+                                bsTxs <- replicateM n gtx1
+                                clTxs <- mapM stx1 bsTxs
+                                mTxs <- mapM stx1 clTxs
+                                finishScenario bsTxs clTxs mTxs
+                            )
+
                   ]
               ]
           where
@@ -162,119 +210,3 @@ openMempoolWithCapacityFor params cmds =
   where
     capacityRequiredByCmds = Mempool.mkCapacityBytesOverride  totalTxsSize
       where totalTxsSize = sum $ fmap TestBlock.txSize $ txsAddedInCmds cmds
-
-{-------------------------------------------------------------------------------
-  Scenarios
--------------------------------------------------------------------------------}
-
--- | Scenario 1: The backing store is empty. The changelog is empty. There are
--- @n@ linked mempool transactions. i.e., each transaction produces a token
--- that the /next/ transaction consumes.
-scenario1 ::
-     Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario1 n =
-  let
-    lst   = ledgerStateFromTokens []
-    blks  = []
-    cmds  = let gtxs = mkSimpleGenesisGenTx 0
-                     : [ mkSimpleGenTx x y
-                       | (x, y) <- zip [0 .. n - 2] [1 .. n - 1]
-                       ]
-            in  fmap mkSimpleTryAdd gtxs
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)
-
--- | Scenario 2: The backing store is empty. The changelog has @m@ linked (see
--- 'scenario1') entries. There are @n@ linked mempool transactions. The last
--- entry in the changelog and the first mempool transaction are also linked.
-scenario2 ::
-     Int
-  -> Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario2 n m =
-  let
-    lst   = ledgerStateFromTokens []
-    blks  = let txs  = mkSimpleGenesisTx (-m)
-                     : [ mkSimpleTx x y
-                       | (x, y) <- zip [-m .. -2] [-m+1 .. -1]
-                       ]
-            in  testBlocksFromTxs txs
-    cmds  = let gtxs = mkSimpleGenTx (-1) 0
-                     : [ mkSimpleGenTx x y
-                       | (x, y) <- zip [0 .. n - 2] [1 .. n - 1]
-                       ]
-            in  fmap mkSimpleTryAdd gtxs
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)
-
--- | Scenario 3: The backing store is empty. The changelog is empty. There
--- are @n@ mempool transactions that each produce a new token.
-scenario3 ::
-     Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario3 n =
-  let
-    rbs  = [0..n-1]
-    lst  = ledgerStateFromTokens []
-    blks = []
-    cmds = [TryAdd [mkSimpleGenesisGenTx x] | x <- rbs]
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)
-
--- | Scenario 4: The backing store has @n@ tokens. The changelog is empty. There
--- are @n@ mempool transactions that each consume one of the @n@ tokens.
-scenario4 ::
-     Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario4 n =
-  let
-    rbs  = [0..n-1]
-    lst  = ledgerStateFromTokens [TestBlock.Token x | x <- rbs]
-    blks = []
-    cmds = [TryAdd [mkSimpleGenTx x (n + x)] | x <- rbs]
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)
-
--- | Scenario 5: The backing store is empty. There are @n@ entries in the
--- changelog that produce a token. There are @n@ mempool transactions that each
--- consume one of the @n@ tokens.
-scenario5 ::
-     Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario5 n =
-  let
-    range = [0..n-1]
-    lst  = ledgerStateFromTokens []
-    blks = testBlocksFromTxs [mkSimpleGenesisTx x | x <- range]
-    cmds = [TryAdd [mkSimpleGenTx x (n + x)] | x <- range]
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)
-
--- | Scenario 6: The backing store has @n@ tokens. There are @n@ entries in the
--- changelog that each consume one of the @n@ tokens, and each of the @n@
--- entries in the changelog also produces a new token. There are @n@ mempool
--- transactions that each consume one of the @n@ new tokens.
-scenario6 ::
-     Int
-  -> ( InitialMempoolAndModelParams m TestBlock
-     , [MempoolCmd TestBlock.TestBlock]
-     )
-scenario6 n =
-  let
-    range = [0..n-1]
-    lst = ledgerStateFromTokens [TestBlock.Token x | x <- range]
-    blks = testBlocksFromTxs [mkSimpleTx x (n + x) | x <- range]
-    cmds = [TryAdd [mkSimpleGenTx (n + x) (2*n + x)] | x <- range]
-  in
-    (mkParams lst blks defaultLedgerDbCfg defaultInMemoryBSS, cmds)

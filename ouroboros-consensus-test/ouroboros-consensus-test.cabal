@@ -344,7 +344,9 @@ benchmark bench-mempool
   main-is:          Main.hs
   other-modules:
     Bench.Consensus.Mempool
+    Bench.Consensus.Mempool.Options
     Bench.Consensus.Mempool.Params
+    Bench.Consensus.Mempool.Scenario
     Bench.Consensus.Mempool.TestBlock
     Bench.Consensus.MempoolWithMockedLedgerItf
 
@@ -361,7 +363,9 @@ benchmark bench-mempool
     , diff-containers
     , directory
     , fs-api
+    , mtl
     , nothunks
+    , optparse-applicative
     , ouroboros-consensus       ^>=0.3.1
     , ouroboros-consensus-test
     , serialise                 >=0.2    && <0.3

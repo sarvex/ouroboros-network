@@ -163,4 +163,3 @@ testBlocksFromTxs (tx0:txs0) = go [firstBlk] txs0
         TestBlock.successorBlockWithPayload
           (Block.blockHash prevBlk)
           (Block.blockSlot prevBlk)
-
