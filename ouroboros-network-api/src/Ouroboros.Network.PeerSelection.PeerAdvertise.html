@@ -10,9 +10,9 @@
 </span><span id="line-10"></span><span class="hs-comment">-- For certain peers specified by configuration it would be an appropriate</span><span>
 </span><span id="line-11"></span><span class="hs-comment">-- policy to keep them private.</span><span>
 </span><span id="line-12"></span><span class="hs-comment">--</span><span>
-</span><span id="line-13"></span><span id="local-6989586621679196575"><span id="local-6989586621679196576"></span></span><span class="hs-keyword">data</span><span> </span><span id="PeerAdvertise"><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-var">PeerAdvertise</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="DoNotAdvertisePeer"><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoNotAdvertisePeer"><span class="hs-identifier hs-var">DoNotAdvertisePeer</span></a></span></span><span>
+</span><span id="line-13"></span><span id="local-6989586621679196639"><span id="local-6989586621679196640"></span></span><span class="hs-keyword">data</span><span> </span><span id="PeerAdvertise"><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-var">PeerAdvertise</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="DoNotAdvertisePeer"><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoNotAdvertisePeer"><span class="hs-identifier hs-var">DoNotAdvertisePeer</span></a></span></span><span>
 </span><span id="line-14"></span><span>                   </span><span class="hs-glyph">|</span><span> </span><span id="DoAdvertisePeer"><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoAdvertisePeer"><span class="hs-identifier hs-var">DoAdvertisePeer</span></a></span></span><span>
-</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196569"><span id="local-6989586621679196571"><span class="annot"><span class="annottext">PeerAdvertise -&gt; PeerAdvertise -&gt; Bool
+</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196633"><span id="local-6989586621679196635"><span class="annot"><span class="annottext">PeerAdvertise -&gt; PeerAdvertise -&gt; Bool
 (PeerAdvertise -&gt; PeerAdvertise -&gt; Bool)
 -&gt; (PeerAdvertise -&gt; PeerAdvertise -&gt; Bool) -&gt; Eq PeerAdvertise
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -20,7 +20,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: PeerAdvertise -&gt; PeerAdvertise -&gt; Bool
 == :: PeerAdvertise -&gt; PeerAdvertise -&gt; Bool
 $c== :: PeerAdvertise -&gt; PeerAdvertise -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196562"><span id="local-6989586621679196564"><span id="local-6989586621679196566"><span class="annot"><span class="annottext">Int -&gt; PeerAdvertise -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196626"><span id="local-6989586621679196628"><span id="local-6989586621679196630"><span class="annot"><span class="annottext">Int -&gt; PeerAdvertise -&gt; ShowS
 [PeerAdvertise] -&gt; ShowS
 PeerAdvertise -&gt; String
 (Int -&gt; PeerAdvertise -&gt; ShowS)
@@ -35,7 +35,7 @@ show :: PeerAdvertise -&gt; String
 $cshow :: PeerAdvertise -&gt; String
 showsPrec :: Int -&gt; PeerAdvertise -&gt; ShowS
 $cshowsPrec :: Int -&gt; PeerAdvertise -&gt; ShowS
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196546"><span id="local-6989586621679196548"><span id="local-6989586621679196550"><span id="local-6989586621679196552"><span id="local-6989586621679196554"><span id="local-6989586621679196556"><span id="local-6989586621679196558"><span class="annot"><span class="annottext">Eq PeerAdvertise
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196610"><span id="local-6989586621679196612"><span id="local-6989586621679196614"><span id="local-6989586621679196616"><span id="local-6989586621679196618"><span id="local-6989586621679196620"><span id="local-6989586621679196622"><span class="annot"><span class="annottext">Eq PeerAdvertise
 Eq PeerAdvertise
 -&gt; (PeerAdvertise -&gt; PeerAdvertise -&gt; Ordering)
 -&gt; (PeerAdvertise -&gt; PeerAdvertise -&gt; Bool)
@@ -84,8 +84,8 @@ $cto :: forall x. Rep PeerAdvertise x -&gt; PeerAdvertise
 $cfrom :: forall x. PeerAdvertise -&gt; Rep PeerAdvertise x
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-16"></span><span>
-</span><span id="line-17"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679196539"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-type">PeerAdvertise</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-18"></span><span>  </span><span id="local-6989586621679196537"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser PeerAdvertise
+</span><span id="line-17"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679196603"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-type">PeerAdvertise</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-18"></span><span>  </span><span id="local-6989586621679196601"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser PeerAdvertise
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 -&gt; (Bool -&gt; Parser PeerAdvertise) -&gt; Value -&gt; Parser PeerAdvertise
 forall a. String -&gt; (Bool -&gt; Parser a) -&gt; Value -&gt; Parser a
@@ -105,8 +105,8 @@ forall a. a -&gt; a -&gt; Bool -&gt; a
 </span><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoNotAdvertisePeer"><span class="hs-identifier hs-var">DoNotAdvertisePeer</span></a></span><span> </span><span class="annot"><span class="annottext">PeerAdvertise
 </span><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoAdvertisePeer"><span class="hs-identifier hs-var">DoAdvertisePeer</span></a></span><span>
 </span><span id="line-20"></span><span>
-</span><span id="line-21"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679196527"><span id="local-6989586621679196529"><span id="local-6989586621679196531"><span class="annot"><span class="hs-identifier hs-type">ToJSON</span></span><span> </span><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-type">PeerAdvertise</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-22"></span><span>  </span><span id="local-6989586621679196525"><span class="annot"><span class="annottext">toJSON :: PeerAdvertise -&gt; Value
+</span><span id="line-21"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679196591"><span id="local-6989586621679196593"><span id="local-6989586621679196595"><span class="annot"><span class="hs-identifier hs-type">ToJSON</span></span><span> </span><span class="annot"><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#PeerAdvertise"><span class="hs-identifier hs-type">PeerAdvertise</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-22"></span><span>  </span><span id="local-6989586621679196589"><span class="annot"><span class="annottext">toJSON :: PeerAdvertise -&gt; Value
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">toJSON</span></span></span><span> </span><span class="annot"><span class="annottext">PeerAdvertise
 </span><a href="Ouroboros.Network.PeerSelection.PeerAdvertise.html#DoAdvertisePeer"><span class="hs-identifier hs-var">DoAdvertisePeer</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Value
 </span><span class="hs-identifier hs-var">Bool</span></span><span> </span><span class="annot"><span class="annottext">Bool
