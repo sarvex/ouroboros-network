@@ -38,7 +38,7 @@
 </span><span id="line-38"></span><span>    </span><span class="hs-comment">-- ^ added @GetPoolDistr, @GetPoolState, @GetSnapshots</span><span>
 </span><span id="line-39"></span><span>    </span><span class="hs-glyph">|</span><span> </span><span id="NodeToClientV_15"><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_15"><span class="hs-identifier hs-var">NodeToClientV_15</span></a></span></span><span>
 </span><span id="line-40"></span><span>    </span><span class="hs-comment">-- ^ enabled @CardanoNodeToClientVersion11@, i.e., Conway</span><span>
-</span><span id="line-41"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196435"><span id="local-6989586621679196437"><span class="annot"><span class="annottext">NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
+</span><span id="line-41"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196501"><span id="local-6989586621679196503"><span class="annot"><span class="annottext">NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
 (NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool)
 -&gt; (NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool)
 -&gt; Eq NodeToClientVersion
@@ -47,7 +47,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
 == :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
 $c== :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196419"><span id="local-6989586621679196421"><span id="local-6989586621679196423"><span id="local-6989586621679196425"><span id="local-6989586621679196427"><span id="local-6989586621679196429"><span id="local-6989586621679196431"><span class="annot"><span class="annottext">Eq NodeToClientVersion
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196485"><span id="local-6989586621679196487"><span id="local-6989586621679196489"><span id="local-6989586621679196491"><span id="local-6989586621679196493"><span id="local-6989586621679196495"><span id="local-6989586621679196497"><span class="annot"><span class="annottext">Eq NodeToClientVersion
 Eq NodeToClientVersion
 -&gt; (NodeToClientVersion -&gt; NodeToClientVersion -&gt; Ordering)
 -&gt; (NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool)
@@ -87,7 +87,7 @@ $c&lt; :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Bool
 compare :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Ordering
 $ccompare :: NodeToClientVersion -&gt; NodeToClientVersion -&gt; Ordering
 $cp1Ord :: Eq NodeToClientVersion
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196402"><span id="local-6989586621679196404"><span id="local-6989586621679196406"><span id="local-6989586621679196408"><span id="local-6989586621679196410"><span id="local-6989586621679196412"><span id="local-6989586621679196414"><span id="local-6989586621679196416"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersion
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196468"><span id="local-6989586621679196470"><span id="local-6989586621679196472"><span id="local-6989586621679196474"><span id="local-6989586621679196476"><span id="local-6989586621679196478"><span id="local-6989586621679196480"><span id="local-6989586621679196482"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersion
 NodeToClientVersion -&gt; Int
 NodeToClientVersion -&gt; [NodeToClientVersion]
 NodeToClientVersion -&gt; NodeToClientVersion
@@ -142,7 +142,7 @@ pred :: NodeToClientVersion -&gt; NodeToClientVersion
 $cpred :: NodeToClientVersion -&gt; NodeToClientVersion
 succ :: NodeToClientVersion -&gt; NodeToClientVersion
 $csucc :: NodeToClientVersion -&gt; NodeToClientVersion
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></a></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196397"><span id="local-6989586621679196399"><span class="annot"><span class="annottext">NodeToClientVersion
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></a></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196463"><span id="local-6989586621679196465"><span class="annot"><span class="annottext">NodeToClientVersion
 NodeToClientVersion
 -&gt; NodeToClientVersion -&gt; Bounded NodeToClientVersion
 forall a. a -&gt; a -&gt; Bounded a
@@ -150,7 +150,7 @@ maxBound :: NodeToClientVersion
 $cmaxBound :: NodeToClientVersion
 minBound :: NodeToClientVersion
 $cminBound :: NodeToClientVersion
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196390"><span id="local-6989586621679196392"><span id="local-6989586621679196394"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersion -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196456"><span id="local-6989586621679196458"><span id="local-6989586621679196460"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersion -&gt; ShowS
 [NodeToClientVersion] -&gt; ShowS
 NodeToClientVersion -&gt; String
 (Int -&gt; NodeToClientVersion -&gt; ShowS)
@@ -186,50 +186,50 @@ decodeTerm :: Term -&gt; Either (Text, Maybe Int) NodeToClientVersion
 decodeTerm :: Term -&gt; Either (Text, Maybe Int) NodeToClientVersion
 </span><a href="Ouroboros.Network.CodecCBORTerm.html#decodeTerm"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span><span> </span><span class="hs-special">}</span><span>
 </span><span id="line-52"></span><span>    </span><span class="hs-keyword">where</span><span>
-</span><span id="line-53"></span><span>      </span><span id="local-6989586621679196387"><span class="annot"><span class="annottext">encodeTerm :: NodeToClientVersion -&gt; Term
-</span><a href="#local-6989586621679196387"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-53"></span><span>      </span><span id="local-6989586621679196453"><span class="annot"><span class="annottext">encodeTerm :: NodeToClientVersion -&gt; Term
+</span><a href="#local-6989586621679196453"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_9"><span class="hs-identifier hs-var">NodeToClientV_9</span></a></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">9</span></span><span>  </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-54"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-54"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_10"><span class="hs-identifier hs-var">NodeToClientV_10</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">10</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-55"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-55"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_11"><span class="hs-identifier hs-var">NodeToClientV_11</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">11</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-56"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-56"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_12"><span class="hs-identifier hs-var">NodeToClientV_12</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">12</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-57"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-57"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_13"><span class="hs-identifier hs-var">NodeToClientV_13</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">13</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-58"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-58"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_14"><span class="hs-identifier hs-var">NodeToClientV_14</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">14</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-59"></span><span>      </span><span class="annot"><a href="#local-6989586621679196387"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
+</span><span id="line-59"></span><span>      </span><span class="annot"><a href="#local-6989586621679196453"><span class="hs-identifier hs-var">encodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_15"><span class="hs-identifier hs-var">NodeToClientV_15</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">15</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
@@ -237,16 +237,16 @@ forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`setBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-60"></span><span>
-</span><span id="line-61"></span><span>      </span><span id="local-6989586621679196385"><span class="annot"><span class="annottext">decodeTerm :: Term -&gt; Either (Text, Maybe Int) NodeToClientVersion
-</span><a href="#local-6989586621679196385"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">CBOR.TInt</span></span><span> </span><span id="local-6989586621679196381"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196381"><span class="hs-identifier hs-var">tag</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-61"></span><span>      </span><span id="local-6989586621679196451"><span class="annot"><span class="annottext">decodeTerm :: Term -&gt; Either (Text, Maybe Int) NodeToClientVersion
+</span><a href="#local-6989586621679196451"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">CBOR.TInt</span></span><span> </span><span id="local-6989586621679196447"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679196447"><span class="hs-identifier hs-var">tag</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-62"></span><span>       </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196381"><span class="hs-identifier hs-var">tag</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+</span><a href="#local-6989586621679196447"><span class="hs-identifier hs-var">tag</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Bits a =&gt; a -&gt; Int -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`clearBit`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span>
 </span><span id="line-63"></span><span>            </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196381"><span class="hs-identifier hs-var">tag</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+</span><a href="#local-6989586621679196447"><span class="hs-identifier hs-var">tag</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
 forall a. Bits a =&gt; a -&gt; Int -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">`testBit`</span></a></span><span>  </span><span class="annot"><span class="annottext">Int
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientVersionBit"><span class="hs-identifier hs-var">nodeToClientVersionBit</span></a></span><span>
@@ -293,8 +293,8 @@ forall a b. b -&gt; Either a b
 forall a b. b -&gt; Either a b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Right</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersion
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientV_15"><span class="hs-identifier hs-var">NodeToClientV_15</span></a></span><span>
-</span><span id="line-72"></span><span>        </span><span class="hs-special">(</span><span id="local-6989586621679196380"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196380"><span class="hs-identifier hs-var">n</span></a></span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span id="line-72"></span><span>        </span><span class="hs-special">(</span><span id="local-6989586621679196446"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679196446"><span class="hs-identifier hs-var">n</span></a></span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">(Text, Maybe Int) -&gt; Either (Text, Maybe Int) NodeToClientVersion
 forall a b. a -&gt; Either a b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Left</span></a></span><span> </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">String -&gt; Text
@@ -305,12 +305,12 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-var">T.pack</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; String
 forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196381"><span class="hs-identifier hs-var">tag</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679196447"><span class="hs-identifier hs-var">tag</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-73"></span><span>                            </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Maybe Int
 forall a. a -&gt; Maybe a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Just</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196380"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-74"></span><span>      </span><span class="annot"><a href="#local-6989586621679196385"><span class="hs-identifier hs-var">decodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">Term
+</span><a href="#local-6989586621679196446"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-74"></span><span>      </span><span class="annot"><a href="#local-6989586621679196451"><span class="hs-identifier hs-var">decodeTerm</span></a></span><span> </span><span class="annot"><span class="annottext">Term
 </span><span class="hs-identifier">_</span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Text, Maybe Int) -&gt; Either (Text, Maybe Int) NodeToClientVersion
 forall a b. a -&gt; Either a b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Left</span></a></span><span> </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">String -&gt; Text
@@ -332,7 +332,7 @@ forall a. Maybe a
 </span><span id="line-84"></span><span class="hs-keyword">newtype</span><span> </span><span id="NodeToClientVersionData"><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-var">NodeToClientVersionData</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="NodeToClientVersionData"><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-var">NodeToClientVersionData</span></a></span></span><span>
 </span><span id="line-85"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="networkMagic"><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; NetworkMagic
 </span><a href="Ouroboros.Network.NodeToClient.Version.html#networkMagic"><span class="hs-identifier hs-var hs-var">networkMagic</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Ouroboros.Network.Magic.html#NetworkMagic"><span class="hs-identifier hs-type">NetworkMagic</span></a></span><span> </span><span class="hs-special">}</span><span>
-</span><span id="line-86"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196372"><span id="local-6989586621679196374"><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
+</span><span id="line-86"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679196438"><span id="local-6989586621679196440"><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
 (NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool)
 -&gt; (NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool)
 -&gt; Eq NodeToClientVersionData
@@ -341,7 +341,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
 == :: NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
 $c== :: NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196366"><span id="local-6989586621679196368"><span id="local-6989586621679196370"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersionData -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679196432"><span id="local-6989586621679196434"><span id="local-6989586621679196436"><span class="annot"><span class="annottext">Int -&gt; NodeToClientVersionData -&gt; ShowS
 [NodeToClientVersionData] -&gt; ShowS
 NodeToClientVersionData -&gt; String
 (Int -&gt; NodeToClientVersionData -&gt; ShowS)
@@ -359,20 +359,20 @@ $cshowsPrec :: Int -&gt; NodeToClientVersionData -&gt; ShowS
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Typeable</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-87"></span><span>
 </span><span id="line-88"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="Ouroboros.Network.Handshake.Acceptable.html#Acceptable"><span class="hs-identifier hs-type">Acceptable</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-89"></span><span>    </span><span id="local-6989586621679196363"><span class="annot"><span class="annottext">acceptableVersion :: NodeToClientVersionData
+</span><span id="line-89"></span><span>    </span><span id="local-6989586621679196429"><span class="annot"><span class="annottext">acceptableVersion :: NodeToClientVersionData
 -&gt; NodeToClientVersionData -&gt; Accept NodeToClientVersionData
-</span><a href="Ouroboros.Network.Handshake.Acceptable.html#acceptableVersion"><span class="hs-identifier hs-var hs-var hs-var hs-var">acceptableVersion</span></a></span></span><span> </span><span id="local-6989586621679196361"><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196361"><span class="hs-identifier hs-var">local</span></a></span></span><span> </span><span id="local-6989586621679196360"><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196360"><span class="hs-identifier hs-var">remote</span></a></span></span><span>
+</span><a href="Ouroboros.Network.Handshake.Acceptable.html#acceptableVersion"><span class="hs-identifier hs-var hs-var hs-var hs-var">acceptableVersion</span></a></span></span><span> </span><span id="local-6989586621679196427"><span class="annot"><span class="annottext">NodeToClientVersionData
+</span><a href="#local-6989586621679196427"><span class="hs-identifier hs-var">local</span></a></span></span><span> </span><span id="local-6989586621679196426"><span class="annot"><span class="annottext">NodeToClientVersionData
+</span><a href="#local-6989586621679196426"><span class="hs-identifier hs-var">remote</span></a></span></span><span>
 </span><span id="line-90"></span><span>      </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196361"><span class="hs-identifier hs-var">local</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
+</span><a href="#local-6989586621679196427"><span class="hs-identifier hs-var">local</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; NodeToClientVersionData -&gt; Bool
 forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">==</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196360"><span class="hs-identifier hs-var">remote</span></a></span><span>
+</span><a href="#local-6989586621679196426"><span class="hs-identifier hs-var">remote</span></a></span><span>
 </span><span id="line-91"></span><span>      </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; Accept NodeToClientVersionData
 forall vData. vData -&gt; Accept vData
 </span><a href="Ouroboros.Network.Handshake.Acceptable.html#Accept"><span class="hs-identifier hs-var">Accept</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196361"><span class="hs-identifier hs-var">local</span></a></span><span>
+</span><a href="#local-6989586621679196427"><span class="hs-identifier hs-var">local</span></a></span><span>
 </span><span id="line-92"></span><span>      </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">otherwise</span></a></span><span> </span><span class="hs-glyph">=</span><span>  </span><span class="annot"><span class="annottext">Text -&gt; Accept NodeToClientVersionData
 forall vData. Text -&gt; Accept vData
@@ -389,7 +389,7 @@ forall a. [a] -&gt; [a] -&gt; [a]
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">++</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; String
 forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196361"><span class="hs-identifier hs-var">local</span></a></span><span>
+</span><a href="#local-6989586621679196427"><span class="hs-identifier hs-var">local</span></a></span><span>
 </span><span id="line-94"></span><span>                                    </span><span class="annot"><span class="annottext">String -&gt; ShowS
 forall a. [a] -&gt; [a] -&gt; [a]
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">++</span></a></span><span> </span><span class="annot"><span class="annottext">String
@@ -398,7 +398,7 @@ forall a. [a] -&gt; [a] -&gt; [a]
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">++</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; String
 forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData
-</span><a href="#local-6989586621679196360"><span class="hs-identifier hs-var">remote</span></a></span><span>
+</span><a href="#local-6989586621679196426"><span class="hs-identifier hs-var">remote</span></a></span><span>
 </span><span id="line-95"></span><span>
 </span><span id="line-96"></span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#nodeToClientCodecCBORTerm"><span class="hs-identifier hs-type">nodeToClientCodecCBORTerm</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersion"><span class="hs-identifier hs-type">NodeToClientVersion</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Ouroboros.Network.CodecCBORTerm.html#CodecCBORTerm"><span class="hs-identifier hs-type">CodecCBORTerm</span></a></span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span>
 </span><span id="line-97"></span><span id="nodeToClientCodecCBORTerm"><span class="annot"><span class="annottext">nodeToClientCodecCBORTerm :: NodeToClientVersion -&gt; CodecCBORTerm Text NodeToClientVersionData
@@ -408,17 +408,17 @@ forall a. Show a =&gt; a -&gt; String
 </span><a href="Ouroboros.Network.CodecCBORTerm.html#CodecCBORTerm"><span class="hs-identifier hs-type">CodecCBORTerm</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; Term
 encodeTerm :: NodeToClientVersionData -&gt; Term
 encodeTerm :: NodeToClientVersionData -&gt; Term
-</span><a href="#local-6989586621679196357"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Term -&gt; Either Text NodeToClientVersionData
+</span><a href="#local-6989586621679196423"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Term -&gt; Either Text NodeToClientVersionData
 decodeTerm :: Term -&gt; Either Text NodeToClientVersionData
 decodeTerm :: Term -&gt; Either Text NodeToClientVersionData
-</span><a href="#local-6989586621679196356"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span><span class="hs-special">}</span><span>
+</span><a href="#local-6989586621679196422"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span><span class="hs-special">}</span><span>
 </span><span id="line-98"></span><span>    </span><span class="hs-keyword">where</span><span>
-</span><span id="line-99"></span><span>      </span><span class="annot"><a href="#local-6989586621679196357"><span class="hs-identifier hs-type">encodeTerm</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CBOR.Term</span></span><span>
-</span><span id="line-100"></span><span>      </span><span id="local-6989586621679196357"><span class="annot"><span class="annottext">encodeTerm :: NodeToClientVersionData -&gt; Term
-</span><a href="#local-6989586621679196357"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span> </span><span class="hs-special">{</span><span> </span><span id="local-6989586621679196355"><span class="annot"><span class="annottext">NetworkMagic
+</span><span id="line-99"></span><span>      </span><span class="annot"><a href="#local-6989586621679196423"><span class="hs-identifier hs-type">encodeTerm</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CBOR.Term</span></span><span>
+</span><span id="line-100"></span><span>      </span><span id="local-6989586621679196423"><span class="annot"><span class="annottext">encodeTerm :: NodeToClientVersionData -&gt; Term
+</span><a href="#local-6989586621679196423"><span class="hs-identifier hs-var hs-var">encodeTerm</span></a></span></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span> </span><span class="hs-special">{</span><span> </span><span id="local-6989586621679196421"><span class="annot"><span class="annottext">NetworkMagic
 networkMagic :: NetworkMagic
 networkMagic :: NodeToClientVersionData -&gt; NetworkMagic
-</span><a href="#local-6989586621679196355"><span class="hs-identifier hs-var hs-var">networkMagic</span></a></span></span><span> </span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679196421"><span class="hs-identifier hs-var hs-var">networkMagic</span></a></span></span><span> </span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-101"></span><span>        </span><span class="annot"><span class="annottext">Int -&gt; Term
 </span><span class="hs-identifier hs-var">CBOR.TInt</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Word32 -&gt; Int
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
@@ -426,18 +426,18 @@ forall a b. (Integral a, Num b) =&gt; a -&gt; b
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">NetworkMagic -&gt; Word32
 </span><a href="Ouroboros.Network.Magic.html#unNetworkMagic"><span class="hs-identifier hs-var hs-var">unNetworkMagic</span></a></span><span> </span><span class="annot"><span class="annottext">NetworkMagic
-</span><a href="#local-6989586621679196355"><span class="hs-identifier hs-var">networkMagic</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679196421"><span class="hs-identifier hs-var">networkMagic</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-102"></span><span>
-</span><span id="line-103"></span><span>      </span><span class="annot"><a href="#local-6989586621679196356"><span class="hs-identifier hs-type">decodeTerm</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CBOR.Term</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Either</span></a></span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span>
-</span><span id="line-104"></span><span>      </span><span id="local-6989586621679196356"><span class="annot"><span class="annottext">decodeTerm :: Term -&gt; Either Text NodeToClientVersionData
-</span><a href="#local-6989586621679196356"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">CBOR.TInt</span></span><span> </span><span id="local-6989586621679196353"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196353"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196353"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+</span><span id="line-103"></span><span>      </span><span class="annot"><a href="#local-6989586621679196422"><span class="hs-identifier hs-type">decodeTerm</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CBOR.Term</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-type">Either</span></a></span><span> </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Network.NodeToClient.Version.html#NodeToClientVersionData"><span class="hs-identifier hs-type">NodeToClientVersionData</span></a></span><span>
+</span><span id="line-104"></span><span>      </span><span id="local-6989586621679196422"><span class="annot"><span class="annottext">decodeTerm :: Term -&gt; Either Text NodeToClientVersionData
+</span><a href="#local-6989586621679196422"><span class="hs-identifier hs-var hs-var">decodeTerm</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">CBOR.TInt</span></span><span> </span><span id="local-6989586621679196419"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679196419"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679196419"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
 forall a. Ord a =&gt; a -&gt; a -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&gt;=</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&amp;&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196353"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+</span><a href="#local-6989586621679196419"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
 forall a. Ord a =&gt; a -&gt; a -&gt; Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&lt;=</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">0xffffffff</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NodeToClientVersionData -&gt; Either Text NodeToClientVersionData
@@ -452,7 +452,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Word32
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">fromIntegral</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196353"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679196419"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-105"></span><span>                               </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">otherwise</span></a></span><span>                 </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either Text NodeToClientVersionData
 forall a b. a -&gt; Either a b
@@ -468,9 +468,9 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">&lt;&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; String
 forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679196353"><span class="hs-identifier hs-var">x</span></a></span><span>
-</span><span id="line-106"></span><span>      </span><span class="annot"><a href="#local-6989586621679196356"><span class="hs-identifier hs-var">decodeTerm</span></a></span><span> </span><span id="local-6989586621679196349"><span class="annot"><span class="annottext">Term
-</span><a href="#local-6989586621679196349"><span class="hs-identifier hs-var">t</span></a></span></span><span>             </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either Text NodeToClientVersionData
+</span><a href="#local-6989586621679196419"><span class="hs-identifier hs-var">x</span></a></span><span>
+</span><span id="line-106"></span><span>      </span><span class="annot"><a href="#local-6989586621679196422"><span class="hs-identifier hs-var">decodeTerm</span></a></span><span> </span><span id="local-6989586621679196415"><span class="annot"><span class="annottext">Term
+</span><a href="#local-6989586621679196415"><span class="hs-identifier hs-var">t</span></a></span></span><span>             </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either Text NodeToClientVersionData
 forall a b. a -&gt; Either a b
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">Left</span></a></span><span> </span><span class="annot"><span class="annottext">(Text -&gt; Either Text NodeToClientVersionData)
 -&gt; Text -&gt; Either Text NodeToClientVersionData
@@ -484,5 +484,5 @@ forall a. [a] -&gt; [a] -&gt; [a]
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-operator hs-var">++</span></a></span><span> </span><span class="annot"><span class="annottext">Term -&gt; String
 forall a. Show a =&gt; a -&gt; String
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">show</span></a></span><span> </span><span class="annot"><span class="annottext">Term
-</span><a href="#local-6989586621679196349"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><a href="#local-6989586621679196415"><span class="hs-identifier hs-var">t</span></a></span><span>
 </span><span id="line-107"></span></pre></body></html>
