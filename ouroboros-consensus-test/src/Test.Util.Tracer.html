@@ -5,7 +5,7 @@
 </span><span id="line-5"></span><span>
 </span><span id="line-6"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Control.Tracer</span></span><span>
 </span><span id="line-7"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier">Data.IORef</span></a></span><span>
-</span><span id="line-8"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.4.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Util.MonadSTM.NormalForm</span></a></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.4.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier">Ouroboros.Consensus.Util.MonadSTM.NormalForm</span></a></span><span>
 </span><span id="line-9"></span><span>
 </span><span id="line-10"></span><span class="hs-comment">-- | Create a 'Tracer' that stores all events in an 'IORef' that is atomically</span><span>
 </span><span id="line-11"></span><span class="hs-comment">-- updated. The second return value lets you obtain the events recorded so far</span><span>
@@ -55,7 +55,7 @@ forall a. IORef a -&gt; IO a
 </span><span id="line-23"></span><span id="recordingTracerTVar"><span class="annot"><span class="annottext">recordingTracerTVar :: m (Tracer m ev, m [ev])
 </span><a href="Test.Util.Tracer.html#recordingTracerTVar"><span class="hs-identifier hs-var hs-var">recordingTracerTVar</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[ev] -&gt; m (StrictTVar m [ev])
 forall (m :: * -&gt; *) a. MonadSTM m =&gt; a -&gt; m (StrictTVar m a)
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.4.1.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">uncheckedNewTVarM</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="annot"><span class="annottext">m (StrictTVar m [ev])
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.4.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-var">uncheckedNewTVarM</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="annot"><span class="annottext">m (StrictTVar m [ev])
 -&gt; (StrictTVar m [ev] -&gt; m (Tracer m ev, m [ev]))
 -&gt; m (Tracer m ev, m [ev])
 forall (m :: * -&gt; *) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
