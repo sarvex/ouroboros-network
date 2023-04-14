@@ -67,7 +67,7 @@ forall a.
 (forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
 $cto :: forall x. Rep (BlockConfig ByronBlock) x -&gt; BlockConfig ByronBlock
 $cfrom :: forall x. BlockConfig ByronBlock -&gt; Rep (BlockConfig ByronBlock) x
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226570"><span id="local-6989586621679226572"><span id="local-6989586621679226574"><span class="annot"><span class="annottext">Context -&gt; BlockConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226569"><span id="local-6989586621679226571"><span id="local-6989586621679226573"><span class="annot"><span class="annottext">Context -&gt; BlockConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 Proxy (BlockConfig ByronBlock) -&gt; String
 (Context -&gt; BlockConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; BlockConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
@@ -150,7 +150,7 @@ forall a.
 (forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
 $cto :: forall x. Rep (CodecConfig ByronBlock) x -&gt; CodecConfig ByronBlock
 $cfrom :: forall x. CodecConfig ByronBlock -&gt; Rep (CodecConfig ByronBlock) x
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226551"><span id="local-6989586621679226553"><span id="local-6989586621679226555"><span class="annot"><span class="annottext">Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226550"><span id="local-6989586621679226552"><span id="local-6989586621679226554"><span class="annot"><span class="annottext">Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 Proxy (CodecConfig ByronBlock) -&gt; String
 (Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
@@ -167,17 +167,17 @@ wNoThunks :: Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 $cwNoThunks :: Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 noThunks :: Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 $cnoThunks :: Context -&gt; CodecConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
-</span><a href="#local-6989586621679226551"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679226550"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-78"></span><span>
 </span><span id="line-79"></span><span class="annot"><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#mkByronCodecConfig"><span class="hs-identifier hs-type">mkByronCodecConfig</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CC.Genesis.Config</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-consensus-0.4.0.0/noopt/doc/html/ouroboros-consensus/src"><span class="hs-identifier hs-type">CodecConfig</span></a></span><span> </span><span class="annot"><a href="Ouroboros.Consensus.Byron.Ledger.Block.html#ByronBlock"><span class="hs-identifier hs-type">ByronBlock</span></a></span><span>
 </span><span id="line-80"></span><span id="mkByronCodecConfig"><span class="annot"><span class="annottext">mkByronCodecConfig :: Config -&gt; CodecConfig ByronBlock
-</span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#mkByronCodecConfig"><span class="hs-identifier hs-var hs-var">mkByronCodecConfig</span></a></span></span><span> </span><span id="local-6989586621679226550"><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679226550"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByronCodecConfig :: EpochSlots -&gt; CodecConfig ByronBlock
+</span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#mkByronCodecConfig"><span class="hs-identifier hs-var hs-var">mkByronCodecConfig</span></a></span></span><span> </span><span id="local-6989586621679226549"><span class="annot"><span class="annottext">Config
+</span><a href="#local-6989586621679226549"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByronCodecConfig :: EpochSlots -&gt; CodecConfig ByronBlock
 </span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#ByronCodecConfig"><span class="hs-identifier hs-type">ByronCodecConfig</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-81"></span><span>      </span><span class="annot"><span class="annottext">getByronEpochSlots :: EpochSlots
 </span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#getByronEpochSlots"><span class="hs-identifier hs-var">getByronEpochSlots</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Config -&gt; EpochSlots
 </span><span class="hs-identifier hs-var">CC.Genesis.configEpochSlots</span></span><span> </span><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679226550"><span class="hs-identifier hs-var">cfg</span></a></span><span>
+</span><a href="#local-6989586621679226549"><span class="hs-identifier hs-var">cfg</span></a></span><span>
 </span><span id="line-82"></span><span>    </span><span class="hs-special">}</span><span>
 </span><span id="line-83"></span><span>
 </span><span id="line-84"></span><span class="hs-comment">{-------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ $cto :: forall x.
 Rep (StorageConfig ByronBlock) x -&gt; StorageConfig ByronBlock
 $cfrom :: forall x.
 StorageConfig ByronBlock -&gt; Rep (StorageConfig ByronBlock) x
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226538"><span id="local-6989586621679226540"><span id="local-6989586621679226542"><span class="annot"><span class="annottext">Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679226537"><span id="local-6989586621679226539"><span id="local-6989586621679226541"><span class="annot"><span class="annottext">Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 Proxy (StorageConfig ByronBlock) -&gt; String
 (Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
 -&gt; (Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo))
@@ -222,7 +222,7 @@ wNoThunks :: Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 $cwNoThunks :: Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 noThunks :: Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 $cnoThunks :: Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
-</span><a href="#local-6989586621679226538"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679226537"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">NoThunks</span></a></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-94"></span><span>
 </span><span id="line-95"></span><span class="hs-comment">{-------------------------------------------------------------------------------
   Compact genesis config
@@ -237,13 +237,13 @@ $cnoThunks :: Context -&gt; StorageConfig ByronBlock -&gt; IO (Maybe ThunkInfo)
 </span><span id="line-105"></span><span class="hs-comment">-- a bit of memory.</span><span>
 </span><span id="line-106"></span><span class="annot"><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#compactGenesisConfig"><span class="hs-identifier hs-type">compactGenesisConfig</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CC.Genesis.Config</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CC.Genesis.Config</span></span><span>
 </span><span id="line-107"></span><span id="compactGenesisConfig"><span class="annot"><span class="annottext">compactGenesisConfig :: Config -&gt; Config
-</span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#compactGenesisConfig"><span class="hs-identifier hs-var hs-var">compactGenesisConfig</span></a></span></span><span> </span><span id="local-6989586621679226537"><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679226537"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679226537"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="hs-special">{</span><span>
+</span><a href="Ouroboros.Consensus.Byron.Ledger.Config.html#compactGenesisConfig"><span class="hs-identifier hs-var hs-var">compactGenesisConfig</span></a></span></span><span> </span><span id="local-6989586621679226536"><span class="annot"><span class="annottext">Config
+</span><a href="#local-6989586621679226536"><span class="hs-identifier hs-var">cfg</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Config
+</span><a href="#local-6989586621679226536"><span class="hs-identifier hs-var">cfg</span></a></span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-108"></span><span>      </span><span class="annot"><span class="annottext">configGenesisData :: GenesisData
 </span><span class="hs-identifier hs-var">CC.Genesis.configGenesisData</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Config -&gt; GenesisData
 </span><span class="hs-identifier hs-var hs-var">CC.Genesis.configGenesisData</span></span><span> </span><span class="annot"><span class="annottext">Config
-</span><a href="#local-6989586621679226537"><span class="hs-identifier hs-var">cfg</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">{</span><span>
+</span><a href="#local-6989586621679226536"><span class="hs-identifier hs-var">cfg</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">{</span><span>
 </span><span id="line-109"></span><span>          </span><span class="annot"><span class="annottext">gdAvvmDistr :: GenesisAvvmBalances
 </span><span class="hs-identifier hs-var">CC.Genesis.gdAvvmDistr</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Map CompactRedeemVerificationKey Lovelace -&gt; GenesisAvvmBalances
 </span><span class="hs-identifier hs-var">CC.Genesis.GenesisAvvmBalances</span></span><span> </span><span class="annot"><span class="annottext">Map CompactRedeemVerificationKey Lovelace

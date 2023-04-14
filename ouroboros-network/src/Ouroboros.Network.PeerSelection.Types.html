@@ -9,7 +9,7 @@
 </span><span id="line-9"></span><span class="hs-keyword">data</span><span> </span><span id="PeerSource"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerSource"><span class="hs-identifier hs-var">PeerSource</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PeerSourceLocalRoot"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerSourceLocalRoot"><span class="hs-identifier hs-var">PeerSourceLocalRoot</span></a></span></span><span>
 </span><span id="line-10"></span><span>                </span><span class="hs-glyph">|</span><span> </span><span id="PeerSourcePublicRoot"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerSourcePublicRoot"><span class="hs-identifier hs-var">PeerSourcePublicRoot</span></a></span></span><span>
 </span><span id="line-11"></span><span>                </span><span class="hs-glyph">|</span><span> </span><span id="PeerSourcePeerShare"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerSourcePeerShare"><span class="hs-identifier hs-var">PeerSourcePeerShare</span></a></span></span><span>
-</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679253502"><span id="local-6989586621679253504"><span class="annot"><span class="annottext">PeerSource -&gt; PeerSource -&gt; Bool
+</span><span id="line-12"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679253501"><span id="local-6989586621679253503"><span class="annot"><span class="annottext">PeerSource -&gt; PeerSource -&gt; Bool
 (PeerSource -&gt; PeerSource -&gt; Bool)
 -&gt; (PeerSource -&gt; PeerSource -&gt; Bool) -&gt; Eq PeerSource
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -17,7 +17,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: PeerSource -&gt; PeerSource -&gt; Bool
 == :: PeerSource -&gt; PeerSource -&gt; Bool
 $c== :: PeerSource -&gt; PeerSource -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253486"><span id="local-6989586621679253488"><span id="local-6989586621679253490"><span id="local-6989586621679253492"><span id="local-6989586621679253494"><span id="local-6989586621679253496"><span id="local-6989586621679253498"><span class="annot"><span class="annottext">Eq PeerSource
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253485"><span id="local-6989586621679253487"><span id="local-6989586621679253489"><span id="local-6989586621679253491"><span id="local-6989586621679253493"><span id="local-6989586621679253495"><span id="local-6989586621679253497"><span class="annot"><span class="annottext">Eq PeerSource
 Eq PeerSource
 -&gt; (PeerSource -&gt; PeerSource -&gt; Ordering)
 -&gt; (PeerSource -&gt; PeerSource -&gt; Bool)
@@ -55,7 +55,7 @@ $c&lt; :: PeerSource -&gt; PeerSource -&gt; Bool
 compare :: PeerSource -&gt; PeerSource -&gt; Ordering
 $ccompare :: PeerSource -&gt; PeerSource -&gt; Ordering
 $cp1Ord :: Eq PeerSource
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253479"><span id="local-6989586621679253481"><span id="local-6989586621679253483"><span class="annot"><span class="annottext">Int -&gt; PeerSource -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253478"><span id="local-6989586621679253480"><span id="local-6989586621679253482"><span class="annot"><span class="annottext">Int -&gt; PeerSource -&gt; ShowS
 [PeerSource] -&gt; ShowS
 PeerSource -&gt; String
 (Int -&gt; PeerSource -&gt; ShowS)
@@ -70,7 +70,7 @@ show :: PeerSource -&gt; String
 $cshow :: PeerSource -&gt; String
 showsPrec :: Int -&gt; PeerSource -&gt; ShowS
 $cshowsPrec :: Int -&gt; PeerSource -&gt; ShowS
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253462"><span id="local-6989586621679253464"><span id="local-6989586621679253466"><span id="local-6989586621679253468"><span id="local-6989586621679253470"><span id="local-6989586621679253472"><span id="local-6989586621679253474"><span id="local-6989586621679253476"><span class="annot"><span class="annottext">Int -&gt; PeerSource
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253461"><span id="local-6989586621679253463"><span id="local-6989586621679253465"><span id="local-6989586621679253467"><span id="local-6989586621679253469"><span id="local-6989586621679253471"><span id="local-6989586621679253473"><span id="local-6989586621679253475"><span class="annot"><span class="annottext">Int -&gt; PeerSource
 PeerSource -&gt; Int
 PeerSource -&gt; [PeerSource]
 PeerSource -&gt; PeerSource
@@ -117,7 +117,7 @@ $csucc :: PeerSource -&gt; PeerSource
 </span><span id="line-15"></span><span>       </span><span id="PeerCold"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerCold"><span class="hs-identifier hs-var">PeerCold</span></a></span></span><span>
 </span><span id="line-16"></span><span>     </span><span class="hs-glyph">|</span><span> </span><span id="PeerWarm"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerWarm"><span class="hs-identifier hs-var">PeerWarm</span></a></span></span><span>
 </span><span id="line-17"></span><span>     </span><span class="hs-glyph">|</span><span> </span><span id="PeerHot"><span class="annot"><a href="Ouroboros.Network.PeerSelection.Types.html#PeerHot"><span class="hs-identifier hs-var">PeerHot</span></a></span></span><span>
-</span><span id="line-18"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679253454"><span id="local-6989586621679253456"><span class="annot"><span class="annottext">PeerStatus -&gt; PeerStatus -&gt; Bool
+</span><span id="line-18"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679253453"><span id="local-6989586621679253455"><span class="annot"><span class="annottext">PeerStatus -&gt; PeerStatus -&gt; Bool
 (PeerStatus -&gt; PeerStatus -&gt; Bool)
 -&gt; (PeerStatus -&gt; PeerStatus -&gt; Bool) -&gt; Eq PeerStatus
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -125,7 +125,7 @@ forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c/= :: PeerStatus -&gt; PeerStatus -&gt; Bool
 == :: PeerStatus -&gt; PeerStatus -&gt; Bool
 $c== :: PeerStatus -&gt; PeerStatus -&gt; Bool
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253439"><span id="local-6989586621679253441"><span id="local-6989586621679253443"><span id="local-6989586621679253445"><span id="local-6989586621679253447"><span id="local-6989586621679253449"><span id="local-6989586621679253451"><span class="annot"><span class="annottext">Eq PeerStatus
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></a></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253438"><span id="local-6989586621679253440"><span id="local-6989586621679253442"><span id="local-6989586621679253444"><span id="local-6989586621679253446"><span id="local-6989586621679253448"><span id="local-6989586621679253450"><span class="annot"><span class="annottext">Eq PeerStatus
 Eq PeerStatus
 -&gt; (PeerStatus -&gt; PeerStatus -&gt; Ordering)
 -&gt; (PeerStatus -&gt; PeerStatus -&gt; Bool)
@@ -163,7 +163,7 @@ $c&lt; :: PeerStatus -&gt; PeerStatus -&gt; Bool
 compare :: PeerStatus -&gt; PeerStatus -&gt; Ordering
 $ccompare :: PeerStatus -&gt; PeerStatus -&gt; Ordering
 $cp1Ord :: Eq PeerStatus
-</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253433"><span id="local-6989586621679253435"><span id="local-6989586621679253437"><span class="annot"><span class="annottext">Int -&gt; PeerStatus -&gt; ShowS
+</span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></a></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679253432"><span id="local-6989586621679253434"><span id="local-6989586621679253436"><span class="annot"><span class="annottext">Int -&gt; PeerStatus -&gt; ShowS
 [PeerStatus] -&gt; ShowS
 PeerStatus -&gt; String
 (Int -&gt; PeerStatus -&gt; ShowS)
