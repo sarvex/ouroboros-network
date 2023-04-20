@@ -1,3 +1,4 @@
+{-# LANGUAGE BangPatterns        #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE NamedFieldPuns      #-}
 {-# LANGUAGE RankNTypes          #-}
@@ -118,7 +119,10 @@ analyse DBAnalyserConfig{analysis, confLimit, dbDir, selectDB, validation, verbo
             putStrLn $ "ImmutableDB tip: " ++ show tipPoint
             pure result
         SelectChainDB -> do
-          bs <- newBackingStore (newBackingStoreInitialiser nullTracer LedgerDB.InMemoryBackingStore) ledgerDbFS (projectLedgerTables genesisLedger)
+          Debug.traceShowM "before"
+          let !x = projectLedgerTables genesisLedger
+          Debug.traceShowM "after"
+          bs <- newBackingStore (newBackingStoreInitialiser nullTracer LedgerDB.InMemoryBackingStore) ledgerDbFS x
           ChainDB.withDB chainDbArgs $ \chainDB -> do
             result <- runAnalysis analysis $ AnalysisEnv {
                 cfg

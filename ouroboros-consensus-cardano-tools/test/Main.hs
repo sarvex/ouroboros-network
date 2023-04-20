@@ -17,7 +17,7 @@ chainDB     = "test/disk/chaindb"
 testSynthOptionsCreate :: DBSynthesizerOptions
 testSynthOptionsCreate =
     DBSynthesizerOptions {
-        synthLimit          = ForgeLimitEpoch 1
+        synthLimit          = ForgeLimitSlot 8192
       , synthOpenMode       = OpenCreateForce
     }
 

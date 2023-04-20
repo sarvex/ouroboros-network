@@ -17,6 +17,7 @@ import           Data.Either (isRight)
 import           Data.Maybe (isJust)
 import           Data.Proxy
 import           Data.Word (Word64)
+import           Debug.Trace
 import           Ouroboros.Consensus.Block.Abstract as Block
 import           Ouroboros.Consensus.Block.Forging as Block (BlockForging (..),
                      ShouldForge (..), checkShouldForge)
@@ -68,7 +69,7 @@ runForge
 runForge epochSize_ nextSlot opts chainDB blockForging cfg = do
     putStrLn $ "--> epoch size: " ++ show epochSize_
     putStrLn $ "--> will process until: " ++ show opts
-    endState <- go initialForgeState {currentSlot = nextSlot}
+    endState <- go 0 initialForgeState {currentSlot = nextSlot}
     putStrLn $ "--> forged and adopted " ++ show (forged endState) ++ " blocks; reached " ++ show (currentSlot endState)
     pure $ ForgeResult $ fromIntegral $ forged endState
   where
@@ -80,11 +81,13 @@ runForge epochSize_ nextSlot opts chainDB blockForging cfg = do
         ForgeLimitBlock b -> (b == ) . forged
         ForgeLimitEpoch e -> (e == ) . currentEpoch
 
-    go :: ForgeState -> IO ForgeState
-    go forgeState
+    go :: Int -> ForgeState -> IO ForgeState
+    go n forgeState
       | forgingDone forgeState = pure forgeState
-      | otherwise = go . nextForgeState forgeState . isRight
-          =<< runExceptT (goSlot $ currentSlot forgeState)
+      | otherwise = do
+          when (n `rem` 10000 == 0) $ traceShowM n
+          go (n + 1) . nextForgeState forgeState . isRight
+            =<< runExceptT (goSlot $ currentSlot forgeState)
 
     nextForgeState :: ForgeState -> Bool -> ForgeState
     nextForgeState ForgeState{currentSlot, forged, currentEpoch, processed} didForge = ForgeState {
