@@ -183,7 +183,7 @@ Context -&gt; HardForkLedgerError xs -&gt; IO (Maybe ThunkInfo)
 forall b b'.
 Coercible (HeaderHash b) (HeaderHash b') =&gt;
 Point b -&gt; Point b'
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span>
 </span><span id="line-89"></span><span>         </span><span class="annot"><span class="annottext">(Point (HardForkBlock xs)
  -&gt; Point (LedgerState (HardForkBlock xs)))
 -&gt; (LedgerState (HardForkBlock xs) -&gt; Point (HardForkBlock xs))
@@ -200,7 +200,7 @@ CanHardFork xs =&gt;
 forall b b'.
 Coercible (HeaderHash b) (HeaderHash b') =&gt;
 Point b -&gt; Point b'
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span> </span><span class="annot"><span class="annottext">(Point (LedgerState blk) -&gt; Point blk)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span> </span><span class="annot"><span class="annottext">(Point (LedgerState blk) -&gt; Point blk)
 -&gt; (LedgerState blk -&gt; Point (LedgerState blk))
 -&gt; LedgerState blk
 -&gt; Point blk
@@ -226,7 +226,7 @@ LedgerState (HardForkBlock xs) -&gt; HardForkState LedgerState xs
 forall b b'.
 Coercible (HeaderHash b) (HeaderHash b') =&gt;
 Point b -&gt; Point b'
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span>
 </span><span id="line-94"></span><span>         </span><span class="annot"><span class="annottext">(Point (HardForkBlock xs)
  -&gt; Point (Ticked (LedgerState (HardForkBlock xs))))
 -&gt; (Ticked (LedgerState (HardForkBlock xs))
@@ -247,7 +247,7 @@ CanHardFork xs =&gt;
 forall b b'.
 Coercible (HeaderHash b) (HeaderHash b') =&gt;
 Point b -&gt; Point b'
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span> </span><span class="annot"><span class="annottext">(Point (Ticked (LedgerState blk)) -&gt; Point blk)
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">castPoint</span></a></span><span> </span><span class="annot"><span class="annottext">(Point (Ticked (LedgerState blk)) -&gt; Point blk)
 -&gt; ((:.:) Ticked LedgerState blk
     -&gt; Point (Ticked (LedgerState blk)))
 -&gt; (:.:) Ticked LedgerState blk

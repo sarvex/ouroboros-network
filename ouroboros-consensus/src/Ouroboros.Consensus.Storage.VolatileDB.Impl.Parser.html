@@ -269,7 +269,7 @@ forall a. a -&gt; [a] -&gt; [a]
 </span><span id="line-94"></span><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">let</span><span> </span><span class="hs-glyph">!</span><span id="local-6989586621680026166"><span class="annot"><span class="annottext">hash :: HeaderHash blk
 </span><a href="#local-6989586621680026166"><span class="hs-identifier hs-var hs-var">hash</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">blk -&gt; HeaderHash blk
 forall b. HasHeader b =&gt; b -&gt; HeaderHash b
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockHash</span></a></span><span> </span><span class="annot"><span class="annottext">blk
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockHash</span></a></span><span> </span><span class="annot"><span class="annottext">blk
 </span><a href="#local-6989586621680026177"><span class="hs-identifier hs-var">blk</span></a></span><span>
 </span><span id="line-95"></span><span>           </span><span class="hs-keyword">in</span><span> </span><span class="annot"><span class="annottext">([ParsedBlockInfo blk], Maybe (ParseError blk, BlockOffset))
 -&gt; m ([ParsedBlockInfo blk], Maybe (ParseError blk, BlockOffset))
@@ -312,17 +312,17 @@ HeaderHash blk
 </span><span id="line-108"></span><span>      </span><span class="annot"><span class="annottext">biHash :: HeaderHash blk
 </span><a href="Ouroboros.Consensus.Storage.VolatileDB.API.html#biHash"><span class="hs-identifier hs-var">biHash</span></a></span><span>         </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">blk -&gt; HeaderHash blk
 forall b. HasHeader b =&gt; b -&gt; HeaderHash b
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockHash</span></a></span><span>     </span><span class="annot"><span class="annottext">blk
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockHash</span></a></span><span>     </span><span class="annot"><span class="annottext">blk
 </span><a href="#local-6989586621680026163"><span class="hs-identifier hs-var">blk</span></a></span><span>
 </span><span id="line-109"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">biSlotNo :: SlotNo
 </span><a href="Ouroboros.Consensus.Storage.VolatileDB.API.html#biSlotNo"><span class="hs-identifier hs-var">biSlotNo</span></a></span><span>       </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">blk -&gt; SlotNo
 forall b. HasHeader b =&gt; b -&gt; SlotNo
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockSlot</span></a></span><span>     </span><span class="annot"><span class="annottext">blk
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockSlot</span></a></span><span>     </span><span class="annot"><span class="annottext">blk
 </span><a href="#local-6989586621680026163"><span class="hs-identifier hs-var">blk</span></a></span><span>
 </span><span id="line-110"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">biBlockNo :: BlockNo
 </span><a href="Ouroboros.Consensus.Storage.VolatileDB.API.html#biBlockNo"><span class="hs-identifier hs-var">biBlockNo</span></a></span><span>      </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">blk -&gt; BlockNo
 forall b. HasHeader b =&gt; b -&gt; BlockNo
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockNo</span></a></span><span>       </span><span class="annot"><span class="annottext">blk
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">blockNo</span></a></span><span>       </span><span class="annot"><span class="annottext">blk
 </span><a href="#local-6989586621680026163"><span class="hs-identifier hs-var">blk</span></a></span><span>
 </span><span id="line-111"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">biIsEBB :: IsEBB
 </span><a href="Ouroboros.Consensus.Storage.VolatileDB.API.html#biIsEBB"><span class="hs-identifier hs-var">biIsEBB</span></a></span><span>        </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">blk -&gt; IsEBB

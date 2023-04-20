@@ -676,11 +676,11 @@ forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><a href="#local-6989586621679243755"><span class="hs-identifier hs-var">getCurrentLedger</span></a></span><span>
 </span><span id="line-218"></span><span>      </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Point DualByronBlock
 </span><a href="#local-6989586621679243751"><span class="hs-identifier hs-var">tip</span></a></span><span> </span><span class="hs-keyword">of</span><span>
-</span><span id="line-219"></span><span>        </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">BlockPoint</span></a></span><span> </span><span class="hs-special">{</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">() -&gt; m ()
+</span><span id="line-219"></span><span>        </span><span class="annot"><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-type">BlockPoint</span></a></span><span> </span><span class="hs-special">{</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">() -&gt; m ()
 forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
 </span><a href="../file:///usr/local/.ghcup/ghc/8.10.7/share/doc/ghc-8.10.7/html/libraries/base-4.14.3.0/src"><span class="hs-identifier hs-var">return</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-220"></span><span>        </span><span class="annot"><span class="annottext">Point DualByronBlock
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisPoint</span></a></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">DualByronBlock -&gt; m ()
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisPoint</span></a></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">DualByronBlock -&gt; m ()
 </span><a href="#local-6989586621679243753"><span class="hs-identifier hs-var">addBlock</span></a></span><span> </span><span class="annot"><span class="annottext">DualByronBlock
 </span><a href="#local-6989586621679243747"><span class="hs-identifier hs-var">genesisEBB</span></a></span><span>
 </span><span id="line-221"></span><span>    </span><span class="hs-keyword">where</span><span>
@@ -719,7 +719,7 @@ forall m a. StorageConfig (DualBlock m a) -&gt; StorageConfig m
 </span><span class="hs-number">0</span></span><span class="hs-special">)</span><span>
 </span><span id="line-234"></span><span>                   </span><span class="annot"><span class="annottext">ChainHash ByronBlock
 forall b. ChainHash b
-</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.1.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisHash</span></a></span><span>
+</span><a href="../file:///home/runner/work/ouroboros-network/ouroboros-network/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ouroboros-network-api-0.2.0.0/noopt/doc/html/ouroboros-network-api/src"><span class="hs-identifier hs-var">GenesisHash</span></a></span><span>
 </span><span id="line-235"></span><span>
 </span><span id="line-236"></span><span>  </span><span class="hs-comment">-- Node config is a consensus concern, determined by the main block only</span><span>
 </span><span id="line-237"></span><span>  </span><span id="local-6989586621679243736"><span class="annot"><span class="annottext">nodeImmutableDbChunkInfo :: StorageConfig DualByronBlock -&gt; ChunkInfo
