@@ -80,3 +80,11 @@ package ouroboros-consensus-shelley
 
 package ouroboros-consensus-cardano
   flags: +asserts
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/fs-sim
+  tag: 70061b951775c053df73a74aa51de224e3a7237d
+  subdir:
+    fs-api
+    fs-sim
