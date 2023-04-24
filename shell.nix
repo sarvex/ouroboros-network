@@ -24,11 +24,6 @@ let
       pkgconfig
       nixfmt
       stylish-haskell
-      cabal-fmt
-
-      # release management
-      scriv
-      (pkgs.python3.withPackages (p: [ p.beautifulsoup4 p.html5lib ]))
     ];
 
     tools = builtins.mapAttrs (name: ver: {
